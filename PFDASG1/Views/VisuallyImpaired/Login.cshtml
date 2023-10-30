@@ -15,7 +15,7 @@
 
     <!-- Reference to customized styling for this website -->
     @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />*@
-    <link rel="stylesheet" type="text/css" href="~/css/homepage.css">
+    <link rel="stylesheet" type="text/css" href="~/css/login(VI).css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <!-- Bootstrap CSS -->
@@ -24,14 +24,26 @@
     <!-- Bootstrap JavaScript (Popper.js is required for dropdowns) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-  
+
 </head>
 <body>
     <header>
-        @await Html.PartialAsync("Navbar.cshtml")
+        @await Html.PartialAsync("_navbar.cshtml")
     </header>
-    
+    <div class="login-page">
+        <div class="form">
+            <h4><b>Online Banking</b></h4>
+            <form class="login-form">
+                <input type="text" placeholder="Access Code" />
+                <input type="password" placeholder="PIN" />
+                <button>login</button>
+                <p class="message"><a href="#"><u>No Access Code/PIN? Click here.</u></a></p>
+
+                <p class="message">Don't have an Online Banking? <a href="#">Sign Up Now.</a></p>
+
+            </form>
+        </div>
+    </div>
 </body>
 </html>
-
 

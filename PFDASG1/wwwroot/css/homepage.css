@@ -1,0 +1,45 @@
+html {
+  font-size: 20px;
+}
+
+.navbar-brand{
+    margin-left: 10px;
+}
+
+/* Dropdown menu styles */
+.dropdown-menu {
+    background-color: #f8f9fa;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    
+}
+
+.dropdown-item {
+    color: #212529;
+}
+
+    .dropdown-item:hover,
+    .dropdown-item:focus {
+        background-color: #e9ecef;
+    }
+
+.dropdown-divider {
+    border-color: #e9ecef;
+}
+
+
+@media (min-width: 768px) {
+    html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
