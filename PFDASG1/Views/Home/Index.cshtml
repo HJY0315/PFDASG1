@@ -63,78 +63,7 @@
         </div>
     </fieldset>
 
-
      <script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>
-    <script>
-
-        var messages = ['🔊 Hey', '🔊 Hi, there!', '🔊 Hi!', '🔊 Hello'];
-
-        if(annyang){
-            console.log("We have annyang!");
-
-            
-
-            var commands = {
-                'Hello' : hello,
-                'Go to login page': goToLoginPage
-            }
-
-            function hello() {
-                var messages = ['Hey', 'Hi, there!','Hello'];
-                var randomIndex = Math.floor(Math.random() * messages.length);
-                var message = messages[randomIndex];
-
-                console.log(`%c ${message}`, 'color: green; font-weight:bold;');
-
-                // Use the Web Speech API to respond with spoken text
-                var speechSynthesis = window.speechSynthesis;
-                var speech = new SpeechSynthesisUtterance(message);
-                speech.volume = 1; // Adjust volume
-                speech.rate = 1; // Adjust speaking rate
-
-                // Start speech synthesis
-                speechSynthesis.speak(speech);
-            }
-
-            
-
-            function goToLoginPage() {
-                // Redirect to the login page
-                window.location.href = '/Home/Login';
-            }
-
-            
-
-            // Add Commands
-            annyang.addCommands(commands);
-
-            // Start listening
-            annyang.start();
-
-        }
-
-    </script>
-
-     <fieldset class="FormContent">
-      <legend>Popular features</legend>
-        <ul class="flex">
-            <li class="flex-item"><a href="#">Sign Up</a></li>
-            <li class="flex-item"><a href="#">Check Account Balance</a></li>
-            <li class="flex-item"><a href="#">Money Transfer</a></li>
-            <li class="flex-item"><a href="#">Pay Bills</a></li>
-            <li class="flex-item"><a href="#">Credit Card Application</a></li>
-            <li class="flex-item"><a href="#">Check Credit Card Balance</a></li>
-            <li class="flex-item"><a href="#">Credit Card Reward Redemption</a></li>
-            <li class="flex-item"><a href="#">Credit and Debit Card Avtivation</a></li>
-            <li class="flex-item"><a href="#">Personal Loans Up</a></li>
-            <li class="flex-item"><a href="#">Accident & Health Inssurance></a></li>
-            <li class="flex-item"><a href="#">Insurance Protection</a></li>
-            <li class="flex-item"><a href="#">Endowment & Whole of Life Plans</a></li>
-            <li class="flex-item"><a href="#">Investments</a></li>
-            <li class="flex-item"><a href="#">Banking Forms</a></li>
-            <li class="flex-item"><a href="#"> Frequently Asked Questions</a></li>
-        </ul>
- </fieldset>    
     <script src="~/js/annyang-setup.js" asp-append-version="true"></script>
 </body>
 </html>
