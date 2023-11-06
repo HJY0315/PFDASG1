@@ -2,9 +2,50 @@ html {
   font-size: 20px;
 }
 
-.navbar-brand{
-    margin-left: 10px;
+.imagetext {
+    position: relative;
+    text-align: center;
+  /*  overflow: hidden;*/
 }
+.text {
+    position: absolute;
+    bottom: 50%;
+    left: 20%;
+    font-size:30px;
+    color: red;
+}
+
+/* Add the .blur and .blurry styles here */
+.blur {
+    overflow: hidden;
+    position: relative;
+}
+
+    .blur img {
+        filter: blur(2px);
+        width: 100%;
+        height: 100%;
+    }
+
+.blurry {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50%;
+    height: 100%;
+}
+
+    .blurry.alt {
+        right: auto;
+        left: 0;
+    }
+
+    .blurry.middle {
+        right: 50%;
+        transform: translateX(50%);
+    }
+
+
 
 /* Dropdown menu styles */
 .dropdown-menu {
@@ -28,6 +69,35 @@ html {
     border-color: #e9ecef;
 }
 
+
+.flex {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+}
+
+.flex-item {
+    margin: 10px;
+    padding: 5px;
+}
+
+.FormContent {
+    padding: 10px;
+    margin: auto;
+    width: 95%;
+    text-align: center;
+}
+
+fieldset {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    background-color: #f2f2f2;
+    border: 1px solid #ccc;
+    border-radius: 50px;
+}
 
 @media (min-width: 768px) {
     html {
