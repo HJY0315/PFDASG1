@@ -17,6 +17,8 @@
     @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />*@
     <link rel="stylesheet" type="text/css" href="~/css/login(VI).css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>
+
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
@@ -30,6 +32,8 @@
     <header>
         @await Html.PartialAsync("Navbar.cshtml")
     </header>
+   
+
     <div class="login-page">
         <div class="form">
             <h4><b>Online Banking</b></h4>
@@ -41,14 +45,38 @@
                 <p class="message">Already registered? <a href="#" onclick="toggle('register'); toggle('login')">Sign In</a></p>
             </form>
             <form class="login-form" id="login" style="display:block;">
-                <input type="text" placeholder="Access Code" />
-                <input type="password" placeholder="PIN" />
+                <input type="text" id="accessCodeInput" placeholder="Access Code" />
+                <input type="password" id="pinInput" placeholder="PIN" />
                 <button>login</button>
                 <p class="message"><a href="#"><u>No Access Code/PIN? Click here.</u></a></p>
                 <p class="message">Don't have an Online Banking? <a href="#" onclick="toggle('login'); toggle('register')">Sign Up Now.</a></p>
             </form>
         </div>
     </div>
+    <script>
+        if (annyang) {
+            
+
+            var commands = {
+                'Enter access code *code': enterAccessCode,
+                'Enter PIN number *pin': enterPIN
+            }
+
+            function enterAccessCode(code) {
+                document.getElementById('accessCodeInput').value = code;
+            }
+
+            function enterPIN(pin) {
+                document.getElementById('pinInput').value = pin;
+            }
+
+            // Add Commands
+            annyang.addCommands(commands);
+
+            // Start listening
+            annyang.start();
+        }
+    </script>
 </body>
 </html>
 
