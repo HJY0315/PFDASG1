@@ -72,15 +72,15 @@ html {
 
 .flex {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    list-style: none;
-    padding: 0;
 }
 
-.flex-item {
+.flex-column {
+    flex: 1;
     margin: 10px;
-    padding: 5px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    list-style:none;
 }
 
 .FormContent {
@@ -88,16 +88,30 @@ html {
     margin: auto;
     width: 95%;
     text-align: center;
+    position: relative;
+    bottom: 35px;
+    justify-content: center;
 }
 
 fieldset {
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 25px;
     padding: 20px;
     background-color: #f2f2f2;
-    border: 1px solid #ccc;
-    border-radius: 50px;
 }
+
+/* Add styles for the legend, headings, and links as needed */
+.flex p {
+    font-weight: bold;
+}
+
+.flex-item a {
+    text-decoration: none;
+    font-weight:bold;
+    color: red; /* Customize the link color */
+}
+
+
 
 @media (min-width: 768px) {
     html {
