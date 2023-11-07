@@ -21,6 +21,7 @@ namespace PFDASG1.Controllers
         {
             return View();
         }
+
         //private MemberDAL memberContext = new MemberDAL();
         //[HttpPost]
         //public ActionResult MemberLogin(IFormCollection formData)
