@@ -24,7 +24,7 @@
     <!-- Bootstrap JavaScript (Popper.js is required for dropdowns) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>
 
   
 </head>
@@ -32,6 +32,36 @@
     <header>
         @await Html.PartialAsync("Navbar.cshtml")
     </header>
+    <div class="imagetext">
+        <div class="blur">
+            <img src="~/img/home_img.jpg" alt="Blurred Image" />
+            <div class="text"><b>Welcome to OCBC</b></div>
+        </div>
+    </div>
+    <fieldset class="FormContent">
+        <legend>Popular features</legend>
+        <div class="flex">
+            <div class="flex-column">
+                <p><b>Banking for Individual</b></p>
+                <li class="flex-item"><a href="#">FRANK by OCBC</a></li>
+                <li class="flex-item"><a href="#">Personal Banking</a></li>
+                <li class="flex-item"><a href="#">Premier Banking</a></li>
+                <li class="flex-item"><a href="#">Premier Private Client</a></li>
+            </div>
+            <div class="flex-column">
+                <p><b>Banking for Businesses</b></p>
+                <li class="flex-item"><a href="#">Business Banking</a></li>
+                <li class="flex-item"><a href="#">Large Corporates</a></li>
+            </div>
+            <div class="flex-column">
+                <p><b>OCBC Group</b></p>
+                <li class="flex-item"><a href="#">About us</a></li>
+                <li class="flex-item"><a href="#">Sustainability</a></li>
+                <li class="flex-item"><a href="#">Careers</a></li>
+                <li class="flex-item"><a href="#">Investors</a></li>
+            </div>
+        </div>
+    </fieldset>
 
     
 

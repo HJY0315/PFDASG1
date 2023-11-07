@@ -1,7 +1,6 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:300);
-
-.navbar-brand {
-    margin-left: 10px;
+html {
+    font-size: 15px;
 }
 
 .login-page {
@@ -116,4 +115,64 @@ body {
     font-family: "Roboto", sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+/* Styling for the search bar and icon */
+.search-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.search-icon {
+    font-size: 20px;
+    margin-right: 10px;
+    color: #555; /* Icon color */
+}
+
+#search {
+    padding: 10px;
+    border: none;
+    border-radius: 25px;
+    background-color: #f2f2f2;
+    width: 250px;
+    margin-right: 15px;
+}
+
+/* Additional styling for the search bar in collapsed mode */
+.navbar .search-wrapper.collapsed {
+    justify-content: flex-end;
+}
+
+    .navbar .search-wrapper.collapsed #search {
+        width: 0;
+        padding: 0;
+        opacity: 0;
+    }
+
+.flex {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+}
+
+.flex-item {
+    margin: 10px;
+    padding: 5px;
+}
+
+    .FormContent {
+    padding: 10px;
+    margin: auto;
+    width: 95%;
+    text-align: center;
+}
+
+fieldset {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px; 
+    background-color: #f2f2f2;
+    border: 1px solid #ccc;
+    border-radius: 50px;
 }
