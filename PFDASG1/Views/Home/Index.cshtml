@@ -63,59 +63,7 @@
         </div>
     </fieldset>
 
-    
-
-
-    <script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>
-    <script>
-
-        var messages = ['🔊 Hey', '🔊 Hi, there!', '🔊 Hi!', '🔊 Hello'];
-
-        if(annyang){
-            
-
-            
-
-            var commands = {
-                'Hello' : hello,
-                'Go to login page': goToLoginPage
-            }
-
-            function hello() {
-                var messages = ['Hey', 'Hi, there!','Hello'];
-                var randomIndex = Math.floor(Math.random() * messages.length);
-                var message = messages[randomIndex];
-
-                console.log(`%c ${message}`, 'color: green; font-weight:bold;');
-
-                // Use the Web Speech API to respond with spoken text
-                var speechSynthesis = window.speechSynthesis;
-                var speech = new SpeechSynthesisUtterance(message);
-                speech.volume = 1; // Adjust volume
-                speech.rate = 1; // Adjust speaking rate
-
-                // Start speech synthesis
-                speechSynthesis.speak(speech);
-            }
-
-            
-
-            function goToLoginPage() {
-                // Redirect to the login page
-                window.location.href = '/Home/Login';
-            }
-
-            
-
-            // Add Commands
-            annyang.addCommands(commands);
-
-            // Start listening
-            annyang.start();
-
-        }
-
-    </script>
+    <script src="~/js/annyang-setup.js" asp-append-version="true"></script>
 
     
 </body>
