@@ -1,4 +1,6 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:300);
+@import url(//fonts.googleapis.com/css?family=Oswald:400);
+
 html {
     font-size: 15px;
 }
@@ -9,10 +11,10 @@ html {
     margin: auto;
 }
 
-h4{
-    margin:5px;
-
+h4 {
+    margin: 5px;
 }
+
 .form {
     position: relative;
     z-index: 1;
@@ -111,7 +113,7 @@ h4{
             }
 
 body {
-    background-color:white;
+    background-color: white;
     font-family: "Roboto", sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -149,8 +151,8 @@ body {
     }
 
 .flex {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     justify-content: center;
     list-style: none;
     padding: 0;
@@ -161,7 +163,7 @@ body {
     padding: 5px;
 }
 
-    .FormContent {
+.FormContent {
     padding: 10px;
     margin: auto;
     width: 95%;
@@ -171,8 +173,14 @@ body {
 fieldset {
     border: 1px solid #ccc;
     border-radius: 5px;
-    padding: 20px; 
+    padding: 20px;
     background-color: #f2f2f2;
     border: 1px solid #ccc;
     border-radius: 50px;
+}
+
+canvas {
+    justify-content:center;
+    max-width: 400px;
+    margin: 0 auto;
 }
