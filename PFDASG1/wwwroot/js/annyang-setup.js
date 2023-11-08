@@ -14,7 +14,8 @@ if (annyang) {
         'Stop listening': stopListening,
         'Enter access code *code': enterAccessCode,
         'Enter PIN number *pin': enterPIN,
-        'Login': login
+        'Login': login,
+        'Logout': logout
     }
 
     function hello() {
@@ -70,6 +71,10 @@ if (annyang) {
 
     function login() {
         document.getElementById('login login_btn').click();
+    }
+
+    function logout() {
+        window.location.href = '/Home/Index';
     }
 
     annyang.addCommands(commands);
