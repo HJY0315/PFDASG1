@@ -11,7 +11,10 @@ if (annyang) {
         'Go to login page': goToLoginPage,
         'Go to home page': goToHomePage,
         'Start listening': startListening,
-        'Stop listening': stopListening
+        'Stop listening': stopListening,
+        'Enter access code *code': enterAccessCode,
+        'Enter PIN number *pin': enterPIN,
+        'Login': login
     }
 
     function hello() {
@@ -53,6 +56,20 @@ if (annyang) {
         speechMessage.text = "Listening stopped";
         speechSynthesis.speak(speechMessage);
         console.log("Listening stopped");
+    }
+
+    function enterAccessCode(code) {
+        code = code.replace(/\s/g, '');
+        document.getElementById('accessCodeInput').value = code;
+    }
+
+    function enterPIN(pin) {
+        pin = pin.replace(/\s/g, '');
+        document.getElementById('pinInput').value = pin;
+    }
+
+    function login() {
+        document.getElementById('login login_btn').click();
     }
 
     annyang.addCommands(commands);

@@ -48,35 +48,13 @@
             <form class="login-form" method="post" id="login" style="display:block;">
                 <input type="text" id="accessCodeInput" name="txtLoginID" placeholder="Access Code" />
                 <input type="password" id="pinInput" name="txtPin" placeholder="PIN" />
-                <button class="login-button" id="login">login</button>
+                <button class="login-button" id="login login_btn" >login</button>
                 <p class="message"><a href="#"><u>No Access Code/PIN? Click here.</u></a></p>
                 <p class="message">Don't have an Online Banking? <a href="#" onclick="toggle('login'); toggle('register')">Sign Up Now.</a></p>
             </form>
         </div>
     </div>
     <script>
-        if (annyang) {
-            
-
-            var commands = {
-                'Enter access code *code': enterAccessCode,
-                'Enter PIN number *pin': enterPIN
-            }
-
-            function enterAccessCode(code) {
-                document.getElementById('accessCodeInput').value = code;
-            }
-
-            function enterPIN(pin) {
-                document.getElementById('pinInput').value = pin;
-            }
-
-            // Add Commands
-            annyang.addCommands(commands);
-
-            // Start listening
-            annyang.start();
-        }
         const loginButton = document.getElementById('login');
 
     </script>
