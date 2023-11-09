@@ -9,9 +9,9 @@ html {
 }
 .text {
     position: absolute;
-    bottom: 50%;
-    left: 20%;
-    font-size:30px;
+    bottom: 80%;
+    left: 15%;
+    font-size:40px;
     color: red;
 }
 
@@ -22,7 +22,7 @@ html {
 }
 
     .blur img {
-        filter: blur(2px);
+        
         width: 100%;
         height: 100%;
     }
@@ -84,6 +84,8 @@ html {
 }
 
 .FormContent {
+    position: relative;
+    bottom: 30px;
     padding: 10px;
     margin: auto;
     width: 95%;

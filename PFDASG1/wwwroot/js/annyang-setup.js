@@ -1,5 +1,5 @@
 ﻿
-var messages = ['🔊 Hey', '🔊 Hi, there!', '🔊 Hi!', '🔊 Hello'];
+var messages = ['🔊 Hey', '🔊 Hi, there!', '🔊 Hello'];
 
 if (annyang) {
     console.log("We have annyang!");

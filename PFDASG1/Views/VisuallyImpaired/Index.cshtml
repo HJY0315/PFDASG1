@@ -56,16 +56,19 @@
     </fieldset>*@
 
     <div style="text-align: center;">
-        <h1>Bank Account Balances</h1>
+        @*link to account database table*@
+        <h1>Total Balance: $0.00</h1>
         <canvas id="doughnutChart" width="400" height="400"></canvas>
     </div>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             // Data for the chart
             var data = {
+                //link to transaction database table
                 labels: ["Savings", "Checking", "Credit Card", "Investment", "Loan"],
                 datasets: [
                     {
+                        
                         data: [5000, 3000, 2000, 8000, 1000], // Example account balances
                         backgroundColor: ["#2C3E50", "#FC4349", "#6DBCDB", "#F7E248", "#D7DADB"],
                     },
@@ -75,7 +78,7 @@
             // Chart options
             var options = {
                 responsive: false,
-                maintainAspectRatio: false,
+                maintainAspectRatio: true,
             };
 
             // Get the chart canvas and create the doughnut chart
