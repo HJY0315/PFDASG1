@@ -1,10 +1,7 @@
-﻿
-var messages = ['🔊 Hey', '🔊 Hi, there!', '🔊 Hello'];
+﻿var messages = ['🔊 Hey', '🔊 Hi, there!', '🔊 Hello'];
 
 if (annyang) {
     console.log("We have annyang!");
-
-
 
     var commands = {
         'Hello': hello,
@@ -19,11 +16,59 @@ if (annyang) {
     }
 
     function hello() {
-        var messages = ['Hey', 'Hi, there!', 'Hello'];
         var randomIndex = Math.floor(Math.random() * messages.length);
         var message = messages[randomIndex];
 
-        console.log(`%c ${message}`, 'color: green; font-weight:bold;');
+        speakResponse(message);
+    }
+
+    function goToLoginPage() {
+        window.location.href = '/Home/Login';
+        speakResponse("You are at the login page.");
+    }
+
+    function goToHomePage() {
+        window.location.href = '/Home/Index';
+        speakResponse("You are at the home page.");
+    }
+
+    function startListening() {
+        annyang.start();
+        speakResponse("Listening started");
+        console.log("Listening started");
+    }
+
+    function stopListening() {
+        annyang.abort();
+        listening = false;
+        speakResponse("Listening stopped");
+        console.log("Listening stopped");
+    }
+
+    function enterAccessCode(code) {
+        code = code.replace(/\s/g, '');
+        document.getElementById('accessCodeInput').value = code;
+        speakResponse("Access code entered.");
+    }
+
+    function enterPIN(pin) {
+        pin = pin.replace(/\s/g, '');
+        document.getElementById('pinInput').value = pin;
+        speakResponse("PIN entered.");
+    }
+
+    function login() {
+        document.getElementById('login login_btn').click();
+        speakResponse("Logging in.");
+    }
+
+    function logout() {
+        window.location.href = '/Home/Index';
+        speakResponse("Logging out.");
+    }
+
+    function speakResponse(message) {
+        console.log(`%c ${message}`, 'color: blue; font-weight:bold;');
 
         // Use the Web Speech API to respond with spoken text
         var speechSynthesis = window.speechSynthesis;
@@ -34,56 +79,10 @@ if (annyang) {
         speechSynthesis.speak(speech);
     }
 
-
-
-    function goToLoginPage() {
-        window.location.href = '/Home/Login';
-    }
-
-    function goToHomePage() {
-        window.location.href = '/Home/Index';
-    }
-
-    function startListening() {
-        annyang.start();
-        speechMessage.text = "Listening started";
-        speechSynthesis.speak(speechMessage);
-        console.log("Listening started");
-    }
-
-    function stopListening() {
-        annyang.abort();
-        listening = false;
-        speechMessage.text = "Listening stopped";
-        speechSynthesis.speak(speechMessage);
-        console.log("Listening stopped");
-    }
-
-    function enterAccessCode(code) {
-        code = code.replace(/\s/g, '');
-        document.getElementById('accessCodeInput').value = code;
-    }
-
-    function enterPIN(pin) {
-        pin = pin.replace(/\s/g, '');
-        document.getElementById('pinInput').value = pin;
-    }
-
-    function login() {
-        document.getElementById('login login_btn').click();
-    }
-
-    function logout() {
-        window.location.href = '/Home/Index';
-    }
-
     annyang.addCommands(commands);
 
     annyang.start();
 }
-
-
-
 
 document.addEventListener("keydown", function (event) {
     if ((event.ctrlKey || event.metaKey) && event.key === " ") {
