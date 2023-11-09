@@ -19,16 +19,16 @@ namespace PFDASG1.DAL
             conn = new SqlConnection(strConn);
         }
 
-        public User Login(string access_code, string Pin)
+        public User Login(string accessCode, string Pin)
         {
-            if (access_code == null || Pin == null)
+            if (accessCode == null || Pin == null)
             {
                 return null;
             }
             User user = new User();
             SqlCommand cmd = conn.CreateCommand();
-            cmd.CommandText = @"SELECT * FROM Users WHERE Access_Code = @access_code AND Pin = @Pin";
-            cmd.Parameters.AddWithValue("@Access_Code", access_code);
+            cmd.CommandText = @"SELECT * FROM Users WHERE AccessCode = @accessCode AND Pin = @Pin";
+            cmd.Parameters.AddWithValue("@AccessCode", accessCode);
             cmd.Parameters.AddWithValue("@Pin", Pin);
             conn.Open();
             SqlDataReader reader = cmd.ExecuteReader();
