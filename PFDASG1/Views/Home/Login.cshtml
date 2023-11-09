@@ -46,40 +46,15 @@
                 <p class="message">Already registered? <a href="#" onclick="toggle('register'); toggle('login')">Sign In</a></p>
             </form>
             <form class="login-form" method="post" id="login" style="display:block;">
-                <input type="text" id="accessCodeInput" name="txtLoginID" placeholder="Access Code" />
-                <input type="password" id="pinInput" name="txtPin" placeholder="PIN" />
-                <button class="login-button" id="login">login</button>
+                <input type="number" id="accessCodeInput" name="txtLoginID" placeholder="Access Code" maxlength="7" />
+                <input type="password" id="pinInput" name="txtPin" placeholder="PIN" maxlength="6" />
+                <span style="color:red;">@TempData["Message"]</span>
+                <button class="login-button" id="login login_btn" >login</button>
                 <p class="message"><a href="#"><u>No Access Code/PIN? Click here.</u></a></p>
                 <p class="message">Don't have an Online Banking? <a href="#" onclick="toggle('login'); toggle('register')">Sign Up Now.</a></p>
             </form>
         </div>
     </div>
-    <script>
-        if (annyang) {
-            
-
-            var commands = {
-                'Enter access code *code': enterAccessCode,
-                'Enter PIN number *pin': enterPIN
-            }
-
-            function enterAccessCode(code) {
-                document.getElementById('accessCodeInput').value = code;
-            }
-
-            function enterPIN(pin) {
-                document.getElementById('pinInput').value = pin;
-            }
-
-            // Add Commands
-            annyang.addCommands(commands);
-
-            // Start listening
-            annyang.start();
-        }
-        const loginButton = document.getElementById('login');
-
-    </script>
 
     <script src="~/js/annyang-setup.js" asp-append-version="true"></script>
 
@@ -87,8 +62,23 @@
 </html>
 
 <script>
+    const accessCodeInput = document.getElementById('accessCodeInput');
 
-$('.message a').click(function(){
-   $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
-});
+    accessCodeInput.addEventListener('input', () => {
+        if (accessCodeInput.value.length > 7) {
+            accessCodeInput.value = accessCodeInput.value.substring(0, 7);
+        }
+    });
+
+
+
+    const pinInput = document.getElementById('pinInput');
+
+    pinInput.addEventListener('keydown', (event) => {
+        const charCode = event.which || event.keyCode;
+
+        if (charCode < 48 || charCode > 57) {
+            event.preventDefault();
+        }
+    });
 </script>

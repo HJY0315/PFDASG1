@@ -85,7 +85,7 @@ namespace PFDASG1.Controllers
             if (userContext.Login(Access_Code, Pin) != null)
             {
                 User user = userContext.Login(Access_Code, Pin);
-                //HttpContext.Session.SetString("Name", user.Name);
+                var name = HttpContext.Session.GetString(user.Name);
                 return RedirectToAction("Index", "VisuallyImpaired");
             }
             
