@@ -46,7 +46,7 @@
                 <p class="message">Already registered? <a href="#" onclick="toggle('register'); toggle('login')">Sign In</a></p>
             </form>
             <form class="login-form" method="post" id="login" style="display:block;">
-                <input type="number" id="accessCodeInput" name="txtLoginID" placeholder="Access Code" maxlength="7" />
+                <input type="text" id="accessCodeInput" name="txtLoginID" placeholder="Access Code" maxlength="7" oninput="validateAccessCode(this.value)" />
                 <input type="password" id="pinInput" name="txtPin" placeholder="PIN" maxlength="6" />
                 <span style="color:red;">@TempData["Message"]</span>
                 <button class="login-button" id="login login_btn" >login</button>
@@ -64,12 +64,17 @@
 <script>
     const accessCodeInput = document.getElementById('accessCodeInput');
 
-    accessCodeInput.addEventListener('input', () => {
-        if (accessCodeInput.value.length > 7) {
-            accessCodeInput.value = accessCodeInput.value.substring(0, 7);
+    accessCodeInput.addEventListener('keydown', (event) => {
+        const charCode = event.which || event.keyCode;
+
+        if (charCode === 8) { // Check for backspace key
+            return; // Allow backspace
+        }
+
+        if (charCode < 48 || charCode > 57) {
+            event.preventDefault(); // Prevent non-numeric characters
         }
     });
-
 
 
     const pinInput = document.getElementById('pinInput');
@@ -77,8 +82,12 @@
     pinInput.addEventListener('keydown', (event) => {
         const charCode = event.which || event.keyCode;
 
+        if (charCode === 8) { // Check for backspace key
+            return; // Allow backspace
+        }
+
         if (charCode < 48 || charCode > 57) {
-            event.preventDefault();
+            event.preventDefault(); // Prevent non-numeric characters
         }
     });
 </script>
