@@ -34,32 +34,33 @@
     <header>
         @await Html.PartialAsync("_navbar.cshtml")
     </header>
-    @*<fieldset class="FormContent">
-        <legend><b>Popular features</b></legend>
-        <ul class="flex">
-            <li class="flex-item"><a href="#">Sign Up</a></li>
-            <li class="flex-item"><a href="#">Check Account Balance</a></li>
-            <li class="flex-item"><a href="#">Money Transfer</a></li>
-            <li class="flex-item"><a href="#">Pay Bills</a></li>
-            <li class="flex-item"><a href="#">Credit Card Application</a></li>
-            <li class="flex-item"><a href="#">Check Credit Card Balance</a></li>
-            <li class="flex-item"><a href="#">Credit Card Reward Redemption</a></li>
-            <li class="flex-item"><a href="#">Credit and Debit Card Avtivation</a></li>
-            <li class="flex-item"><a href="#">Personal Loans Up</a></li>
-            <li class="flex-item"><a href="#">Accident & Health Inssurance></a></li>
-            <li class="flex-item"><a href="#">Insurance Protection</a></li>
-            <li class="flex-item"><a href="#">Endowment & Whole of Life Plans</a></li>
-            <li class="flex-item"><a href="#">Investments</a></li>
-            <li class="flex-item"><a href="#">Banking Forms</a></li>
-            <li class="flex-item"><a href="#"> Frequently Asked Questions</a></li>
-        </ul>
-    </fieldset>*@
 
     <div style="text-align: center;">
         @*link to account database table*@
         <h1>Total Balance: $0.00</h1>
         <canvas id="doughnutChart" width="400" height="400"></canvas>
     </div>
+
+    <fieldset class="FormContent">
+    <legend><b>Popular features</b></legend>
+    <ul class="flex">
+    <li class="flex-item"><a href="#">Sign Up</a></li>
+    <li class="flex-item"><a href="#">Check Account Balance</a></li>
+    <li class="flex-item"><a href="#">Money Transfer</a></li>
+    <li class="flex-item"><a href="#">Pay Bills</a></li>
+    <li class="flex-item"><a href="#">Credit Card Application</a></li>
+    <li class="flex-item"><a href="#">Check Credit Card Balance</a></li>
+    <li class="flex-item"><a href="#">Credit Card Reward Redemption</a></li>
+    <li class="flex-item"><a href="#">Credit and Debit Card Avtivation</a></li>
+    <li class="flex-item"><a href="#">Personal Loans Up</a></li>
+    <li class="flex-item"><a href="#">Accident & Health Inssurance></a></li>
+    <li class="flex-item"><a href="#">Insurance Protection</a></li>
+    <li class="flex-item"><a href="#">Endowment & Whole of Life Plans</a></li>
+    <li class="flex-item"><a href="#">Investments</a></li>
+    <li class="flex-item"><a href="#">Banking Forms</a></li>
+    <li class="flex-item"><a href="#"> Frequently Asked Questions</a></li>
+    </ul>
+    </fieldset>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             // Data for the chart

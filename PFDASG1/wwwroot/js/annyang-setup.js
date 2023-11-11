@@ -1,4 +1,5 @@
 ﻿var messages = ['🔊 Hey', '🔊 Hi, there!', '🔊 Hello'];
+var unrecognizedFlag = false;
 
 if (annyang) {
     console.log("We have annyang!");
@@ -12,13 +13,14 @@ if (annyang) {
         'Enter access code *code': enterAccessCode,
         'Enter PIN number *pin': enterPIN,
         'Login': login,
-        'Logout': logout
-    }
+        'Logout': logout,
+    };
+
+    
 
     function hello() {
         var randomIndex = Math.floor(Math.random() * messages.length);
         var message = messages[randomIndex];
-
         speakResponse(message);
     }
 
@@ -67,14 +69,18 @@ if (annyang) {
         speakResponse("Logging out.");
     }
 
-    function speakResponse(message) {
+    function speakResponse(message, callback) {
         console.log(`%c ${message}`, 'color: blue; font-weight:bold;');
-
-        // Use the Web Speech API to respond with spoken text
         var speechSynthesis = window.speechSynthesis;
         var speech = new SpeechSynthesisUtterance(message);
         speech.volume = 1; // Adjust volume
         speech.rate = 1; // Adjust speaking rate
+
+        speech.addEventListener('end', function () {
+            if (callback && typeof callback === 'function') {
+                callback();
+            }
+        });
 
         speechSynthesis.speak(speech);
     }
@@ -82,10 +88,22 @@ if (annyang) {
     annyang.addCommands(commands);
 
     annyang.start();
+
+    // Handle unrecognized command
+    annyang.addCallback('resultNoMatch', function (phrases) {
+        console.log("resultNoMatch triggered");
+        if (!unrecognizedFlag) {
+            console.log("Handling unrecognized command");
+            speakResponse("Sorry, I didn't catch that. Please say again.", function () {
+                unrecognizedFlag = false;  // Reset the flag after speaking
+            });
+            unrecognizedFlag = true;
+        }
+    });
 }
 
 document.addEventListener("keydown", function (event) {
-    if ((event.ctrlKey || event.metaKey) && event.key === " ") {
+    if ((event.ctrlKey || event.metaKey) && event.key === " " && document.activeElement.tagName !== "INPUT") {
         startListening();
         event.preventDefault();
     }
