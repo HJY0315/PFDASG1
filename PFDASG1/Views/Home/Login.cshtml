@@ -62,6 +62,11 @@
 </html>
 
 <script>
+
+    $('.message a').click(function () {
+        $('form').animate({ height: "toggle", opacity: "toggle" }, "slow");
+    });
+
     const accessCodeInput = document.getElementById('accessCodeInput');
 
     accessCodeInput.addEventListener('keydown', (event) => {
