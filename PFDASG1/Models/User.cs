@@ -11,5 +11,6 @@ namespace PFDASG1.Models
         [Required(ErrorMessage = "Pin is required.")]
 
         public string Pin { get; set; }
+        public string NRIC { get; set; }
     }
 }
