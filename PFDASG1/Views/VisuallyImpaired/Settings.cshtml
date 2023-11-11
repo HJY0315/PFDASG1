@@ -100,21 +100,22 @@
         </div>
         <form class="form" autocomplete="off" novalidate>
             <fieldset>
-                <label for="card-number">Card Number</label>
-                <input type="num" id="card-number" class="input-cart-number" maxlength="4" />
-                <input type="num" id="card-number-1" class="input-cart-number" maxlength="4" />
-                <input type="num" id="card-number-2" class="input-cart-number" maxlength="4" />
-                <input type="num" id="card-number-3" class="input-cart-number" maxlength="4" />
+                <label for="card-number">Card Number (last 8 digits of your card number)</label>
+                <input type="num" id="card-number" class="input-cart-number" value="xxxx" readonly />
+                <input type="num" id="card-number-1" class="input-cart-number" value="xxxx" readonly />
+                <input type="num" id="card-number-2" class="input-cart-number" maxlength="4" placeholder="1234" required />
+                <input type="num" id="card-number-3" class="input-cart-number" maxlength="4" placeholder="1234" required />
             </fieldset>
+
             <fieldset>
                 <label for="card-holder">Card holder</label>
-                <input type="text" id="card-holder" />
+                <input type="text" id="card-holder" placeholder="Name on the card" required/>
             </fieldset>
             <fieldset class="fieldset-expiration">
                 <label for="card-expiration-month">Expiration date</label>
                 <div class="select">
                     <select id="card-expiration-month">
-                        <option></option>
+                        <option>Month</option>
                         <option>01</option>
                         <option>02</option>
                         <option>03</option>
@@ -131,7 +132,7 @@
                 </div>
                 <div class="select">
                     <select id="card-expiration-year">
-                        <option></option>
+                        <option>Year</option>
                         <option>2016</option>
                         <option>2017</option>
                         <option>2018</option>
@@ -147,19 +148,19 @@
             </fieldset>
             <fieldset class="fieldset-ccv">
                 <label for="card-ccv">CCV</label>
-                <input type="text" id="card-ccv" maxlength="3" />
+                <input type="text" id="card-ccv" maxlength="3" required />
             </fieldset>
             <fieldset>
                 <label for="security-question">Security Question</label>
                 <div class="select">
                   <select id="security-question">
-                        <option></option>
-                        <option>What is your primary school?</option>
-                        <option>2017</option>
-                        <option>2018</option>
+                        <option>Questions</option>
+                        <option>Where is your primary school?</option>
+                        <option>Who is your best friend?</option>
+                        <option>Do you have any musicial background?</option>
                     </select>
                 </div>
-                <input type="text" id="security-question" maxlength="20" />
+                <input type="text" id="security-question" maxlength="20" style="margin-top:10px; border: none;" placeholder="Answer" required/>
             </fieldset>
 
             <button class="btn"><i class="fa fa-lock"></i> submit</button>
@@ -177,19 +178,18 @@
             }
 
             var card_number = '';
-            $('.input-cart-number').each(function () {
-                card_number += $(this).val() + ' ';
-                if ($(this).val().length == 4) {
-                    $(this).next().focus();
+            $('.input-cart-number').each(function (index) {
+                if (index < 2) {
+                    card_number += 'xxxx ';
+                } else {
+                    card_number += $(this).val() + ' ';
+                    if ($(this).val().length == 4) {
+                        $(this).next().focus();
+                    }
                 }
             })
 
             $('.credit-card-box .number').html(card_number);
-        });
-
-        $('#card-holder').on('keyup change', function () {
-            $t = $(this);
-            $('.credit-card-box .card-holder div').html($t.val());
         });
 
         $('#card-holder').on('keyup change', function () {
@@ -218,6 +218,7 @@
             });
         }, 500);
     </script>
+
 
 </body>
 </html>
