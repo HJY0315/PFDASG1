@@ -41,7 +41,7 @@ namespace PFDASG1.DAL
                     user.AccessCode = reader.GetString(2);
                     user.phoneNumber = reader.GetString(3);
                     user.Pin = reader.GetString(4);
-                    
+                    user.NRIC = reader.GetString(5);
 
                     reader.Close();
                     conn.Close();

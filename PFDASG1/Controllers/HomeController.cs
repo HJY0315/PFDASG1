@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
 using PFDASG1.DAL;
 using PFDASG1.Models;
 using System.Diagnostics;
@@ -25,46 +26,6 @@ namespace PFDASG1.Controllers
             return View();
         }
 
-        //private MemberDAL memberContext = new MemberDAL();
-        //[HttpPost]
-        //public ActionResult MemberLogin(IFormCollection formData)
-        //{
-        //    // Read inputs from textboxes
-        //    // Email address converted to lowercase
-        //    string loginID = formData["txtLoginID"].ToString().ToLower();
-
-        //    string password = formData["txtPassword"].ToString();
-
-        //    string memberName;
-
-        //    int memberid;
-
-        //    if (memberContext.Login(loginID, password, out memberName, out memberid))
-        //    {
-        //        // Store Login ID in session with the key "LoginID"
-        //        HttpContext.Session.SetString("LoginID", loginID);
-
-        //        HttpContext.Session.SetString("Role", "Member");
-
-        //        HttpContext.Session.SetString("Name", memberName);
-
-        //        HttpContext.Session.SetInt32("MemberID", memberid);
-
-        //        HttpContext.Session.SetString("LoggedInTime", DateTime.Now.ToString());
-
-        //        // Redirect user to the "StaffMain" view through an action
-        //        return RedirectToAction("MemberMain");
-        //    }
-
-        //    else
-        //    {
-        //        // Store an error message in TempData for display at the index view
-        //        TempData["Message"] = "Invalid Login Credentials!";
-
-        //        // Redirect user back to the index view through an action
-        //        return RedirectToAction("Index");
-        //    }
-        //}
         public IActionResult Privacy()
         {
             return View();
@@ -86,15 +47,24 @@ namespace PFDASG1.Controllers
             {
                 User user = userContext.Login(Access_Code, Pin);
                 var name = HttpContext.Session.GetString(user.Name);
-                return RedirectToAction("Index", "VisuallyImpaired");
+                return RedirectToAction("Index", "VisuallyImpaired", new { userName = user.Name });
             }
             
-
+             
             else
             {
                 TempData["Message"] = "Invalid login credentials";
                 return View();
             }
+        }
+
+        public async Task<IActionResult> Logout()
+        {
+            // Sign out the user
+            await HttpContext.SignOutAsync();
+
+            // Redirect to the home page or any other page
+            return RedirectToAction("Index", "Home");
         }
     }
 }

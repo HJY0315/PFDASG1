@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace PFDASG1.Controllers
 {
@@ -9,14 +10,21 @@ namespace PFDASG1.Controllers
         {
             return View();
         }
-        public IActionResult Index()
+    
+
+        public IActionResult Index(string userName)
         {
+            // Use the userName parameter as needed in this action
+            ViewBag.UserName = userName;
+
             return View();
         }
+
 
         public IActionResult Search()
         {
             return View();
         }
+
     }
 }
