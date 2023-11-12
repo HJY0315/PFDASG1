@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PFDASG1.DAL;
+using PFDASG1.Models;
 
 namespace PFDASG1.Controllers
 {
     public class VisuallyImpairedController : Controller
     {
+        private SearchDAL SearchDAL = new SearchDAL();
 
         public IActionResult Settings()
         {
@@ -23,7 +26,8 @@ namespace PFDASG1.Controllers
 
         public IActionResult Search()
         {
-            return View();
+            List<Pages> pagesList = SearchDAL.GetAllPages();
+            return View(pagesList);
         }
 
     }

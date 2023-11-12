@@ -1,6 +1,9 @@
 ﻿@{
     Layout = null;
 }
+
+@model List<PFDASG1.Models.Pages>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -35,30 +38,86 @@
         @await Html.PartialAsync("_navbar.cshtml")
     </header>
 
-    <fieldset class="FormContent">
-        <legend>Popular features</legend>
-        <div class="flex">
-            <div class="flex-column">
-                <p><b>Banking for Individual</b></p>
-                <li class="flex-item"><a href="#">FRANK by OCBC</a></li>
-                <li class="flex-item"><a href="#">Personal Banking</a></li>
-                <li class="flex-item"><a href="#">Premier Banking</a></li>
-                <li class="flex-item"><a href="#">Premier Private Client</a></li>
+    <section class="search-result" hidden style="padding-bottom:30px">
+        <fieldset class="FormContent">
+            <legend>Search result</legend>
+            @if (Model == null)
+            {
+                <p class="no-result-message">No results found.</p>
+            }
+            else
+            {
+            <div class="flex">
+                <div class="flex-column" id="column1"></div>
+                <div class="flex-column" id="column2"></div>
+                <div class="flex-column" id="column3"></div>
             </div>
-            <div class="flex-column">
-                <p><b>Banking for Businesses</b></p>
-                <li class="flex-item"><a href="#">Business Banking</a></li>
-                <li class="flex-item"><a href="#">Large Corporates</a></li>
+            }
+        </fieldset>
+    </section>
+
+    <section class="search_pfeature">
+        <fieldset class="FormContent">
+            <legend>Popular features</legend>
+            <div class="flex">
+                <div class="flex-column">
+                    <p><b>Banking for Individual</b></p>
+                    <li class="flex-item"><a href="#">FRANK by OCBC</a></li>
+                    <li class="flex-item"><a href="#">Personal Banking</a></li>
+                    <li class="flex-item"><a href="#">Premier Banking</a></li>
+                    <li class="flex-item"><a href="#">Premier Private Client</a></li>
+                </div>
+                <div class="flex-column">
+                    <p><b>Banking for Businesses</b></p>
+                    <li class="flex-item"><a href="#">Business Banking</a></li>
+                    <li class="flex-item"><a href="#">Large Corporates</a></li>
+                </div>
+                <div class="flex-column">
+                    <p><b>OCBC Group</b></p>
+                    <li class="flex-item"><a href="#">About us</a></li>
+                    <li class="flex-item"><a href="#">Sustainability</a></li>
+                    <li class="flex-item"><a href="#">Careers</a></li>
+                    <li class="flex-item"><a href="#">Investors</a></li>
+                </div>
             </div>
-            <div class="flex-column">
-                <p><b>OCBC Group</b></p>
-                <li class="flex-item"><a href="#">About us</a></li>
-                <li class="flex-item"><a href="#">Sustainability</a></li>
-                <li class="flex-item"><a href="#">Careers</a></li>
-                <li class="flex-item"><a href="#">Investors</a></li>
-            </div>
-        </div>
-    </fieldset>
+        </fieldset>
+    </section>
+
+    <script>
+        const searchResults = @Html.Raw(Json.Serialize(Model));
+
+        function populateColumns(results) {
+            const columns = [document.getElementById('column1'), document.getElementById('column2'), document.getElementById('column3')];
+            let columnIndex = 0;
+
+            columns.forEach(column => {
+                column.innerHTML = '';
+            });
+
+            results.slice(0, 12).forEach(result => {
+                const listItem = document.createElement('li');
+                listItem.className = 'flex-item';
+                const link = document.createElement('a');
+                link.href = result.url;
+                link.textContent = result.pageTitle;
+                listItem.appendChild(link);
+
+                columns[columnIndex].appendChild(listItem);
+                columnIndex = (columnIndex + 1) % columns.length;
+            });
+
+            const resultSection = document.querySelector('.search-result');
+            resultSection.removeAttribute('hidden');
+        }
+
+        function handleSearch() {
+            const searchTerm = document.getElementById('search').value.toLowerCase();
+            const filteredResults = searchResults.filter(result => result.pageTitle.toLowerCase().includes(searchTerm));
+            populateColumns(filteredResults);
+        }
+
+        document.getElementById('search').addEventListener('input', handleSearch);
+    </script>
 
     <script src="~/js/annyang-setup.js" asp-append-version="true"></script>
 </body>
