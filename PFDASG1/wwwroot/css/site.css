@@ -1,18 +1,299 @@
-html {
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
+@import url(https://fonts.googleapis.com/css?family=Roboto:300);
+@import url(//fonts.googleapis.com/css?family=Oswald:400);
 
 html {
-  position: relative;
-  min-height: 100%;
+    font-size: 15px;
 }
+
+.login-page {
+    width: 360px;
+    padding: 8% 0 0;
+    margin: auto;
+}
+
+h4 {
+    margin: 5px;
+}
+
+.form {
+    position: relative;
+    z-index: 1;
+    background: #FFFFFF;
+    max-width: auto;
+    margin: 0 auto 100px;
+    padding: 45px;
+    text-align: center;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+
+    .form input {
+        font-family: "Roboto", sans-serif;
+        outline: 0;
+        background: #f2f2f2;
+        width: 100%;
+        border: 0;
+        margin: 0 0 15px;
+        padding: 15px;
+        box-sizing: border-box;
+        font-size: 14px;
+    }
+
+    .form button {
+        font-family: "Roboto", sans-serif;
+        text-transform: uppercase;
+        outline: 0;
+        background: red;
+        width: 100%;
+        border: 0;
+        padding: 15px;
+        color: #FFFFFF;
+        font-size: 14px;
+        -webkit-transition: all 0.3 ease;
+        transition: all 0.3 ease;
+        cursor: pointer;
+    }
+
+        .form button:hover, .form button:active, .form button:focus {
+            background: #e50000;
+        }
+
+    .form .message {
+        margin: 15px 0 0;
+        color: #b3b3b3;
+        font-size: 12px;
+    }
+
+        .form .message a {
+            color: red;
+            text-decoration: none;
+        }
+
+    .form .register-form {
+        display: none;
+    }
+
+.container {
+    position: relative;
+    z-index: 1;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+    .container:before, .container:after {
+        content: "";
+        display: block;
+        clear: both;
+    }
+
+    .container .info {
+        margin: 50px auto;
+        text-align: center;
+    }
+
+        .container .info h1 {
+            margin: 0 0 15px;
+            padding: 0;
+            font-size: 36px;
+            font-weight: 300;
+            color: #1a1a1a;
+        }
+
+        .container .info span {
+            color: #4d4d4d;
+            font-size: 12px;
+        }
+
+            .container .info span a {
+                color: #000000;
+                text-decoration: none;
+            }
+
+            .container .info span .fa {
+                color: #EF3B3A;
+            }
 
 body {
-  margin-bottom: 60px;
+    background-color: white;
+    font-family: "Roboto", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
+/* Styling for the search bar and icon*/
+.search-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.search-icon {
+    font-size: 20px;
+    margin-right: 10px;
+    color: #555;
+    Icon color
+}
+
+#search {
+    padding: 10px;
+    border: none;
+    border-radius: 25px;
+    background-color: #f2f2f2;
+    width: 250px;
+    margin-right: 15px;
+}
+
+Additional styling for the search bar in collapsed mode
+.navbar .search-wrapper.collapsed {
+    justify-content: flex-end;
+}
+
+.navbar .search-wrapper.collapsed #search {
+    width: 0;
+    padding: 0;
+    opacity: 0;
+}
+
+.flex {
+    width: 100%;
+}
+
+
+th, td {
+    padding: 15px;
+}
+
+tr:hover {
+    background-color: #D6EEEE;
+}
+
+.FormContent {
+    padding: 10px;
+    margin-top: 10px;
+    margin: auto;
+    width: 90%;
+    text-align: center;
+}
+
+fieldset {
+    border: 1px solid #ccc;
+    padding: 10px;
+    background-color: #f2f2f2;
+    border-radius: 25px;
+}
+
+canvas {
+    justify-content: center;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 10px;
+}
+
+.content-wrapper {
+    display: flex;
+    justify-content: space-evenly;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.total-balance,
+.transaction-history {
+    width: 48%; /* Adjust the width as needed */
+}
+
+    .total-balance canvas {
+        max-width: 100%;
+        margin: 0 auto;
+    }
+
+/*--------------------
+Form
+--------------------*/
+.form fieldset {
+    border: none;
+    padding: 0;
+    padding: 10px 0;
+    position: relative;
+    clear: both;
+}
+
+    .form fieldset.fieldset-type {
+        float: left;
+        width: 100%;
+    }
+
+        .form fieldset.fieldset-type .select {
+            width: 100%;
+            float: left;
+        }
+
+    .form fieldset label {
+        display: block;
+        text-transform: uppercase;
+        font-size: 11px;
+        color: rgba(0, 0, 0, 0.6);
+        margin-bottom: 5px;
+        font-weight: bold;
+        font-family: Inconsolata;
+    }
+
+    .form fieldset input,
+    .form fieldset .select {
+        width: 100%;
+        height: 38px;
+        padding: 10px;
+        border-radius: 5px;
+        font-size: 15px;
+        outline: none !important;
+        border: 1px solid rgba(0, 0, 0, 0.3);
+        box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.2);
+    }
+
+        .form fieldset input.input-cart-number,
+        .form fieldset .select.input-cart-number {
+            width: 55px;
+            display: inline-block;
+            margin-right: 8px;
+        }
+
+            .form fieldset input.input-cart-number:last-child,
+            .form fieldset .select.input-cart-number:last-child {
+                margin-right: 0;
+            }
+
+    .form fieldset .select {
+        position: relative;
+    }
+
+        .form fieldset .select::after {
+            content: "";
+            border-top: 8px solid #222;
+            border-left: 4px solid transparent;
+            border-right: 4px solid transparent;
+            position: absolute;
+            z-index: 2;
+            top: 14px;
+            right: 10px;
+            pointer-events: none;
+        }
+
+        .form fieldset .select select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            position: absolute;
+            padding: 0;
+            border: none;
+            width: 100%;
+            outline: none !important;
+            top: 6px;
+            left: 6px;
+            background: none;
+        }
+
+            .form fieldset .select select :-moz-focusring {
+                color: transparent;
+                text-shadow: 0 0 0 #000;
+            }
