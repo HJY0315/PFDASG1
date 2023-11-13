@@ -14,6 +14,15 @@ namespace PFDASG1.Controllers
             return View();
         }
     
+        public IActionResult Transfer()
+        {
+            return View();
+        }
+
+        public IActionResult ViewAllCards()
+        {
+            return View();
+        }
 
         public IActionResult Index(string userName)
         {

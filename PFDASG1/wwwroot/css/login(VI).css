@@ -118,8 +118,8 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
-/* Styling for the search bar and icon */
-/*.search-wrapper {
+/* Styling for the search bar and icon 
+.search-wrapper {
     display: flex;
     align-items: center;
 }
@@ -127,8 +127,8 @@ body {
 .search-icon {
     font-size: 20px;
     margin-right: 10px;
-    color: #555;*/ /* Icon color */
-/*}
+    color: #555;  Icon color 
+}
 
 #search {
     padding: 10px;
@@ -137,10 +137,10 @@ body {
     background-color: #f2f2f2;
     width: 250px;
     margin-right: 15px;
-}*/
+}
 
-/* Additional styling for the search bar in collapsed mode */
-/*.navbar .search-wrapper.collapsed {
+ Additional styling for the search bar in collapsed mode 
+.navbar .search-wrapper.collapsed {
     justify-content: flex-end;
 }
 
@@ -168,18 +168,18 @@ body {
     margin: auto;
     width: 95%;
     text-align: center;
-}*/
+}
 
-/*fieldset {
+fieldset {
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 20px;
     background-color: #f2f2f2;
     border: 1px solid #ccc;
     border-radius: 50px;
-}*/
+}
 
-/*canvas {
+canvas {
     justify-content:center;
     max-width: 400px;
     margin: 0 auto;

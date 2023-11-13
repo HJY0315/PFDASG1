@@ -150,26 +150,59 @@
                 <label for="card-ccv">CCV</label>
                 <input type="text" id="card-ccv" maxlength="3" required />
             </fieldset>
-            <fieldset>
-                <label for="security-question">Security Question</label>
-                <div class="select">
-                  <select id="security-question">
-                        <option>Questions</option>
-                        <option>Where is your primary school?</option>
-                        <option>Who is your best friend?</option>
-                        <option>Do you have any musicial background?</option>
-                    </select>
-                </div>
-                <input type="text" id="security-question" maxlength="20" style="margin-top:10px; border: none;" placeholder="Answer" required/>
-            </fieldset>
 
+            <div id="security-questions-container">
+                <!-- Initial security question fieldset -->
+                <fieldset class="security-question-fieldset">
+                    <div class="security-question-inputs">
+                        <div class="select">
+                            <select class="security-question-dropdown">
+                                <option>Questions</option>
+                                <option>Where is your primary school?</option>
+                                <option>Who is your best friend?</option>
+                                <option>Do you have any musical background?</option>
+                            </select>
+                        </div>
+                        <input type="text" class="security-answer" maxlength="20" style="margin-top:10px; border: none;" placeholder="Answer" required />
+                    </div>
+                </fieldset>
+                <!-- Add button -->
+                <button class="btn-add-question"><i class="fas fa-plus"></i>Add more questions</button>
+            </div>
+            
             <button class="btn"><i class="fa fa-lock"></i> submit</button>
         </form>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="script.js"></script>
+@*    <script src="script.js"></script>*@
 
     <script>
+        $(document).ready(function () {
+            var maxQuestions = 3; // Set the maximum number of additional questions
+
+            $('#security-questions-container').on('click', '.btn-add-question', function (e) {
+                e.preventDefault();
+
+                // Check if the maximum number of questions is reached
+                if ($('#security-questions-container .security-question-fieldset').length >= maxQuestions) {
+                    alert('You can add a maximum of ' + maxQuestions + ' extra questions.');
+                    return;
+                }
+
+                var newSecurityQuestionFieldset = $('.security-question-fieldset:first').clone();
+
+                // Clear the selected option and input value
+                newSecurityQuestionFieldset.find('.security-question-dropdown').val('Questions');
+                newSecurityQuestionFieldset.find('.security-answer').val('');
+
+                // Insert the new question and answer fieldset before the "Add" button
+                $(this).before(newSecurityQuestionFieldset);
+            });
+        });
+
+
+
+
         $('.input-cart-number').on('keyup change', function () {
             $t = $(this);
 
@@ -213,9 +246,7 @@
         });
 
         setTimeout(function () {
-            $('#card-ccv').focus().delay(1000).queue(function () {
-                $(this).blur().dequeue();
-            });
+            $('#card-ccv').focus();
         }, 500);
     </script>
 

@@ -17,7 +17,7 @@
 
     <!-- Reference to customized styling for this website -->
     @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />*@
-    <link rel="stylesheet" type="text/css" href="~/css/login(VI).css">
+    <link rel="stylesheet" type="text/css" href="~/css/site.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <!-- Bootstrap CSS -->
@@ -36,33 +36,46 @@
     <header>
         @await Html.PartialAsync("_navbar.cshtml")
     </header>
-    <p>Welcome Back @ViewBag.UserName...</p>
-    <div style="text-align: center;">
+    <div class="content-wrapper">
+        <div class="total-balance">
         @*link to account database table*@
-        <h1>Total Balance: $0.00</h1>
-        <canvas id="doughnutChart" width="400" height="400"></canvas>
+        <h1 style="text-align:center;">Total Balance: $0.00</h1>
+        <canvas id="doughnutChart" width="350" height="350"></canvas>
+        </div>
+        <div class="transaction-history">
+            <fieldset class="FormContent">
+            <legend><b>Transaction History</b></legend>
+            <table class="flex">
+                <tr>
+                    <th>Transaction Date</th>
+                    <th>Description</th>
+                    <th>Withdrawals (SGD)</th>
+                    <th>Deposits (SGD)</th>
+                </tr>
+                <tr>
+                    <th>01/01/2021</th>
+                    <th>Fund Transfer <br /> Jia Yi</th>
+                    <th>-</th>
+                    <th>50.00</th>
+                </tr>
+                    <tr>
+                        <th>02/01/2021</th>
+                        <th>Debit Purchase <br /> Macdonals</th>
+                        <th>30.00</th>
+                        <th>-</th>
+                    </tr>
+                    <tr>
+                        <th>03/01/2021</th>
+                        <th>Fast Payment <br /> Xin Yin</th>
+                        <th>10.00</th>
+                        <th>-</th>
+                    </tr>
+            </table>
+            </fieldset>
+        </div>
     </div>
 
-    <fieldset class="FormContent">
-    <legend><b>Popular features</b></legend>
-    <ul class="flex">
-    <li class="flex-item"><a href="#">Sign Up</a></li>
-    <li class="flex-item"><a href="#">Check Account Balance</a></li>
-    <li class="flex-item"><a href="#">Money Transfer</a></li>
-    <li class="flex-item"><a href="#">Pay Bills</a></li>
-    <li class="flex-item"><a href="#">Credit Card Application</a></li>
-    <li class="flex-item"><a href="#">Check Credit Card Balance</a></li>
-    <li class="flex-item"><a href="#">Credit Card Reward Redemption</a></li>
-    <li class="flex-item"><a href="#">Credit and Debit Card Avtivation</a></li>
-    <li class="flex-item"><a href="#">Personal Loans Up</a></li>
-    <li class="flex-item"><a href="#">Accident & Health Inssurance></a></li>
-    <li class="flex-item"><a href="#">Insurance Protection</a></li>
-    <li class="flex-item"><a href="#">Endowment & Whole of Life Plans</a></li>
-    <li class="flex-item"><a href="#">Investments</a></li>
-    <li class="flex-item"><a href="#">Banking Forms</a></li>
-    <li class="flex-item"><a href="#">Frequently Asked Questions</a></li>
-    </ul>
-    </fieldset>
+
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             // Data for the chart
