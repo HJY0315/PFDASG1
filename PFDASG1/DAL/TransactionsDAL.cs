@@ -1,4 +1,7 @@
 ﻿using System.Data.SqlClient;
+using System.Diagnostics.Metrics;
+using System.Transactions;
+using PFDASG1.Models;
 
 namespace PFDASG1.DAL
 {
@@ -6,6 +9,7 @@ namespace PFDASG1.DAL
     {
         private IConfiguration Configuration { get; }
         private SqlConnection conn;
+        private Transaction transaction;
 
         public TransactionsDAL()
         {
@@ -17,6 +21,30 @@ namespace PFDASG1.DAL
             conn = new SqlConnection(strConn);
         }
 
+        public int add(Transactions transaction)
+        {
+            //Create a SqlCommand object from connection object
+            SqlCommand cmd = conn.CreateCommand();
+            //Specify an INSERT SQL statement which will
+            //return the auto-generated StaffID after insertion
+            cmd.CommandText = @"INSERT INTO Transactions (transactionId, description, accountid, amount, transactionDate, receiverId)
+                                OUTPUT INSERTED.MemberID
+                                VALUES(@transactionId, @description, @accountid, @amount, @transactionDate, @receiverId)"
+            ;
 
+            cmd.Parameters.AddWithValue("@transactionId", transaction.transactionId);
+            cmd.Parameters.AddWithValue("@description", transaction.description);
+            cmd.Parameters.AddWithValue("@accountid", transaction.accountId);
+            cmd.Parameters.AddWithValue("@transactionDate", transaction.transactionDate);
+            cmd.Parameters.AddWithValue("@receiverId", transaction.receiverId);
+            //A connection to database must be opened before any operations made.   
+            conn.Open();
+
+            transaction.transactionId = (int)cmd.ExecuteScalar();
+            //A connection should be closed after operations.
+            conn.Close();
+            //Return id when no error occurs.
+            return transaction.transactionId;
+        }
     }
 }
