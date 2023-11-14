@@ -14,6 +14,8 @@ if (annyang) {
         'Enter PIN number *pin': enterPIN,
         'Login': login,
         'Logout': logout,
+        'Search': search,
+        'Type in': typeIn,
     };
 
     
@@ -67,6 +69,17 @@ if (annyang) {
     function logout() {
         window.location.href = '/Home/Index';
         speakResponse("Logging out.");
+    }
+
+    function search() {
+        window.location.href = '/VisuallyImpaired/Search';
+        speakResponse("Search bar, use type in command to enter your input");
+    }
+
+    //this one not working
+    function typeIn(value) {
+        document.getElementById('search').value = value;
+        speakResponse("Input entered, press enter to search.");
     }
 
     function speakResponse(message, callback) {
