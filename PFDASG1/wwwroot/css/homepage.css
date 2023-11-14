@@ -69,7 +69,6 @@ html {
     border-color: #e9ecef;
 }
 
-
 .flex {
     display: flex;
 }
@@ -110,8 +109,6 @@ fieldset {
     font-weight:bold;
     color: red; /* Customize the link color */
 }
-
-
 
 @media (min-width: 768px) {
     html {

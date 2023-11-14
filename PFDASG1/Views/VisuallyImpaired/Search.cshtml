@@ -17,8 +17,8 @@
     <title>OCBC</title>
 
     <!-- Reference to customized styling for this website -->
-    @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />*@
     <link rel="stylesheet" type="text/css" href="~/css/search.css">
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <!-- Bootstrap CSS -->
@@ -37,53 +37,52 @@
     <header>
         @await Html.PartialAsync("_navbar.cshtml")
     </header>
-
-    <section class="search-result" hidden style="padding-bottom:30px">
+    
+    <section hidden id="search_result" style="padding-bottom:30px">
         <fieldset class="FormContent">
             <legend>Search result</legend>
-            @if (Model == null)
-            {
-                <p class="no-result-message">No results found.</p>
-            }
-            else
-            {
             <div class="flex">
                 <div class="flex-column" id="column1"></div>
                 <div class="flex-column" id="column2"></div>
                 <div class="flex-column" id="column3"></div>
             </div>
-            }
         </fieldset>
     </section>
 
-    <section class="search_pfeature">
-        <fieldset class="FormContent">
-            <legend>Popular features</legend>
-            <div class="flex">
-                <div class="flex-column">
-                    <p><b>Banking for Individual</b></p>
-                    <li class="flex-item"><a href="#">FRANK by OCBC</a></li>
-                    <li class="flex-item"><a href="#">Personal Banking</a></li>
-                    <li class="flex-item"><a href="#">Premier Banking</a></li>
-                    <li class="flex-item"><a href="#">Premier Private Client</a></li>
-                </div>
-                <div class="flex-column">
-                    <p><b>Banking for Businesses</b></p>
-                    <li class="flex-item"><a href="#">Business Banking</a></li>
-                    <li class="flex-item"><a href="#">Large Corporates</a></li>
-                </div>
-                <div class="flex-column">
-                    <p><b>OCBC Group</b></p>
-                    <li class="flex-item"><a href="#">About us</a></li>
-                    <li class="flex-item"><a href="#">Sustainability</a></li>
-                    <li class="flex-item"><a href="#">Careers</a></li>
-                    <li class="flex-item"><a href="#">Investors</a></li>
-                </div>
+    <fieldset class="FormContent" id="search_pfeature">
+        <legend>Popular features</legend>
+        <div class="flex">
+            <div class="flex-column">
+                <p><b>Banking for Individual</b></p>
+                <li class="flex-item"><a href="#">FRANK by OCBC</a></li>
+                <li class="flex-item"><a href="#">Personal Banking</a></li>
+                <li class="flex-item"><a href="#">Premier Banking</a></li>
+                <li class="flex-item"><a href="#">Premier Private Client</a></li>
             </div>
-        </fieldset>
-    </section>
+            <div class="flex-column">
+                <p><b>Banking for Businesses</b></p>
+                <li class="flex-item"><a href="#">Business Banking</a></li>
+                <li class="flex-item"><a href="#">Large Corporates</a></li>
+            </div>
+            <div class="flex-column">
+                <p><b>OCBC Group</b></p>
+                <li class="flex-item"><a href="#">About us</a></li>
+                <li class="flex-item"><a href="#">Sustainability</a></li>
+                <li class="flex-item"><a href="#">Careers</a></li>
+                <li class="flex-item"><a href="#">Investors</a></li>
+            </div>
+        </div>
+    </fieldset>
 
     <script>
+        //keep user focus stay on search bar
+        window.addEventListener('load', function () {
+            const searchInput = document.getElementById('search');
+            if (searchInput) {
+                searchInput.focus();
+            }
+        });
+
         const searchResults = @Html.Raw(Json.Serialize(Model));
 
         function populateColumns(results) {
@@ -106,7 +105,7 @@
                 columnIndex = (columnIndex + 1) % columns.length;
             });
 
-            const resultSection = document.querySelector('.search-result');
+            const resultSection = document.querySelector('#search_result');
             resultSection.removeAttribute('hidden');
         }
 
@@ -117,6 +116,17 @@
         }
 
         document.getElementById('search').addEventListener('input', handleSearch);
+
+        //for focus the user onto result section
+        document.getElementById('search').addEventListener('keypress', function(event){
+            if (event.key === 'Enter') {
+                const resultSection = document.getElementById('search_result');
+                if (resultSection){
+                    resultSection.tabIndex = -1;
+                    resultSection.focus();
+                }
+            }
+        });
     </script>
 
     <script src="~/js/annyang-setup.js" asp-append-version="true"></script>

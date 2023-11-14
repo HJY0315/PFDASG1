@@ -83,13 +83,21 @@
 
 .FormContent {
     position: relative;
-    top: 30px;
+    bottom: 30px;
     padding: 10px;
     margin: auto;
     width: 70%;
     text-align: center;
     justify-content: center;
 }
+
+fieldset {
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    padding: 20px;
+    background-color: #f2f2f2;
+}
+
 
 /* Add styles for the legend, headings, and links as needed */
 .flex p {
