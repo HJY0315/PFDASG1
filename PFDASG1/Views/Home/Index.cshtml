@@ -16,6 +16,7 @@
     <!-- Reference to customized styling for this website -->
     @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />*@
     <link rel="stylesheet" type="text/css" href="~/css/homepage.css">
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <!-- Bootstrap CSS -->
@@ -26,6 +27,36 @@
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>
 
+    <style>
+        /* Styles for the center div */
+        .center-div {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        /* Close button styles */
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .buttons{
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+    </style>
   
 </head>
 <body>
@@ -63,9 +94,84 @@
         </div>
     </fieldset>
 
-    <script src="~/js/annyang-setup.js" asp-append-version="true"></script>
+    <!-- Add an overlay div -->
+    <div id="overlay"></div>
 
-    
+    <!-- Center div -->
+    <div id="centerDiv" class="center-div">
+        <span class="close" onclick="closeCenterDiv()">&times;</span>
+        <div aria-live="assertive">
+            <p tabindex="1" id="accessibilityMode">Accessibility Mode</p>
+        </div>
+        <div aria-live="assertive">
+            <p tabindex="1">
+                Do you want to activate the accessibility mode? You will be able to access speech recognition,
+                speech-to-text and other useful functions that aim to help people with disabilities access our website.
+                We will provide a tutorial for you to familiarize with the application of those functionalities.
+                You can press control key to cancel or space bar to activate accessibility mode.
+            </p>
+        </div>
+
+        <div class="buttons">
+            <button tabindex="1" type="button" class="btn btn-secondary" onclick="cancelActivation()">Cancel</button>
+            <button tabindex="1" type="button" class="btn btn-success" onclick="activateAccessibility()">Activate</button>
+        </div>
+    </div>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Check if the modal should be shown
+            var shouldShowModal = sessionStorage.getItem("showModal");
+
+            if (!shouldShowModal) {
+                openCenterDiv();
+                // Set the flag to indicate that the modal has been shown
+                sessionStorage.setItem("showModal", "true");
+            }
+            document.getElementById('accessibilityMode').focus();
+        });
+
+        function openCenterDiv() {
+            var overlay = document.getElementById("overlay");
+            var centerDiv = document.getElementById("centerDiv");
+            if (overlay && centerDiv) {
+                overlay.style.display = "block";
+                centerDiv.style.display = "block";
+                document.body.style.overflow = "hidden"; // Disable scrolling
+            }
+        }
+
+        function closeCenterDiv() {
+            var overlay = document.getElementById("overlay");
+            var centerDiv = document.getElementById("centerDiv");
+            if (overlay && centerDiv) {
+                overlay.style.display = "none";
+                centerDiv.style.display = "none";
+                document.body.style.overflow = ""; // Enable scrolling
+            }
+        }
+
+        function activateAccessibility() {
+            // code for activating accessibility
+            closeCenterDiv();
+        }
+
+        function cancelActivation() {
+            // code for canceling activation
+            closeCenterDiv();
+        }
+
+        document.addEventListener("keydown", function (e) {
+            if (event.ctrlKey && event.key === "Control") {
+                cancelActivation();
+            } else if (event.code === "Space") {
+                activateAccessibility();
+            }
+        });
+    </script>
+
+    <script src="~/js/annyang-setup.js" asp-append-version="true"></script>
 </body>
 </html>
 
