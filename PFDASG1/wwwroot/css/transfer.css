@@ -158,7 +158,7 @@ html {
 
 .form-step-list .form-step-item .item__title {
     white-space: nowrap;
-}
+
 
 .form-layout {
     position: relative;
@@ -200,3 +200,8 @@ html {
     padding: 10px 0;
     width: 100%;
 }
+
+.form-group.step-content {
+    display: none;
+}
+

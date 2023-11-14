@@ -1,5 +1,6 @@
 ﻿var messages = ['🔊 Hey', '🔊 Hi, there!', '🔊 Hello'];
 var unrecognizedFlag = false;
+var accessibilityModeActivated = sessionStorage.getItem('accessibilityMode') === 'true';
 
 if (annyang) {
     console.log("We have annyang!");
@@ -17,8 +18,6 @@ if (annyang) {
         'Search': search,
         'Type in': typeIn,
     };
-
-    
 
     function hello() {
         var randomIndex = Math.floor(Math.random() * messages.length);
@@ -76,7 +75,7 @@ if (annyang) {
         speakResponse("Search bar, use type in command to enter your input");
     }
 
-    //this one not working
+    // This one not working
     function typeIn(value) {
         document.getElementById('search').value = value;
         speakResponse("Input entered, press enter to search.");
@@ -98,9 +97,25 @@ if (annyang) {
         speechSynthesis.speak(speech);
     }
 
+    function activateAccessibility() {
+        accessibilityModeActivated = true;
+        sessionStorage.setItem('accessibilityMode', 'true');
+        startListening(); // Start listening immediately
+        closeCenterDiv();
+    }
+
+    function cancelActivation() {
+        accessibilityModeActivated = false;
+        sessionStorage.setItem('accessibilityMode', 'false');
+        closeCenterDiv();
+        stopListening();
+    }
+
     annyang.addCommands(commands);
 
-    annyang.start();
+    if (accessibilityModeActivated) {
+        startListening(); // Start listening if accessibility mode is activated
+    }
 
     // Handle unrecognized command
     annyang.addCallback('resultNoMatch', function (phrases) {
@@ -119,5 +134,9 @@ document.addEventListener("keydown", function (event) {
     if ((event.ctrlKey || event.metaKey) && event.key === " " && document.activeElement.tagName !== "INPUT") {
         startListening();
         event.preventDefault();
+    } else if (event.ctrlKey && event.key === "Control" && event.code !== "Space") {
+        cancelActivation();
+    } else if (event.code === "Space") {
+        activateAccessibility();
     }
 });
