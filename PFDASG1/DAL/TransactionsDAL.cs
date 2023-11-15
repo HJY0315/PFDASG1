@@ -23,30 +23,36 @@ namespace PFDASG1.DAL
             conn = new SqlConnection(strConn);
         }
 
-        public int Transactions(Transactions transaction)
+        public int Add(Transactions transaction)
         {
-            //Create a SqlCommand object from connection object
+            // Create a SqlCommand object from the connection object
             SqlCommand cmd = conn.CreateCommand();
-            //Specify an INSERT SQL statement which will
-            //return the auto-generated StaffID after insertion
-            cmd.CommandText = @"INSERT INTO Transactions (transactionId, description, accountid, amount, transactionDate, receipientId, senderId)
-                                OUTPUT INSERTED.MemberID
-                                VALUES(@transactionId, @description, @accountid, @amount, @transactionDate, @receipientId, @senderId)"
-            ;
+
+            // Specify an INSERT SQL statement
+            cmd.CommandText = @"INSERT INTO Transactions (transactionId, description, accountId, amount, transactionDate, recipientId, senderId)
+                        OUTPUT INSERTED.MemberID
+                        VALUES (@transactionId, @description, @accountId, @amount, @transactionDate, @recipientId, @accountId)";
 
             cmd.Parameters.AddWithValue("@transactionId", transaction.TransactionId);
             cmd.Parameters.AddWithValue("@description", transaction.Description);
-            cmd.Parameters.AddWithValue("@accountid", transaction.AccountId);
+            cmd.Parameters.AddWithValue("@accountId", transaction.AccountId);
+            cmd.Parameters.AddWithValue("@amount", transaction.Amount);
             cmd.Parameters.AddWithValue("@transactionDate", transaction.TransactionDate);
-            cmd.Parameters.AddWithValue("@receipientId", transaction.ReceipientID);
-            cmd.Parameters.AddWithValue("@senderId", transaction.SenderID);
-            //A connection to database must be opened before any operations made.   
+            cmd.Parameters.AddWithValue("@recipientId", transaction.RecipientID);
+
+            // Ensure that the sender ID is always set to the account ID
+            cmd.Parameters.AddWithValue("@senderId", transaction.AccountId);
+
+            // Open a connection to the database
             conn.Open();
 
+            // Execute the INSERT SQL statement and retrieve the auto-generated transaction ID
             transaction.TransactionId = (int)cmd.ExecuteScalar();
-            //A connection should be closed after operations.
+
+            // Close the connection to the database
             conn.Close();
-            //Return id when no error occurs.
+
+            // Return the transaction ID
             return transaction.TransactionId;
         }
         public List<Transactions> getalltransactions(int userid)
@@ -93,8 +99,8 @@ ORDER BY
                         AccountId = reader.GetInt32(2),
                         Amount = reader.GetDecimal(3),
                         TransactionDate = reader.GetDateTime(4),
-                        ReceipientID = reader.IsDBNull(5) ? null : reader.GetInt32(5),
-                        SenderID = reader.IsDBNull(6) ? null : reader.GetInt32(6),
+                        RecipientID = reader.GetInt32(5),
+                        SenderID = reader.GetInt32(6)
 
                     }
                     );
