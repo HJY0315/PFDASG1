@@ -18,7 +18,7 @@ if (annyang) {
         'Type in': typeIn,
     };
 
-    
+
 
     function hello() {
         var randomIndex = Math.floor(Math.random() * messages.length);
