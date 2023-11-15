@@ -9,14 +9,16 @@ if (annyang) {
         'Hello': hello,
         'Go to login page': goToLoginPage,
         'Go to home page': goToHomePage,
+        'Go to activation': goToCardActivation,
         'Start listening': startListening,
         'Stop listening': stopListening,
         'Access code *code': enterAccessCode,
-        'PIN number *pin': enterPIN,
+        'Pin number *pin': enterPIN,
         'Login': login,
         'Logout': logout,
         'Search': search,
-        'Type in': typeIn,
+        'Type in *value': typeIn,
+        
     };
 
 
@@ -35,6 +37,12 @@ if (annyang) {
     function goToHomePage() {
         window.location.href = '/Home/Index';
         speakResponse("You are at the home page.");
+    }
+
+    function goToCardActivation() {
+        console.log("goToCardActivation function called");
+        window.location.href = '/VisuallyImpaired/Settings';
+        speakResponse("Navigating to card activation.");
     }
 
     const activated = 0;
@@ -83,9 +91,12 @@ if (annyang) {
 
     //this one not working
     function typeIn(value) {
+        console.log("typeIn function called with value:", value);
         document.getElementById('search').value = value;
         speakResponse("Input entered, press enter to search.");
     }
+
+    
 
     function speakResponse(message, callback) {
         console.log(`%c ${message}`, 'color: blue; font-weight:bold;');
