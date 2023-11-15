@@ -112,3 +112,7 @@ header a {
         font-size: 16px;
         background: #f08420;
     }
+
+.enlarged-text {
+    font-size: 1.6em;
+}

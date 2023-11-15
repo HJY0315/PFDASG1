@@ -72,8 +72,8 @@
                                 <tr>
                                     <td>@item.TransactionDate</td>
                                     <td>@item.Description</td>
-                                    <td>@(item.ReceipientID.HasValue ? "+" : "-")@item.Amount.ToString("0.00")</td>
-                                    <td>@item.ReceipientID</td>
+                                    <td>@(item.RecipientID == item.AccountId ? "+" : "-")@item.Amount.ToString("0.00")</td>
+                                    <td>@item.RecipientID</td>
                                     <td>@item.SenderID</td>
                                 </tr>
                             }
@@ -129,6 +129,7 @@
             ctx.fillText("Total Balance", centerX, centerY + 30);
         });
     </script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/search.js" asp-append-version="true"></script>
     <script src="~/js/annyang-setup.js" asp-append-version="true"></script>
 </body>

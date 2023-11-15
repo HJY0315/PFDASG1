@@ -297,3 +297,8 @@ Form
                 color: transparent;
                 text-shadow: 0 0 0 #000;
             }
+
+
+.enlarged-text {
+    font-size: 1.6em;
+}

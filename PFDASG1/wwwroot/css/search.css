@@ -147,3 +147,7 @@ html {
 body {
     margin-bottom: 60px;
 }
+
+.enlarged-text {
+    font-size: 1.6em;
+}
