@@ -1,5 +1,6 @@
 ﻿var messages = ['🔊 Hey', '🔊 Hi, there!', '🔊 Hello'];
 var unrecognizedFlag = false;
+var listening = false;
 
 if (annyang) {
     console.log("We have annyang!");
@@ -42,7 +43,7 @@ if (annyang) {
         annyang.start();
         speakResponse("Listening started");
         console.log("Listening started");
-        activated = 1;
+        sessionStorage.setItem("annyangStatus", "true");
     }
 
     function stopListening() {
@@ -50,7 +51,7 @@ if (annyang) {
         listening = false;
         speakResponse("Listening stopped");
         console.log("Listening stopped");
-        activated = 0;
+        sessionStorage.setItem("annyangStatus", "false");
     }
 
     function enterAccessCode(code) {
@@ -104,7 +105,9 @@ if (annyang) {
 
     annyang.addCommands(commands);
 
-    //annyang.start();
+    if (sessionStorage.getItem("annyangStatus")) {
+        annyang.start();
+    }
 
     // Handle unrecognized command
     annyang.addCallback('resultNoMatch', function (phrases) {
@@ -121,12 +124,10 @@ if (annyang) {
 
 document.addEventListener("keydown", function (event) {
     if ((event.ctrlKey || event.metaKey) && event.key === " " && document.activeElement.tagName !== "INPUT") {
-        if (annyang) {
+        if (annyang && annyang.isListening()) {
             stopListening();
-        }
-        else {
+        } else {
             startListening();
         }
-        event.preventDefault();
     }
 });

@@ -100,6 +100,8 @@
             sessionStorage.setItem("showModal", "true");
         }
         document.getElementById('accessibilityMode').focus();
+
+        var storedStatus = sessionStorage.getItem("annyangStatus");
     });
 
     // Variable to keep track of the current tutorial step
@@ -153,7 +155,7 @@
         updateTutorialContent();
     }
     
-        const activateCount = 0;
+    var activateCount = 0;
 
     function activateAccessibility() {
         // code for activating accessibility
@@ -179,14 +181,20 @@
          nextTutorialStep();
     });
 
-    document.addEventListener("keydown", function (e) {
-        if (event.ctrlKey && event.key === "Control") {
-            close();
-        } else if (event.code === "Space") {
-            activateAccessibility();
-            nextTutorialStep(); // Update this to move to the next step
-        }
-    });
+document.addEventListener("keydown", function (event) {
+    // Check if centerDiv exists
+    var centralDiv = document.getElementById("centerDiv");
+    if (!centerDiv) {
+        return;
+    }
+
+    if (event.ctrlKey && event.key === "Control") {
+        close();
+    } else if (event.code === "Space") {
+        activateAccessibility();
+        nextTutorialStep(); // Update this to move to the next step
+    }
+});
     </script>
 
     <script src="~/js/annyang-setup.js" asp-append-version="true"></script>
