@@ -9,11 +9,11 @@ function toggleEnlargedText() {
 
     // Store the user's preference in localStorage
     const isEnlarged = document.body.classList.contains('enlarged-text');
-    localStorage.setItem('enlargedText', isEnlarged);
+    sessionStorage.setItem('enlargedText', isEnlarged);
 }
 
 function applyUserPreference() {
-    const isEnlarged = localStorage.getItem('enlargedText') === 'true';
+    const isEnlarged = sessionStorage.getItem('enlargedText') === 'true';
 
     // Toggle the class based on the stored preference
     if (isEnlarged) {

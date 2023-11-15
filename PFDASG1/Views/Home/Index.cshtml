@@ -207,7 +207,7 @@
         if (!annyang.isListening()) {
             startListening();
             activateCount++;
-            localStorage.setItem("activateCount", activateCount);
+            sessionStorage.setItem("activateCount", activateCount);
         }
         toggleEnlargedText();
     }
