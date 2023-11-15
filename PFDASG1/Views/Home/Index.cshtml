@@ -83,13 +83,14 @@
         </div>
 
         <div class="buttons">
-            <button tabindex="1" type="button" class="btn btn-secondary" onclick="cancelActivation()">Cancel</button>
-            <button tabindex="1" type="button" class="btn btn-success" id="activateButton">Activate</button>
+            <button tabindex="1" type="button" class="btn btn-secondary" id="cancelButton">Cancel</button>
+            <button tabindex="1" type="button" class="btn btn-success" id="nextButton">Next</button>
         </div>
     </div>
 
 
     <script>
+    var activateCount = localStorage.getItem("activateCount");
     document.addEventListener("DOMContentLoaded", function () {
         // Check if the modal should be shown
         var shouldShowModal = sessionStorage.getItem("showModal");
@@ -102,29 +103,48 @@
         document.getElementById('accessibilityMode').focus();
 
         var storedStatus = sessionStorage.getItem("annyangStatus");
+
+        activateCount = 0;
     });
 
     // Variable to keep track of the current tutorial step
     var currentStep = 1;
 
     // Function to update tutorial content for different steps
-    function updateTutorialContent() {
-        var tutorialContent = document.getElementById("tutorialContent");
+        function updateTutorialContent() {
+            var tutorialContent = document.getElementById("tutorialContent");
 
-        // Check the current step and update content accordingly
-        switch (currentStep) {
-            case 1:
-                tutorialContent.innerHTML = `<p>Do you want to activate the accessibility mode? This mode include features such as 
-                voice recognition which can be useful for some user. Tutorial will be provided.
-                To Cancel, Control + b. To Activate, control + n. </p>`;
-                break;
-            case 2:
-                tutorialContent.innerHTML = `<p>Step 1: First step of tutorial. U can use shortcut of control + space key to toggle the accessibility 
-                mode on and off. Toggle it for once and go to next step</p>`;
-                break;
-            // Add more cases for additional steps
+            // Check the current step and update content accordingly
+            switch (currentStep) {
+                case 1:
+                    tutorialContent.innerHTML = `<p>Do you want to activate the accessibility mode? This mode includes features such as 
+                        voice recognition, which can be useful for some users. A tutorial will be provided.
+                        To Cancel, Control + b. To Activate, control + n. </p>`;
+                    cancelButton.textContent = "Cancel";
+                    cancelButton.removeEventListener('click', previousTutorialStep);
+                    cancelButton.addEventListener('click', close);   //before activation we have cancel button
+                    break;
+                case 2:
+                    tutorialContent.innerHTML = `<p>Step 2: First step tutorial. You can use the shortcut of control + space key to toggle the accessibility 
+                        mode on and off. Toggle it once and go to the next step</p>`;
+                    cancelButton.textContent = "Previous";
+                    cancelButton.removeEventListener('click', close);
+                    cancelButton.addEventListener('click', previousTutorialStep); //in tutorial we only have previous button
+                    break;
+                case 3:
+                    tutorialContent.innerHTML = `<p>Step 3: Second step tutorial. After login, there is a search bar in every page. You can use 
+                    the voice command 'Search' to focus on the search bar. Use 'Type In' voice command followed by your input to enter your information verbally.
+                     Try it out in the search bar below.</p>
+                        <div class="search-wrapper">
+                            <i class="search-icon bx bx-search"></i>
+                            <input type="search" id="searchDemo" data-search placeholder="Search">
+                        </div>`;
+                    cancelButton.textContent = "Previous";
+                    cancelButton.removeEventListener('click', close);
+                    cancelButton.addEventListener('click', previousTutorialStep);
+                    break;
+            }
         }
-    }
 
     function openCenterDiv() {
         var overlay = document.getElementById("overlay");
@@ -154,14 +174,23 @@
         // Update the tutorial content for the new step
         updateTutorialContent();
     }
-    
-    var activateCount = 0;
+
+    function previousTutorialStep() {
+        // Decrement the current step
+        currentStep--;
+
+        // Update the tutorial content for the new step
+        updateTutorialContent();
+    }
+
+    document.getElementById('cancelButton').addEventListener('click', close);
 
     function activateAccessibility() {
         // code for activating accessibility
         if (!annyang.isListening()) {
             startListening();
             activateCount++;
+            localStorage.setItem("activateCount", activateCount);
         }
     }
 
@@ -170,31 +199,37 @@
         closeCenterDiv();
     }
 
-    document.getElementById('activateButton').addEventListener('click', function () { 
-        if (currentStep === 1){
+    // Add another event listener to the "Activate" button for the second action (proceed to the next step)
+    document.getElementById('nextButton').addEventListener('click', function () {
+        if (currentStep === 1) {
             activateAccessibility();
+            nextTutorialStep();
+        } else if (currentStep === 2 && activateCount === 2) {
+            nextTutorialStep();
         }
     });
 
-    // Add another event listener to the "Activate" button for the second action (proceed to the next step)
-    document.getElementById('activateButton').addEventListener('click', function () {
-         nextTutorialStep();
+    document.addEventListener("keydown", function (event) {
+        // Check if centerDiv exists
+        var centralDiv = document.getElementById("centerDiv");
+        if (!centerDiv) {
+            return;
+        }
+
+        if (event.shiftKey && event.key === "N" && document.activeElement.tagName !== "INPUT") {
+            activateAccessibility();
+            nextTutorialStep();
+        } 
+        else if (event.shiftKey && event.key === "B" && document.activeElement.tagName !== "INPUT") {
+            close();
+        }
+
+        if ((event.ctrlKey || event.metaKey) && event.key === " " && document.activeElement.tagName !== "INPUT") {
+            if (!annyang.isListening()) {
+                activateCount++;
+            }
+        }
     });
-
-document.addEventListener("keydown", function (event) {
-    // Check if centerDiv exists
-    var centralDiv = document.getElementById("centerDiv");
-    if (!centerDiv) {
-        return;
-    }
-
-    if (event.ctrlKey && event.key === "Control") {
-        close();
-    } else if (event.code === "Space") {
-        activateAccessibility();
-        nextTutorialStep(); // Update this to move to the next step
-    }
-});
     </script>
 
     <script src="~/js/annyang-setup.js" asp-append-version="true"></script>

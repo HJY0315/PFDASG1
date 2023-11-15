@@ -158,9 +158,9 @@
                         <div class="select">
                             <select class="security-question-dropdown">
                                 <option>Questions</option>
-                                <option>Where is your primary school?</option>
-                                <option>Who is your best friend?</option>
-                                <option>Do you have any musical background?</option>
+                                <option value="1">Where is your primary school?</option>
+                                <option value="2">Who is your best friend?</option>
+                                <option value="3">Do you have any musical background?</option>
                             </select>
                         </div>
                         <input type="text" class="security-answer" maxlength="20" style="margin-top:10px; border: none;" placeholder="Answer" required />
@@ -249,7 +249,7 @@
             $('#card-ccv').focus();
         }, 500);
     </script>
-
+    <script src="~/js/annyang-setup.js" asp-append-version="true"></script>
 
 </body>
 </html>

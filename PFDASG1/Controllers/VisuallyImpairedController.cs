@@ -8,6 +8,8 @@ namespace PFDASG1.Controllers
     public class VisuallyImpairedController : Controller
     {
         private SearchDAL SearchDAL = new SearchDAL();
+        TransactionsDAL TransactionsContext = new TransactionsDAL();
+        User user;
 
         public IActionResult Settings()
         {
@@ -24,14 +26,15 @@ namespace PFDASG1.Controllers
             return View();
         }
 
-        public IActionResult Index(string userName)
+        public IActionResult Index(string userName, int id)
         {
             // Use the userName parameter as needed in this action
             ViewBag.UserName = userName;
-
-            return View();
+            
+            List<Transactions> transactions = TransactionsContext.getalltransactions(id);
+            return View(transactions);
         }
-
+  
 
         public IActionResult Search()
         {

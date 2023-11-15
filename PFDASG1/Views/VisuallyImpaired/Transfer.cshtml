@@ -62,28 +62,32 @@
                 <div class="form-group" id="nricInput" style="display:none;">
                     <label for="nric">Enter NRIC</label>
                     <input type="text" id="nric" placeholder="S1234567A" maxlength="9"/>
+                    @Html.Display("NRIC")
                 </div>
 
                 <!-- Input for Mobile Number -->
                 <div class="form-group" id="mobileInput" style="display:none;">
                     <label for="mobileNumber">Enter Mobile Number</label>
                     <input type="text" id="mobileNumber" placeholder="91234567" maxlength="8"/>
+                    @Html.Display("MobileNumber")
                 </div>
             </div>
 
-
+            <!--hide unhide balance-->
             <!-- Step 3: Enter Amount --><!-- Backend for validation for amount and add the $ thingy-->
             <div class="form-group step-content">
                 <label for="amount">Enter your Amount</label>
-                <input type="text" id="amount" required /> <br />
+                <input type="text" id="amount" required/> <br />
+                @Html.Display("Amount")
                 <label for="description">Description</label>
                 <input type="text" id="description" required />
+                @Html.Display("Description")
             </div>
 
             <!-- Step 4: Review --><!-- Backend for validation for amount and add the $ thingy-->
             <div class="form-group step-content">
                 <img src="../img/checked.png" width="150" height="150" />
-                <p>Amount: <span id="reviewAmount"></span></p>
+                <p>Amount: <span id="reviewAmount">@Html.Display("Amount")</span></p>
                 <p>Transfer to: <span id="reviewTransferTo"></span></p>
                 <p>Description: <span id="reviewDescription"></span></p>
             </div>
@@ -92,7 +96,7 @@
         <!-- Next and Previous Buttons -->
         <div class="form-navigation mt-5">
             <button class="btn btn-primary" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
-            <button class="btn btn-primary" id="nextBtn" onclick="nextPrev(1)">Next</button>
+            <button class="btn btn-primary" id="nextBtn" onclick="nextPrev(0)">Next</button>
         </div>
     </div>
 
@@ -124,7 +128,6 @@
             updateReviewContent();
         }
 
-
         function updateReviewContent() {
             const reviewAmount = document.getElementById('reviewAmount');
             const reviewTransferTo = document.getElementById('reviewTransferTo');
@@ -132,54 +135,96 @@
 
             // Get values from the form inputs
             const amount = document.getElementById('amount').value;
-            const bankTransfer = document.getElementById('bankTransfer').value;
             const paymentType = document.getElementById('paymentType').value;
 
             // Update the review content
             reviewAmount.textContent = amount;
-            reviewTransferTo.textContent = getTransferToText(bankTransfer, paymentType);
-            reviewDescription.textContent = getDescriptionText(bankTransfer, paymentType);
+            reviewTransferTo.textContent = getTransferToText(paymentType);
+
+            // Display the description in the review
+            const description = document.getElementById('description').value;
+            reviewDescription.textContent = description;
         }
 
-        function getTransferToText(bankTransfer, paymentType) {
-            // Customize this function based on your requirements
+
+        function getTransferToText(paymentType) {
+            const nricInput = document.getElementById('nric');
+            const mobileNumberInput = document.getElementById('mobileNumber');
+
             if (paymentType === '2') {
-                return 'Transfer to NRIC ending with ' + paymentType;
+                return 'Transfer to NRIC: ' + nricInput.value;
             } else if (paymentType === '3') {
-                return 'Transfer to Mobile Number ' + paymentType;
+                return 'Transfer to Mobile Number: ' + mobileNumberInput.value;
             } else {
                 return 'Unknown Transfer';
             }
         }
+
 
         function getDescriptionText(bankTransfer, paymentType) {
             // Customize this function based on your requirements
             return 'Payment for ' + getTransferToText(bankTransfer, paymentType);
         }
 
-        function nextPrev(stepChange) {
-            
-            if (currentStep === 2) {  // Step 3
-                // Prompt for confirmation
-                if (confirm('Are you sure you want to transfer?')) {
-                    currentStep += stepChange;
-                }
+        // Assume you have a variable to track the current page
+        let currentPage = 1;
+
+        function nextPrev(n) {
+            // Update the current page based on the navigation
+            currentPage += n;
+
+            // Perform your page navigation logic here
+
+            if (currentPage === 2) {
+                // Change the button text to "Confirm"
+                document.getElementById('nextBtn').innerText = 'Confirm';
+                // Update the onclick event to call a different function for confirmation
+                document.getElementById('nextBtn').onclick = function () {
+                    // Call your confirmation function here
+                    confirmTransfer();
+                    // Move to the next page after confirmation
+                    nextPrev(1);
+                };
+            } else if (currentPage === 4) {
+                // Reset the button text to "Next" for other pages
+                document.getElementById('nextBtn').innerText = 'Next';
+                // Reset the onclick event to the original function for other pages
+                document.getElementById('nextBtn').onclick = function () {
+                    nextPrev(1);
+                };
             } else {
-                currentStep += stepChange;
+                // Reset the button text to "Next" for other pages
+                document.getElementById('nextBtn').innerText = 'Next';
+                // Reset the onclick event to the original function for other pages
+                document.getElementById('nextBtn').onclick = function () {
+                    nextPrev(1);
+                };
+                // Show the buttons for other pages
+                document.getElementById('prevBtn').style.display = 'block';
+                document.getElementById('nextBtn').style.display = 'block';
             }
 
-            if (currentStep < 0) {
-                currentStep = 0;
-            } else if (currentStep >= formSteps.length) {
-                currentStep = formSteps.length - 1;
+
+
+            //// Perform your existing logic for updating the current step
+            if (currentPage < 0) {
+                currentPage = 0;
+            } else if (currentPage >= formSteps.length) {
+                currentPage = formSteps.length - 1;
             }
-            showStep(currentStep);
+            showStep(currentPage);
         }
 
-        // Initially show only the Khởi tạo content
         document.addEventListener('DOMContentLoaded', function () {
             showStep(0);
         });
+
+        // Add your confirmTransfer function
+        function confirmTransfer() {
+            // Implement your confirmation logic and money transfer here
+            alert('Confirmed!'); // Replace this with your actual logic
+        }
+
 
         function updatePaymentMethod() {
             const paymentType = document.getElementById('paymentType').value;
@@ -204,6 +249,8 @@
         }
 
     </script>
+
+    <script src="~/js/annyang-setup.js" asp-append-version="true"></script>
 </body>
 
 </html>

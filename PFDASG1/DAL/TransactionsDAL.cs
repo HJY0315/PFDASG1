@@ -56,7 +56,7 @@ namespace PFDASG1.DAL
             cmd.CommandText = @"SELECT
     t.transactionId,
     t.description,
-    t.accountId
+    t.accountId,
     t.amount,
     t.transactionDate,
     t.receiverId
