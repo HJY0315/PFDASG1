@@ -9,10 +9,10 @@ namespace PFDASG1.Models
         [Display(Name = "Transaction ID")]
         public int TransactionId{ get; set; }
 
-        [Required(ErrorMessage = "Description is required.")]
+
         [Display(Name = "Description")]
         [StringLength(255, ErrorMessage = "Description cannot exceed 255 characters.")]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         [Required(ErrorMessage = "Account ID is required.")]
         [Display(Name = "Account ID")]
@@ -20,7 +20,8 @@ namespace PFDASG1.Models
 
         [Required(ErrorMessage = "Amount is required.")]
         [Display(Name = "Amount")]
-        [Range(-9999999999.99, 9999999999.99, ErrorMessage = "Amount must be between -9999999999.99 and 9999999999.99.")] public decimal Amount { get; set; }
+        [Range(-9999999999.99, 9999999999.99, ErrorMessage = "Amount must be between -9999999999.99 and 9999999999.99.")]
+        public decimal Amount { get; set; }
 
         [Required(ErrorMessage = "Transaction date is required.")]
         [Display(Name = "Transaction Date")]

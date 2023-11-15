@@ -2,6 +2,7 @@
 using System.Diagnostics.Metrics;
 using System.Transactions;
 using PFDASG1.Models;
+using System.Data.SqlClient;
 
 namespace PFDASG1.DAL
 {
@@ -21,7 +22,7 @@ namespace PFDASG1.DAL
             conn = new SqlConnection(strConn);
         }
 
-        public int add(Transactions transaction)
+        public int Transactions(Transactions transaction)
         {
             //Create a SqlCommand object from connection object
             SqlCommand cmd = conn.CreateCommand();
@@ -45,6 +46,66 @@ namespace PFDASG1.DAL
             conn.Close();
             //Return id when no error occurs.
             return transaction.TransactionId;
+        }
+        public List<Transactions> getalltransactions(int userid)
+        {
+
+            //Create a SqlCommand object from connection object
+            SqlCommand cmd = conn.CreateCommand();
+            //Specify the SELECT SQL statement 
+            cmd.CommandText = @"SELECT
+    t.transactionId,
+    t.description,
+    t.accountId
+    t.amount,
+    t.transactionDate,
+    t.receiverId
+
+FROM
+    Transactions AS t
+INNER JOIN
+    Accounts AS a
+ON
+    t.accountId = a.accountId
+WHERE
+    a.userId = @userId
+ORDER BY
+    t.transactionDate DESC;";
+            cmd.Parameters.AddWithValue("@userID", userid);
+            //Open a database connection
+            conn.Open();
+            //Execute the SELECT SQL through a DataReader
+            SqlDataReader reader = cmd.ExecuteReader();
+            List<Transactions> transactionslist = new List<Transactions>();
+            if (reader.HasRows)
+            {
+
+                while (reader.Read())
+                {
+                    transactionslist.Add(
+                    new Transactions
+                    {
+                        TransactionId = reader.GetInt32(0),
+                        Description = reader.GetString(1),
+                        AccountId = reader.GetInt32(2),
+                        Amount = reader.GetDecimal(3),
+                        TransactionDate = reader.GetDateTime(4),
+                        ReceipientOrSenderID = reader.GetInt32(5)
+
+                    }
+                    );
+                }
+                reader.Close();
+                conn.Close();
+                return transactionslist;
+            }
+            else
+            {
+                // No rows found, return an empty list
+                reader.Close();
+                conn.Close();
+                return new List<Transactions>();
+            }
         }
     }
 }
