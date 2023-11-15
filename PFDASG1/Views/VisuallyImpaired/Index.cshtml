@@ -1,4 +1,5 @@
-﻿@{
+﻿@model IEnumerable<PFDASG1.Models.Transactions>
+@{
     Layout = null;
 }
 
@@ -36,45 +37,53 @@
     <header>
         @await Html.PartialAsync("_navbar.cshtml")
     </header>
-    <div class="content-wrapper">
-        <div class="total-balance">
-        @*link to account database table*@
-        <h1 style="text-align:center;">Total Balance: $0.00</h1>
-        <canvas id="doughnutChart" width="350" height="350"></canvas>
-        </div>
-        <div class="transaction-history">
-            <fieldset class="FormContent">
-            <legend><b>Transaction History</b></legend>
-            <table class="flex">
-                <tr>
-                    <th>Transaction Date</th>
-                    <th>Description</th>
-                    <th>Amount</th>
-                    <th>Receiver</th>
-                </tr>
-                <tr>
-                    <th>01/01/2021</th>
-                    <th>Fund Transfer</th>
-                    <th>+$50.00</th>
-                    <th>Jia Yi</th>
-                </tr>
-                    <tr>
-                        <th>02/01/2021</th>
-                        <th>Debit Purchase</th>
-                        <th>-$30.00</th>
-                        <th>Macdonals</th>
-                    </tr>
-                    <tr>
-                        <th>03/01/2021</th>
-                        <th>Fast Payment</th>
-                        <th>-$10.00</th>
-                        <th>Xin Yin</th>
-                    </tr>
-            </table>
-            </fieldset>
-        </div>
-    </div>
 
+        <div class="content-wrapper">
+            <div class="total-balance">
+            @if (Model != null)
+            {
+                <h1 style="text-align:center;">Total Balance: $@(Model.Sum(item => item.Amount).ToString("0.00"))</h1>
+            }
+            else
+            {
+                <p>No data available</p>
+            }
+
+            <canvas id="doughnutChart" width="350" height="350"></canvas>
+            </div>
+            <div class="transaction-history">
+                <fieldset class="FormContent">
+                    <legend><b>Transaction History</b></legend>
+                    <table class="flex">
+                        <thead>
+                            <tr>
+                                <th>Transaction Date</th>
+                                <th>Description</th>
+                                <th>Amount</th>
+                                <th>Receiver/Sender</th>
+                            </tr>
+                        </thead>
+                    <tbody>
+                        @if (Model != null)
+                        {
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.TransactionDate</td>
+                                    <td>@item.Description</td>
+                                    <td>@item.Amount.ToString("0.00")</td>
+                                    <td>@item.ReceipientOrSenderID</td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+
+
+                    </table>
+                </fieldset>
+            </div>
+        </div>
+    }
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {

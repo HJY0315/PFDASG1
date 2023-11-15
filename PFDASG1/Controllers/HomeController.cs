@@ -41,16 +41,17 @@ namespace PFDASG1.Controllers
         {
             string Access_Code = formData["txtLoginID"];
             string Pin = formData["txtPin"];
-            
+
 
             if (userContext.Login(Access_Code, Pin) != null)
             {
                 User user = userContext.Login(Access_Code, Pin);
-                var name = HttpContext.Session.GetString(user.Name);
-                return RedirectToAction("Index", "VisuallyImpaired", new { userName = user.Name });
+                HttpContext.Session.SetString("Name", user.Name);
+                HttpContext.Session.SetInt32("id", user.Userid);
+                return RedirectToAction("Index", "VisuallyImpaired", new { userName = user.Name , id = user.Userid});
             }
-            
-             
+
+
             else
             {
                 TempData["Message"] = "Invalid login credentials";
