@@ -125,20 +125,34 @@
                     cancelButton.addEventListener('click', close);   //before activation we have cancel button
                     break;
                 case 2:
-                    tutorialContent.innerHTML = `<p>Step 2: First step tutorial. You can use the shortcut of control + space key to toggle the accessibility 
+                    tutorialContent.innerHTML = `<p>Tutorial Step 1: You can use the shortcut of control + space key to toggle the accessibility 
                         mode on and off. Toggle it once and go to the next step</p>`;
                     cancelButton.textContent = "Previous";
                     cancelButton.removeEventListener('click', close);
                     cancelButton.addEventListener('click', previousTutorialStep); //in tutorial we only have previous button
                     break;
                 case 3:
-                    tutorialContent.innerHTML = `<p>Step 3: Second step tutorial. After login, there is a search bar in every page. You can use 
+                    tutorialContent.innerHTML = `<p>Step 2: After login, there is a search bar in every page. You can use 
                     the voice command 'Search' to focus on the search bar. Use 'Type In' voice command followed by your input to enter your information verbally.
-                     Try it out in the search bar below.</p>
+                     After that, press enter on keyboard.Try it out in the search bar below.</p>
                         <div class="search-wrapper">
                             <i class="search-icon bx bx-search"></i>
                             <input type="search" id="searchDemo" data-search placeholder="Search">
                         </div>`;
+                    cancelButton.textContent = "Previous";
+                    cancelButton.removeEventListener('click', close);
+                    cancelButton.addEventListener('click', previousTutorialStep);
+                    break;
+                case 4:
+                    tutorialContent.innerHTML = `<p>You can use 'Type in' command to fill up any of the input field in this website. Remember 
+                    the command carefully and utilize it to make your journey easier.</p>`;
+                    cancelButton.textContent = "Previous";
+                    cancelButton.removeEventListener('click', close);
+                    cancelButton.addEventListener('click', previousTutorialStep);
+                    break;
+                case 5:
+                    tutorialContent.innerHTML = `<p>Step 4: To navigate to different pages, use voice commands starting with 'Go to.' 
+                    For example, say 'Go to login page'. The system also may provide suggestion for you based on your inacurate voice command.</p>`;
                     cancelButton.textContent = "Previous";
                     cancelButton.removeEventListener('click', close);
                     cancelButton.addEventListener('click', previousTutorialStep);
@@ -197,6 +211,7 @@
     function close() {
         // code for canceling activation
         closeCenterDiv();
+        documentgetElementById('centerDiv').style.display = 'none';
     }
 
     // Add another event listener to the "Activate" button for the second action (proceed to the next step)
@@ -206,6 +221,24 @@
             nextTutorialStep();
         } else if (currentStep === 2 && activateCount === 2) {
             nextTutorialStep();
+        }
+        else if (currentStep === 2 && activateCount < 2){
+            speakResponse("Please toggle the accessibility mode using control + space.");
+        }
+        else if (currentStep === 3) {
+            const searchDemoValue = document.getElementById('searchDemo').value.trim();
+            if (searchDemoValue !== '') {
+                nextTutorialStep();
+            }
+            else {
+                speakResponse("Please enter something into search bar.");
+            }
+        }
+        else if (currentStep === 4) {
+            nextTutorialStep();
+        }
+        else if (currentStep === 5) {
+            close();
         }
     });
 

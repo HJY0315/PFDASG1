@@ -9,7 +9,7 @@ if (annyang) {
         'Hello': hello,
         'login page': goToLoginPage,
         'home page': goToHomePage,
-        'Go to activation': goToCardActivation,
+        'Go to CARD activation': goToCardActivation,
         'Start listening': startListening,
         'Stop listening': stopListening,
         'Access code *code': enterAccessCode,
@@ -86,21 +86,25 @@ if (annyang) {
     }
 
     function search() {
-        if (window.location.pathname !== '/Home/Index') {
-            window.location.href = '/VisuallyImpaired/Search';
-
+        if (window.location.pathname.toLowerCase() === '/home/index' || window.location.pathname === '/') {
+            document.getElementById('searchDemo').focus();
         }
         else {
-            document.getElementById('searchDemo').focus();
+            window.location.href = '/VisuallyImpaired/Search';
         }
         speakResponse("Search bar, use type in command to enter your input");
     }
 
-    //this one not working
     function typeIn(value) {
-        console.log("typeIn function called with value:", value);
-        document.getElementById('search').value = value;
-        speakResponse("Input entered, press enter to search.");
+        if (window.location.pathname.toLowerCase() === '/home/index' || window.location.pathname === '/') {
+            document.getElementById('searchDemo').value = value;
+            speakResponse("Input entered, You can go to next step now.");
+        }
+        else {
+            document.getElementById('search').value = value;
+            speakResponse("Input entered, press enter to search.");
+        }
+        
     }
 
 
@@ -129,7 +133,7 @@ if (annyang) {
 
     annyang.addCommands(commands);
 
-    if (sessionStorage.getItem("annyangStatus")) {
+    if (sessionStorage.getItem("annyangStatus") === "true") {
         annyang.start();
     }
 
