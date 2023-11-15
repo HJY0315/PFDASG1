@@ -26,7 +26,7 @@
             </div>
             <div class="form-step-item text-center">
                 <span class="item__step">2</span>
-                <p class="item__title mt-1">Select Payment Method</p>
+                <p class="item__title mt-1">Search Recipient</p>
             </div>
             <div class="form-step-item text-center">
                 <span class="item__step">3</span>
@@ -38,26 +38,24 @@
             </div>
         </div>
 
-        <div class="form-layout mt-4">
-            <!-- Step 1: Select Account -->
-            <div class="form-group step-content active">
-                <label for="bankTransfer">Select Account</label>
+        <div class="form-layout">
+            <!-- Step 1: Select Account --><!-- Backend for Frank card number and saving acct number-->
+            <div class="form-group step-content">
+                <label for="bankTransfer">Choose Account</label>
                 <select name="bankTransfer" id="bankTransfer">
                     <option value="1">Please Select</option>
-                    <option value="2">Fank Card</option>
-                    <option value="3">Saving Account</option>
+                    <option value="2">Frank Card </option>
+                    <option value="3">Saving Account </option>
                 </select>
-                @*<div class="form-group__notice mt-1">Mô tả và một số lưu ý với tính năng chuyển tiền &copy;</div>*@
             </div>
 
             <!-- Step 2: Select Payment Type -->
             <div class="form-group step-content">
-                <label for="paymentType">Select Payment Method</label>
+                <label for="paymentType">Search Recipient</label>
                 <select name="paymentType" id="paymentType" onchange="updatePaymentMethod()">
                     <option value="1">Please Select</option>
                     <option value="2">NRIC</option>
                     <option value="3">Mobile Number</option>
-                    <option value="4">UEN</option>
                 </select>
 
                 <!-- Input for NRIC -->
@@ -74,7 +72,7 @@
             </div>
 
 
-            <!-- Step 3: Enter Amount -->
+            <!-- Step 3: Enter Amount --><!-- Backend for validation for amount and add the $ thingy-->
             <div class="form-group step-content">
                 <label for="amount">Enter your Amount</label>
                 <input type="text" id="amount" required /> <br />
@@ -82,8 +80,9 @@
                 <input type="text" id="description" required />
             </div>
 
-            <!-- Step 4: Review -->
+            <!-- Step 4: Review --><!-- Backend for validation for amount and add the $ thingy-->
             <div class="form-group step-content">
+                <img src="../img/checked.png" width="150" height="150" />
                 <p>Amount: <span id="reviewAmount"></span></p>
                 <p>Transfer to: <span id="reviewTransferTo"></span></p>
                 <p>Description: <span id="reviewDescription"></span></p>
@@ -101,7 +100,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>
     <script>
-        let currentStep = 0;
+        let currentStep = 0;    
         const formSteps = document.querySelectorAll('.form-step-item');
         const formContents = document.querySelectorAll('.form-group.step-content');
 
@@ -145,11 +144,9 @@
         function getTransferToText(bankTransfer, paymentType) {
             // Customize this function based on your requirements
             if (paymentType === '2') {
-                return 'Transfer to NRIC ending with ' + bankTransfer.slice(-4);
+                return 'Transfer to NRIC ending with ' + paymentType;
             } else if (paymentType === '3') {
-                return 'Transfer to Mobile Number ' + bankTransfer;
-            } else if (paymentType === '4') {
-                return 'Transfer to UEN ' + bankTransfer;
+                return 'Transfer to Mobile Number ' + paymentType;
             } else {
                 return 'Unknown Transfer';
             }

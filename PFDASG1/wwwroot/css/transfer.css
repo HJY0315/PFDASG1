@@ -1,7 +1,4 @@
-﻿@import url(https://fonts.googleapis.com/css?family=Roboto:300);
-@import url(//fonts.googleapis.com/css?family=Oswald:400);
-
-html {
+﻿html {
     font-size: 15px;
 }
 
@@ -37,20 +34,7 @@ html {
         opacity: 0;
     }
 
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
-}
-
 :root {
-    --spacer: 1rem;
-    --spacers-0: calc(var(--spacer) * 0);
-    --spacers-1: calc(var(--spacer) * 0.25);
-    --spacers-2: calc(var(--spacer) * 0.5);
-    --spacers-3: var(--spacer);
-    --spacers-4: calc(var(--spacer) * 1.5);
-    --spacers-5: calc(var(--spacer) * 3);
     --link-color: #fff;
     --body-color: #b1b8b9;
     --body-bgcolor: #051b21;
@@ -59,44 +43,6 @@ html {
     --active-step-color: #fff;
     --active-step-bgcolor: #72c000;
     --notice-color: #62a909;
-}
-
-/*body {
-    font-size: 1rem;
-    font-family: "Roboto", sans-serif;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--body-color);
-    background: var(--body-bgcolor);
-}
-*/
-/* style general */
-
-/* margin-top */
-.mt-0 {
-    margin-top: var(--spacers-0);
-}
-
-.mt-1 {
-    margin-top: var(--spacers-1);
-}
-
-.mt-2 {
-    margin-top: var(--spacers-2);
-}
-
-.mt-3 {
-    margin-top: var(--spacers-3);
-}
-
-.mt-4 {
-    margin-top: var(--spacers-4);
-}
-
-.mt-5 {
-    margin-top: var(--spacers-5);
 }
 
 /* text align */
@@ -108,10 +54,6 @@ html {
     text-align: right;
 }
 
-/* font weight */
-.font-weight-bold {
-    font-weight: bold;
-}
 
 /* stye form */
 .transfer-form {
@@ -156,16 +98,55 @@ html {
     background: var(--active-step-bgcolor);
 }
 
-.form-step-list .form-step-item .item__title {
-    white-space: nowrap;
+.form-group__notice {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    font-size: 13px;
+    color: var(--notice-color);
+}
+
+.form-group.step-content {
+    display: none;
+}
 
 
-.form-layout {
+.form-step-list {
     position: relative;
-    border-radius: 7px;
-    padding: 20px 30px;
-    font-size: 15px;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+    .form-step-list::before {
+        content: "";
+        position: absolute;
+        z-index: -1;
+        top: 14px;
+        width: 100%;
+        height: 1px;
+        background: var(--line-step-color);
+    }
+
+.form-step-item {
+    font-size: 12px;
+}
+
+.form-step-list .form-step-item .item__step {
+    display: inline-block;
+    border: 1px solid var(--line-step-color);
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    line-height: 25px;
+    text-align: center;
     background: var(--primary-color);
+}
+
+.form-step-list .form-step-item.active .item__step {
+    color: var(--active-step-color);
+    background: var(--active-step-bgcolor);
 }
 
 .form-group__notice {
@@ -176,32 +157,52 @@ html {
     color: var(--notice-color);
 }
 
-.form-group {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-}
 
-    .form-group label {
-        width: 30%;
-    }
-
-    .form-group input,
-    .form-group select {
-        width: 70%;
-        flex: 1;
-        border-radius: 7px;
-        padding: 10px;
-    }
-
-.form-control {
-    outline: none;
+.form-layout {
     border: none;
+    padding: 0;
     padding: 10px 0;
-    width: 100%;
+    position: relative;
+    clear: both;
 }
 
 .form-group.step-content {
     display: none;
 }
 
+    .form-group.step-content label {
+        display: block;
+        text-transform: uppercase;
+        font-size: 18px;
+        color: rgba(0, 0, 0, 0.6);
+        margin-bottom: 5px;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .form-group.step-content select,
+    .form-group.step-content input {
+        width: 100%;
+        height: 38px;
+        color: #333333;
+        padding: 10px;
+        border-radius: 5px;
+        font-size: 15px;
+        margin-bottom: 5px;
+        outline: none !important;
+        border: 1px solid rgba(0, 0, 0, 0.3);
+        box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .form-group.step-content p {
+        text-align: center;
+        padding: 10px;
+        font-size: 16px;
+        margin-bottom: 5px;
+    }
+
+    .form-group.step-content img {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
