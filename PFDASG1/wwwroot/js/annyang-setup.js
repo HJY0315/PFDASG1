@@ -9,7 +9,7 @@ if (annyang) {
         'Hello': hello,
         'login page': goToLoginPage,
         'home page': goToHomePage,
-        'Go to activation': goToCardActivation,
+        'Go to CARD activation': goToCardActivation,
         'Start listening': startListening,
         'Stop listening': stopListening,
         'Access code *code': enterAccessCode,

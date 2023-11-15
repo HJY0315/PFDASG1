@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PFDASG1.DAL;
 using PFDASG1.Models;
@@ -40,23 +41,26 @@ namespace PFDASG1.Controllers
         public ActionResult Login(IFormCollection formData)
         {
             string Access_Code = formData["txtLoginID"];
-            string Pin = formData["txtPin"];
-            
+            string Pin = formData["txtPin"].ToString();
+            string Name;
+            int id;
 
-            if (userContext.Login(Access_Code, Pin) != null)
+            if (userContext.Login(Access_Code, Pin, out Name, out id))
             {
-                User user = userContext.Login(Access_Code, Pin);
-                var name = HttpContext.Session.GetString(user.Name);
-                return RedirectToAction("Index", "VisuallyImpaired", new { userName = user.Name });
+                HttpContext.Session.SetString("Name", Name);
+                HttpContext.Session.SetInt32("id", id);
+                return RedirectToAction("Index", "VisuallyImpaired");
             }
-            
-             
+
+
             else
             {
                 TempData["Message"] = "Invalid login credentials";
                 return View();
             }
         }
+
+
 
         public async Task<IActionResult> Logout()
         {

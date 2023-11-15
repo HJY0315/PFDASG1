@@ -18,6 +18,8 @@ namespace PFDASG1.Controllers
             int userId = (int)HttpContext.Session.GetInt32("Userid");
             List<Transactions> transactions = TransactionsContext.getalltransactions(userId);
             return View(transactions);
+
         }
+
     }
 }
