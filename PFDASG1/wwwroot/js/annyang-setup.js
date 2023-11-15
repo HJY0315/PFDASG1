@@ -77,7 +77,13 @@ if (annyang) {
     }
 
     function search() {
-        window.location.href = '/VisuallyImpaired/Search';
+        if (window.location.pathname !== '/Home/Index') {
+            window.location.href = '/VisuallyImpaired/Search';
+
+        }
+        else {
+            document.getElementById('searchDemo').focus();
+        }
         speakResponse("Search bar, use type in command to enter your input");
     }
 
