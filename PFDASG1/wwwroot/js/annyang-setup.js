@@ -36,10 +36,13 @@ if (annyang) {
         speakResponse("You are at the home page.");
     }
 
+    const activated = 0;
+
     function startListening() {
         annyang.start();
         speakResponse("Listening started");
         console.log("Listening started");
+        activated = 1;
     }
 
     function stopListening() {
@@ -47,6 +50,7 @@ if (annyang) {
         listening = false;
         speakResponse("Listening stopped");
         console.log("Listening stopped");
+        activated = 0;
     }
 
     function enterAccessCode(code) {
@@ -100,7 +104,7 @@ if (annyang) {
 
     annyang.addCommands(commands);
 
-    annyang.start();
+    //annyang.start();
 
     // Handle unrecognized command
     annyang.addCallback('resultNoMatch', function (phrases) {

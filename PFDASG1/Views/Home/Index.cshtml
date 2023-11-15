@@ -27,36 +27,6 @@
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>
 
-    <style>
-        /* Styles for the center div */
-        .center-div {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            z-index: 999;
-        }
-
-        /* Close button styles */
-        .close {
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            cursor: pointer;
-            font-size: 20px;
-        }
-
-        .buttons{
-            display: flex;
-            justify-content: space-around;
-            margin-top: 20px;
-        }
-    </style>
   
 </head>
 <body>
@@ -103,7 +73,7 @@
         <div aria-live="assertive">
             <p tabindex="1" id="accessibilityMode">Accessibility Mode</p>
         </div>
-        <div aria-live="assertive">
+        <div id="tutorialContent" aria-live="assertive">
             <p tabindex="1">
                 Do you want to activate the accessibility mode? You will be able to access speech recognition,
                 speech-to-text and other useful functions that aim to help people with disabilities access our website.
@@ -114,61 +84,109 @@
 
         <div class="buttons">
             <button tabindex="1" type="button" class="btn btn-secondary" onclick="cancelActivation()">Cancel</button>
-            <button tabindex="1" type="button" class="btn btn-success" onclick="activateAccessibility()">Activate</button>
+            <button tabindex="1" type="button" class="btn btn-success" id="activateButton">Activate</button>
         </div>
     </div>
 
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            // Check if the modal should be shown
-            var shouldShowModal = sessionStorage.getItem("showModal");
+    document.addEventListener("DOMContentLoaded", function () {
+        // Check if the modal should be shown
+        var shouldShowModal = sessionStorage.getItem("showModal");
 
-            if (!shouldShowModal) {
-                openCenterDiv();
-                // Set the flag to indicate that the modal has been shown
-                sessionStorage.setItem("showModal", "true");
-            }
-            document.getElementById('accessibilityMode').focus();
-        });
-
-        function openCenterDiv() {
-            var overlay = document.getElementById("overlay");
-            var centerDiv = document.getElementById("centerDiv");
-            if (overlay && centerDiv) {
-                overlay.style.display = "block";
-                centerDiv.style.display = "block";
-                document.body.style.overflow = "hidden"; // Disable scrolling
-            }
+        if (!shouldShowModal) {
+            openCenterDiv();
+            // Set the flag to indicate that the modal has been shown
+            sessionStorage.setItem("showModal", "true");
         }
+        document.getElementById('accessibilityMode').focus();
+    });
 
-        function closeCenterDiv() {
-            var overlay = document.getElementById("overlay");
-            var centerDiv = document.getElementById("centerDiv");
-            if (overlay && centerDiv) {
-                overlay.style.display = "none";
-                centerDiv.style.display = "none";
-                document.body.style.overflow = ""; // Enable scrolling
-            }
+    // Variable to keep track of the current tutorial step
+    var currentStep = 1;
+
+    // Function to update tutorial content for different steps
+    function updateTutorialContent() {
+        var tutorialContent = document.getElementById("tutorialContent");
+
+        // Check the current step and update content accordingly
+        switch (currentStep) {
+            case 1:
+                tutorialContent.innerHTML = `<p>Do you want to activate the accessibility mode? This mode include features such as 
+                voice recognition which can be useful for some user. Tutorial will be provided.
+                To Cancel, Control + b. To Activate, control + n. </p>`;
+                break;
+            case 2:
+                tutorialContent.innerHTML = `<p>Step 1: First step of tutorial. U can use shortcut of control + space key to toggle the accessibility 
+                mode on and off. Toggle it for once and go to next step</p>`;
+                break;
+            // Add more cases for additional steps
         }
+    }
 
-        function activateAccessibility() {
-            // code for activating accessibility
-            closeCenterDiv();
+    function openCenterDiv() {
+        var overlay = document.getElementById("overlay");
+        var centerDiv = document.getElementById("centerDiv");
+        if (overlay && centerDiv) {
+            overlay.style.display = "block";
+            centerDiv.style.display = "block";
+            document.body.style.overflow = "hidden"; // Disable scrolling
+            updateTutorialContent(); // Update content when opening the modal
         }
+    }
 
-        function cancelActivation() {
-            // code for canceling activation
-            closeCenterDiv();
+    function closeCenterDiv() {
+        var overlay = document.getElementById("overlay");
+        var centerDiv = document.getElementById("centerDiv");
+        if (overlay && centerDiv) {
+            overlay.style.display = "none";
+            centerDiv.style.display = "none";
+            document.body.style.overflow = ""; // Enable scrolling
         }
+    }
 
-        document.addEventListener("keydown", function (e) {
-            if (event.ctrlKey && event.key === "Control") {
-                cancelActivation();
-            } else if (event.code === "Space") {
-                activateAccessibility();
-            }
-        });
+    function nextTutorialStep() {
+        // Increment the current step
+        currentStep++;
+
+        // Update the tutorial content for the new step
+        updateTutorialContent();
+    }
+    
+        const activateCount = 0;
+
+    function activateAccessibility() {
+        // code for activating accessibility
+        if (!annyang.isListening()) {
+            startListening();
+            activateCount++;
+        }
+    }
+
+    function close() {
+        // code for canceling activation
+        closeCenterDiv();
+    }
+
+    document.getElementById('activateButton').addEventListener('click', function () { 
+        if (currentStep === 1){
+            activateAccessibility();
+        }
+    });
+
+    // Add another event listener to the "Activate" button for the second action (proceed to the next step)
+    document.getElementById('activateButton').addEventListener('click', function () {
+         nextTutorialStep();
+    });
+
+    document.addEventListener("keydown", function (e) {
+        if (event.ctrlKey && event.key === "Control") {
+            close();
+        } else if (event.code === "Space") {
+            activateAccessibility();
+            nextTutorialStep(); // Update this to move to the next step
+        }
+    });
     </script>
 
     <script src="~/js/annyang-setup.js" asp-append-version="true"></script>
