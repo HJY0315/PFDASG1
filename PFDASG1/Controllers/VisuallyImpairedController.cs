@@ -26,12 +26,13 @@ namespace PFDASG1.Controllers
             return View();
         }
 
-        public IActionResult Index(string userName, int id)
+        public IActionResult Index()
         {
             // Use the userName parameter as needed in this action
-            ViewBag.UserName = userName;
-            
-            List<Transactions> transactions = TransactionsContext.getalltransactions(id);
+            string Name = HttpContext.Session.GetString("Name");
+            ViewBag.UserName = Name;
+            int Id = HttpContext.Session.GetInt32("id") ?? 0;
+            List<Transactions> transactions = TransactionsContext.getalltransactions(Id);
             return View(transactions);
         }
   

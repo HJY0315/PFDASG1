@@ -19,38 +19,71 @@ namespace PFDASG1.DAL
             conn = new SqlConnection(strConn);
         }
 
-        public User Login(string accessCode, string Pin)
+        public bool Login(string accesscode, string pin, out string Name, out int id)
         {
-            if (accessCode == null || Pin == null)
-            {
-                return null;
-            }
-            User user = new User();
+            Name = "null";
+            id = 0;
+            bool authenticated = false;
+            //Create a SqlCommand object from connection object
             SqlCommand cmd = conn.CreateCommand();
-            cmd.CommandText = @"SELECT * FROM Users WHERE AccessCode = @accessCode AND Pin = @Pin";
-            cmd.Parameters.AddWithValue("@AccessCode", accessCode);
-            cmd.Parameters.AddWithValue("@Pin", Pin);
+            //Specify the SELECT SQL statement 
+            cmd.CommandText = @"SELECT * FROM Users";
+            //Open a database connection
             conn.Open();
+            //Execute the SELECT SQL through a DataReader
             SqlDataReader reader = cmd.ExecuteReader();
-            if (reader.HasRows)
+            //Read all records until the end
+            while (reader.Read())
             {
-                while (reader.Read())
+                // Convert email address to lowercase for comparison
+                // Password comparison is case-sensitive
+                if ((reader.GetString(2) == accesscode) && (reader.GetString(4) == pin))
                 {
-                    user.Userid = reader.GetInt32(0);
-                    user.Name = reader.GetString(1);
-                    user.AccessCode = reader.GetString(2);
-                    user.phoneNumber = reader.GetString(3);
-                    user.Pin = reader.GetString(4);
-                    user.NRIC = reader.GetString(5);
-
-                    reader.Close();
-                    conn.Close();
-                    return user;
+                    authenticated = true;
+                    Name = reader.GetString(1);
+                    id = reader.GetInt32(0);
+                    break; // Exit the while loop
                 }
             }
-            reader.Close();
-            conn.Close();
-            return null;
+            return authenticated;
         }
+
+
+
+        //public User Login(string accessCode, string Pin, out string Name, out int id)
+        //{
+        //    //if (accessCode == null || Pin == null)
+        //    //{
+        //    //    return null;
+        //    //}
+        //    Name = "null";
+        //    id = 0;
+        //    User user = new User();
+        //    SqlCommand cmd = conn.CreateCommand();
+        //    cmd.CommandText = @"SELECT * FROM Users WHERE AccessCode = @accessCode AND Pin = @Pin";
+        //    cmd.Parameters.AddWithValue("@AccessCode", accessCode);
+        //    cmd.Parameters.AddWithValue("@Pin", Pin);
+        //    conn.Open();
+        //    SqlDataReader reader = cmd.ExecuteReader();
+        //    if (reader.HasRows)
+        //    {
+        //        while (reader.Read())
+        //        {
+        //            user.Userid = reader.GetInt32(0);
+        //            user.Name = reader.GetString(1);
+        //            user.AccessCode = reader.GetString(2);
+        //            user.phoneNumber = reader.GetString(3);
+        //            user.Pin = reader.GetString(4);
+        //            user.NRIC = reader.GetString(5);
+
+        //            reader.Close();
+        //            conn.Close();
+        //            return user;
+        //        }
+        //    }
+        //    reader.Close();
+        //    conn.Close();
+        //    return null;
+        //}
     }
 }

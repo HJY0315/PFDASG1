@@ -40,15 +40,15 @@ namespace PFDASG1.Controllers
         public ActionResult Login(IFormCollection formData)
         {
             string Access_Code = formData["txtLoginID"];
-            string Pin = formData["txtPin"];
+            string Pin = formData["txtPin"].ToString();
+            string Name;
+            int id;
 
-
-            if (userContext.Login(Access_Code, Pin) != null)
+            if (userContext.Login(Access_Code, Pin, out Name, out id))
             {
-                User user = userContext.Login(Access_Code, Pin);
-                HttpContext.Session.SetString("Name", user.Name);
-                HttpContext.Session.SetInt32("id", user.Userid);
-                return RedirectToAction("Index", "VisuallyImpaired", new { userName = user.Name , id = user.Userid});
+                HttpContext.Session.SetString("Name", Name);
+                HttpContext.Session.SetInt32("id", id);
+                return RedirectToAction("Index", "VisuallyImpaired");
             }
 
 
@@ -58,6 +58,8 @@ namespace PFDASG1.Controllers
                 return View();
             }
         }
+
+
 
         public async Task<IActionResult> Logout()
         {
