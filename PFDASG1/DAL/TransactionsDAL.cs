@@ -32,19 +32,19 @@ namespace PFDASG1.DAL
                                 VALUES(@transactionId, @description, @accountid, @amount, @transactionDate, @receiverId)"
             ;
 
-            cmd.Parameters.AddWithValue("@transactionId", transaction.transactionId);
-            cmd.Parameters.AddWithValue("@description", transaction.description);
-            cmd.Parameters.AddWithValue("@accountid", transaction.accountId);
-            cmd.Parameters.AddWithValue("@transactionDate", transaction.transactionDate);
-            cmd.Parameters.AddWithValue("@receiverId", transaction.receiverId);
+            cmd.Parameters.AddWithValue("@transactionId", transaction.TransactionId);
+            cmd.Parameters.AddWithValue("@description", transaction.Description);
+            cmd.Parameters.AddWithValue("@accountid", transaction.AccountId);
+            cmd.Parameters.AddWithValue("@transactionDate", transaction.TransactionDate);
+            cmd.Parameters.AddWithValue("@receiverId", transaction.ReceipientOrSenderID);
             //A connection to database must be opened before any operations made.   
             conn.Open();
 
-            transaction.transactionId = (int)cmd.ExecuteScalar();
+            transaction.TransactionId = (int)cmd.ExecuteScalar();
             //A connection should be closed after operations.
             conn.Close();
             //Return id when no error occurs.
-            return transaction.transactionId;
+            return transaction.TransactionId;
         }
     }
 }
