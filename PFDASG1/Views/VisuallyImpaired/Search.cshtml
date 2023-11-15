@@ -110,10 +110,25 @@
         }
 
         function handleSearch() {
-            const searchTerm = document.getElementById('search').value.toLowerCase();
-            const filteredResults = searchResults.filter(result => result.pageTitle.toLowerCase().includes(searchTerm));
-            populateColumns(filteredResults);
+            const searchTerm = document.getElementById('search').value.trim().toLowerCase(); //trim() get rid of spaces at both ends of string
+
+            if (searchTerm === '') {
+                // If the search bar is blank, hide the results section
+                const resultSection = document.querySelector('#search_result');
+                resultSection.setAttribute('hidden', 'true');
+            } else {
+                // If there is a search term, filter and display relevant results
+                const searchWords = searchTerm.split(' ');
+
+                const filteredResults = searchResults.filter(result => {
+                    const resultTitleLower = result.pageTitle.toLowerCase();
+                    return searchWords.every(word => resultTitleLower.includes(word));
+                });
+
+                populateColumns(filteredResults);
+            }
         }
+
 
         document.getElementById('search').addEventListener('input', handleSearch);
 

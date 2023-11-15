@@ -117,7 +117,12 @@ if (annyang) {
 
 document.addEventListener("keydown", function (event) {
     if ((event.ctrlKey || event.metaKey) && event.key === " " && document.activeElement.tagName !== "INPUT") {
-        startListening();
+        if (annyang) {
+            stopListening();
+        }
+        else {
+            startListening();
+        }
         event.preventDefault();
     }
 });
