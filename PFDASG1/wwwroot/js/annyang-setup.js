@@ -7,8 +7,8 @@ if (annyang) {
 
     var commands = {
         'Hello': hello,
-        'Go to login page': goToLoginPage,
-        'Go to home page': goToHomePage,
+        'login page': goToLoginPage,
+        'home page': goToHomePage,
         'Go to activation': goToCardActivation,
         'Start listening': startListening,
         'Stop listening': stopListening,
@@ -18,6 +18,7 @@ if (annyang) {
         'Logout': logout,
         'Search': search,
         'Type in *value': typeIn,
+        'Go to payment page': goToTransferPage,
         
     };
 
@@ -94,6 +95,12 @@ if (annyang) {
         console.log("typeIn function called with value:", value);
         document.getElementById('search').value = value;
         speakResponse("Input entered, press enter to search.");
+    }
+
+
+    function goToTransferPage() {
+        window.location.href = '/VisuallyImpaired/Transfer';
+        speakResponse("Navigating to transfer page.");
     }
 
     
