@@ -19,6 +19,7 @@
         @await Html.PartialAsync("_navbar.cshtml")
     </header>
     <div class="transfer-form container mt-5">
+         
         <div class="form-step-list">
             <div class="form-step-item active">
                 <span class="item__step">1</span>
@@ -94,10 +95,11 @@
         </div>
 
         <!-- Next and Previous Buttons -->
-        <div class="form-navigation mt-5">
-            <button class="btn btn-primary" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
-            <button class="btn btn-primary" id="nextBtn" onclick="nextPrev(0)">Next</button>
-        </div>
+         <div class="form-navigation mt-5">
+                <button class="btn btn-primary" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
+                <button class="btn btn-primary" id="nextBtn" onclick="nextPrev(0)">Next</button>
+            </div>
+        
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

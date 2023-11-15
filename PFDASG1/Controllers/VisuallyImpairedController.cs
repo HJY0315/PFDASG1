@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PFDASG1.DAL;
 using PFDASG1.Models;
+using System.Diagnostics.Metrics;
 
 namespace PFDASG1.Controllers
 {
@@ -10,6 +11,7 @@ namespace PFDASG1.Controllers
         private SearchDAL SearchDAL = new SearchDAL();
         TransactionsDAL TransactionsContext = new TransactionsDAL();
         User user;
+        
 
         public IActionResult Settings()
         {
@@ -20,6 +22,8 @@ namespace PFDASG1.Controllers
         {
             return View();
         }
+
+
 
         public IActionResult ViewAllCards()
         {
