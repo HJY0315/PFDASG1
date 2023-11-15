@@ -1,6 +1,5 @@
 ﻿var messages = ['🔊 Hey', '🔊 Hi, there!', '🔊 Hello'];
 var unrecognizedFlag = false;
-var accessibilityModeActivated = sessionStorage.getItem('accessibilityMode') === 'true';
 
 if (annyang) {
     console.log("We have annyang!");
@@ -19,6 +18,8 @@ if (annyang) {
         'Type in': typeIn,
     };
 
+
+
     function hello() {
         var randomIndex = Math.floor(Math.random() * messages.length);
         var message = messages[randomIndex];
@@ -35,10 +36,13 @@ if (annyang) {
         speakResponse("You are at the home page.");
     }
 
+    const activated = 0;
+
     function startListening() {
         annyang.start();
         speakResponse("Listening started");
         console.log("Listening started");
+        activated = 1;
     }
 
     function stopListening() {
@@ -46,6 +50,7 @@ if (annyang) {
         listening = false;
         speakResponse("Listening stopped");
         console.log("Listening stopped");
+        activated = 0;
     }
 
     function enterAccessCode(code) {
@@ -75,7 +80,7 @@ if (annyang) {
         speakResponse("Search bar, use type in command to enter your input");
     }
 
-    // This one not working
+    //this one not working
     function typeIn(value) {
         document.getElementById('search').value = value;
         speakResponse("Input entered, press enter to search.");
@@ -97,25 +102,9 @@ if (annyang) {
         speechSynthesis.speak(speech);
     }
 
-    function activateAccessibility() {
-        accessibilityModeActivated = true;
-        sessionStorage.setItem('accessibilityMode', 'true');
-        startListening(); // Start listening immediately
-        closeCenterDiv();
-    }
-
-    function cancelActivation() {
-        accessibilityModeActivated = false;
-        sessionStorage.setItem('accessibilityMode', 'false');
-        closeCenterDiv();
-        stopListening();
-    }
-
     annyang.addCommands(commands);
 
-    if (accessibilityModeActivated) {
-        startListening(); // Start listening if accessibility mode is activated
-    }
+    annyang.start();
 
     // Handle unrecognized command
     annyang.addCallback('resultNoMatch', function (phrases) {
@@ -132,11 +121,12 @@ if (annyang) {
 
 document.addEventListener("keydown", function (event) {
     if ((event.ctrlKey || event.metaKey) && event.key === " " && document.activeElement.tagName !== "INPUT") {
-        startListening();
+        if (annyang) {
+            stopListening();
+        }
+        else {
+            startListening();
+        }
         event.preventDefault();
-    } else if (event.ctrlKey && event.key === "Control" && event.code !== "Space") {
-        cancelActivation();
-    } else if (event.code === "Space") {
-        activateAccessibility();
     }
 });
