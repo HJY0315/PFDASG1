@@ -5,14 +5,30 @@ namespace PFDASG1.Models
 {
     public class Transactions
     {
-        public int transactionId { get; set; }
-        public int accountId { get; set; }
-        public string description {get; set;}
+        [Required(ErrorMessage = "Transaction ID is required.")]
+        [Display(Name = "Transaction ID")]
+        public int TransactionId{ get; set; }
 
+
+        [Display(Name = "Description")]
+        [StringLength(255, ErrorMessage = "Description cannot exceed 255 characters.")]
+        public string? Description { get; set; }
+
+        [Required(ErrorMessage = "Account ID is required.")]
+        [Display(Name = "Account ID")]
+        public int AccountId { get; set; }
+
+        [Required(ErrorMessage = "Amount is required.")]
         [Display(Name = "Amount")]
-        [Required(ErrorMessage = "Please enter a City!")]
-        public decimal amount { get; set; }
-        public DateTime transactionDate { get; set; }
-        public int receiverId { get; set; }
+        [Range(-9999999999.99, 9999999999.99, ErrorMessage = "Amount must be between -9999999999.99 and 9999999999.99.")]
+        public decimal Amount { get; set; }
+
+        [Required(ErrorMessage = "Transaction date is required.")]
+        [Display(Name = "Transaction Date")]
+        public DateTime TransactionDate { get; set; }
+
+        [Required(ErrorMessage = "Sender ID is required.")]
+        [Display(Name = "Sender/Recipient ID")]
+        public int ReceipientOrSenderID { get; set; }
     }
 }

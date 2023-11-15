@@ -7,16 +7,19 @@ if (annyang) {
 
     var commands = {
         'Hello': hello,
-        'Go to login page': goToLoginPage,
-        'Go to home page': goToHomePage,
+        'login page': goToLoginPage,
+        'home page': goToHomePage,
+        'Go to CARD activation': goToCardActivation,
         'Start listening': startListening,
         'Stop listening': stopListening,
-        'Enter access code *code': enterAccessCode,
-        'Enter PIN number *pin': enterPIN,
+        'Access code *code': enterAccessCode,
+        'Pin number *pin': enterPIN,
         'Login': login,
         'Logout': logout,
         'Search': search,
-        'Type in': typeIn,
+        'Type in *value': typeIn,
+        'Go to payment page': goToTransferPage,
+        
     };
 
 
@@ -35,6 +38,12 @@ if (annyang) {
     function goToHomePage() {
         window.location.href = '/Home/Index';
         speakResponse("You are at the home page.");
+    }
+
+    function goToCardActivation() {
+        console.log("goToCardActivation function called");
+        window.location.href = '/VisuallyImpaired/Settings';
+        speakResponse("Navigating to card activation.");
     }
 
     const activated = 0;
@@ -77,21 +86,28 @@ if (annyang) {
     }
 
     function search() {
-        if (window.location.pathname !== '/Home/Index') {
-            window.location.href = '/VisuallyImpaired/Search';
-
+        if (window.location.pathname.toLowerCase() === '/home/index' || window.location.pathname === '/') {
+            document.getElementById('searchDemo').focus();
         }
         else {
-            document.getElementById('searchDemo').focus();
+            window.location.href = '/VisuallyImpaired/Search';
         }
         speakResponse("Search bar, use type in command to enter your input");
     }
 
-    //this one not working
+    
     function typeIn(value) {
         document.getElementById('search').value = value;
         speakResponse("Input entered, press enter to search.");
     }
+
+
+    function goToTransferPage() {
+        window.location.href = '/VisuallyImpaired/Transfer';
+        speakResponse("Navigating to transfer page.");
+    }
+
+    
 
     function speakResponse(message, callback) {
         console.log(`%c ${message}`, 'color: blue; font-weight:bold;');
