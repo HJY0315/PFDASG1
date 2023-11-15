@@ -3,6 +3,7 @@ using System.Diagnostics.Metrics;
 using System.Transactions;
 using PFDASG1.Models;
 using System.Data.SqlClient;
+using System.Data;
 
 namespace PFDASG1.DAL
 {
@@ -28,16 +29,17 @@ namespace PFDASG1.DAL
             SqlCommand cmd = conn.CreateCommand();
             //Specify an INSERT SQL statement which will
             //return the auto-generated StaffID after insertion
-            cmd.CommandText = @"INSERT INTO Transactions (transactionId, description, accountid, amount, transactionDate, receiverId)
+            cmd.CommandText = @"INSERT INTO Transactions (transactionId, description, accountid, amount, transactionDate, receipientId, senderId)
                                 OUTPUT INSERTED.MemberID
-                                VALUES(@transactionId, @description, @accountid, @amount, @transactionDate, @receiverId)"
+                                VALUES(@transactionId, @description, @accountid, @amount, @transactionDate, @receipientId, @senderId)"
             ;
 
             cmd.Parameters.AddWithValue("@transactionId", transaction.TransactionId);
             cmd.Parameters.AddWithValue("@description", transaction.Description);
             cmd.Parameters.AddWithValue("@accountid", transaction.AccountId);
             cmd.Parameters.AddWithValue("@transactionDate", transaction.TransactionDate);
-            cmd.Parameters.AddWithValue("@receiverId", transaction.ReceipientOrSenderID);
+            cmd.Parameters.AddWithValue("@receipientId", transaction.ReceipientID);
+            cmd.Parameters.AddWithValue("@senderId", transaction.SenderID);
             //A connection to database must be opened before any operations made.   
             conn.Open();
 
@@ -54,23 +56,24 @@ namespace PFDASG1.DAL
             SqlCommand cmd = conn.CreateCommand();
             //Specify the SELECT SQL statement 
             cmd.CommandText = @"SELECT
-    t.transactionId,
-    t.description,
-    t.accountId,
-    t.amount,
-    t.transactionDate,
-    t.receiverId
+   t.transactionId,
+   t.description,
+   t.accountId,
+   t.amount,
+   t.transactionDate,
+   t.receiverId,
+   t.senderId
 
 FROM
-    Transactions AS t
+   Transactions AS t
 INNER JOIN
-    Accounts AS a
+   Accounts AS a
 ON
-    t.accountId = a.accountId
+   t.accountId = a.accountId
 WHERE
-    a.userId = @userId
+   a.userId = @userId
 ORDER BY
-    t.transactionDate DESC;";
+   t.transactionDate DESC;";
             cmd.Parameters.AddWithValue("@userID", userid);
             //Open a database connection
             conn.Open();
@@ -90,7 +93,8 @@ ORDER BY
                         AccountId = reader.GetInt32(2),
                         Amount = reader.GetDecimal(3),
                         TransactionDate = reader.GetDateTime(4),
-                        ReceipientOrSenderID = reader.GetInt32(5)
+                        ReceipientID = reader.IsDBNull(5) ? null : reader.GetInt32(5),
+                        SenderID = reader.IsDBNull(6) ? null : reader.GetInt32(6),
 
                     }
                     );

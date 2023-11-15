@@ -27,8 +27,11 @@ namespace PFDASG1.Models
         [Display(Name = "Transaction Date")]
         public DateTime TransactionDate { get; set; }
 
-        [Required(ErrorMessage = "Sender ID is required.")]
-        [Display(Name = "Sender/Recipient ID")]
-        public int ReceipientOrSenderID { get; set; }
+
+        [Display(Name = "Recipient ID")]
+        public int? ReceipientID { get; set; }
+        [Display(Name = "Sender ID")]
+        public int? SenderID { get; set; }
+
     }
 }
