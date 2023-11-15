@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PFDASG1.DAL;
 using PFDASG1.Models;
@@ -46,7 +47,8 @@ namespace PFDASG1.Controllers
             if (userContext.Login(Access_Code, Pin) != null)
             {
                 User user = userContext.Login(Access_Code, Pin);
-                var name = HttpContext.Session.GetString(user.Name);
+                HttpContext.Session.SetString("Name", user.Name);
+                HttpContext.Session.SetInt32("id", user.Userid);
                 return RedirectToAction("Index", "VisuallyImpaired", new { userName = user.Name });
             }
             
