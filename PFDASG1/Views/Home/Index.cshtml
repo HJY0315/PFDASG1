@@ -184,6 +184,9 @@
     function nextTutorialStep() {
         // Increment the current step
         currentStep++;
+        if (currentStep === 6) {
+            close();
+        }
 
         // Update the tutorial content for the new step
         updateTutorialContent();
@@ -238,7 +241,7 @@
             nextTutorialStep();
         }
         else if (currentStep === 5) {
-            close();
+            nextTutorialStep();
         }
     });
 
