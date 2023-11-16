@@ -85,7 +85,7 @@
                 <!-- Step 3: Enter Amount -->
                 <div class="form-group step-content">
                     <label asp-for="Amount">Enter your Amount</label>
-                    <input type="text" id="amount" asp-for="Amount" required value="$"/>
+                    <input type="text" id="amount" asp-for="Amount" required/>
                     <span asp-validation-for="Amount" class="text-danger"></span>
 
                  @*   <label asp-for="RemainingBalance">Remaining Balance:</label>
@@ -100,8 +100,8 @@
                 <div class="form-group step-content">
                     <img src="../img/checked.png" width="150" height="150" />
                     <p>Amount: <span id="reviewAmount">@Html.DisplayFor(model => model.Amount)</span></p>
-                    <p>Transfer to: <span id="reviewTransferTo"></span></p>
-                    <p>Description: <span id="reviewDescription"></span></p>
+                    <p>Transfer to: <span id="reviewTransferTo">@Model.receipient</span></p>
+                    <p>Description: <span id="reviewDescription">@Model.Description</span></p>
                 </div>
             </div>
 

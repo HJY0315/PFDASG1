@@ -79,9 +79,7 @@ namespace PFDASG1.Controllers
             // Add the transaction to the TransactionsContext
             TransactionsContext.Add(transactionViewModel);
 
-            // Set the TempData variables to display a success message
-            TempData["message"] = "Money has successfully been transferred";
-            TempData["status"] = "success";
+          
             //}
             //catch (Exception ex)
             //{
@@ -91,7 +89,7 @@ namespace PFDASG1.Controllers
             //}
 
             //// Redirect the user back to the Transfer page
-            return RedirectToAction("Transfer");
+            return RedirectToAction("Index");
         }
 
         public IActionResult Unknown()
