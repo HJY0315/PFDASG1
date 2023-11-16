@@ -1,6 +1,8 @@
 ﻿@model IEnumerable<PFDASG1.Models.Transactions>
 @using Microsoft.AspNetCore.Http
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+
 @{
     int userid = 0;
     if (HttpContextAccessor.HttpContext != null)
@@ -95,7 +97,9 @@
                                 <tr>
                                     <td>@item.TransactionDate</td>
                                     <td>@item.Description</td>
-                                    <td>@(item.RecipientID == @userid ? "+" : "-")@item.Amount.ToString("0.00")</td>
+                                    <td style="color: @(item.RecipientID == @userid ? "green" : "red"); font-weight:bold; font-size: 25px">
+                                        @(item.RecipientID == @userid ? "+" : "-")@item.Amount.ToString("0.00")
+                                    </td>
                                     <td>@item.RecipientID</td>
                                     <td>@item.SenderID</td>
                                 </tr>
@@ -111,46 +115,6 @@
     }
 
     <script>
-
-        //document.addEventListener("DOMContentLoaded", () => {
-        //    // Fetch account balance and new balance data from the server
-        //    fetch("/VisuallyImpaired/GetCurrentBalance")
-        //        .then((response) => {
-        //            if (response.status === 200) {
-        //                return response.json();
-        //            } else {
-        //                throw new Error("Failed to fetch current balance data");
-        //            }
-        //        })
-        //        .then((data) => {
-        //            // Update the chart data using the fetched data
-        //            const chartData = {
-        //                labels: ["Account Balance", "New Balance"],
-        //                datasets: [
-        //                    {
-        //                        data: [data.accountBalance, data.newBalance],
-        //                        backgroundColor: ["#2C3E50", "#FC4349"],
-        //                    },
-        //                ],
-        //            };
-
-        //            const options = {
-        //                responsive: true,
-        //                maintainAspectRatio: true,
-        //            };
-
-        //            const ctx = document.getElementById("doughnutChart").getContext("2d");
-        //            const myDoughnutChart = new Chart(ctx, {
-        //                type: "doughnut",
-        //                data: chartData,
-        //                options: options,
-        //            });
-        //        })
-        //        .catch((error) => {
-        //            console.error(error);
-        //            // Handle any errors that occur
-        //        });
-        //});
         document.addEventListener("DOMContentLoaded", function () {
  
             const chartData = {
@@ -160,6 +124,7 @@
                         data: [@ViewBag.amountToSubtract, @ViewBag.totalBalance],
                         backgroundColor: ["#2C3E50", "#FC4349"],
                     },
+                    
                 ],
             };
 
