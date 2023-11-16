@@ -22,6 +22,7 @@
             'Enter': searchEnter,
             'balance': getBalance,
             
+            
         };
 
 
@@ -94,18 +95,38 @@
         }
 
         function typeIn(value) {
-            if (window.location.pathname.toLowerCase() === '/home/index' || window.location.pathname === '/') {
+            if (window.location.pathname.toLowerCase() === '/visuallyimpaired/settings') {
+
+                const focusedInput = document.activeElement;
+
+                if (focusedInput.tagName === 'INPUT') {
+                    
+                    value = value.replace(/\s/g, '');
+                    focusedInput.value = value;
+                    speakResponse("Input entered, You can go to the next step now.");
+                } else {
+                    speakResponse("No input field is focused.");
+                }
+            } else if (window.location.pathname.toLowerCase() === '/home/index' || window.location.pathname === '/') {
+                
+                value = value.replace(/\s/g, '');
                 document.getElementById('searchDemo').value = value;
-                speakResponse("Input entered, You can go to next step now.");
-            }
-            else {
+                speakResponse("Input entered, You can go to the next step now.");
+            } else {
+                
+                value = value.replace(/\s/g, '');
                 document.getElementById('search').value = value;
                 const inputEvent = new Event('input', { bubbles: true });
                 document.getElementById('search').dispatchEvent(inputEvent);
                 speakResponse("Input entered, press enter to search.");
             }
-        
         }
+
+
+
+
+
+        
 
         function getBalance() {
             var totalBalanceElement = document.querySelector('.total-balance h1');

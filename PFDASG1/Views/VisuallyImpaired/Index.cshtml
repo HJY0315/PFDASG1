@@ -72,7 +72,7 @@
                 <p>No data available</p>
             }
 
-            <canvas id="doughnutChart" width="350" height="350"></canvas>
+            <div id="doughnutChart" style:"width=350px; height=100%;"></div>
             </div>
             <div class="transaction-history">
                 <fieldset class="FormContent">
@@ -111,11 +111,11 @@
     }
 
     <script>
+      
         document.addEventListener("DOMContentLoaded", function () {
             // Data for the chart
             var data = {
-                //link to transaction database table
-                labels: ["Savings", "Checking", "Credit Card", "Investment", "Loan"],
+                labels: ["Withdraw","Deposit"],
                 datasets: [
                     {
                         
