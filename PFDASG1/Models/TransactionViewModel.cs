@@ -29,7 +29,7 @@ namespace PFDASG1.Models
         public decimal Amount { get; set; }
 
         
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         public DateTime TransactionDate { get; set; }
 
