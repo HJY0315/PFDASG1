@@ -43,7 +43,7 @@ header a {
         border-radius: 50%;
         width: 30px;
         height: 30px;
-        line-height: 30px;
+        line-height: 25px;
         text-align: center;
         background: #fff;
         color: #3c3f42;
@@ -51,7 +51,12 @@ header a {
     }
 
     .form-step-item.active .item__step {
-        background: #f08420;
+        background: #EF3B3A;
+        color: #fff;
+    }
+
+    .form-step-item.active .item__step {
+        background: #EF3B3A;
         color: #fff;
     }
 
@@ -68,7 +73,7 @@ header a {
         display: block;
         text-transform: uppercase;
         font-size: 14px;
-        color: #f08420;
+        color: #e50000;
         margin-bottom: 8px;
         font-weight: bold;
     }
@@ -82,6 +87,7 @@ header a {
         border-radius: 5px;
         font-size: 15px;
         margin-bottom: 10px;
+        font-size: 25px;
         outline: none !important;
         border: 1px solid #ccc;
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
@@ -110,21 +116,16 @@ header a {
         width: 150px;
         padding: 10px;
         font-size: 16px;
-        background: #f08420;
+        background: red;
     }
+
+        .form-navigation button:hover {
+            width: 150px;
+            padding: 10px;
+            font-size: 16px;
+            background: #e50000;
+        }
 
 .enlarged-text {
     font-size: 1.6em;
-}
-
-.enlargePage {
-    zoom: 1.6; /* Adjust the zoom factor as needed */
-}
-
-.enlarged-text .login-page .form {
-    font-size: 1.6em;
-}
-
-.enlarged-page .login-page .form {
-    zoom: 1.6;
 }
