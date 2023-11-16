@@ -6,8 +6,8 @@ html {
 }
 
 .login-page {
-    width: 360px;
-    padding: 8% 0 0;
+    width: 450px;
+    padding: 10% 0 0;
     margin: auto;
 }
 
@@ -19,9 +19,10 @@ h4 {
     position: relative;
     z-index: 1;
     background: #FFFFFF;
-    max-width: auto;
+    /*max-width: auto;*/
     margin: 0 auto 100px;
     padding: 45px;
+    width:500px;
     text-align: center;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
 }
@@ -289,10 +290,3 @@ Form
     zoom: 1.6; /* Adjust the zoom factor as needed */
 }
 
-.enlarged-text .login-page .form {
-    font-size: 1.6em;
-}
-
-.enlarged-page .login-page .form {
-    zoom: 1.6;
-}

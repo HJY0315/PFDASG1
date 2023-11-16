@@ -13,15 +13,10 @@ namespace PFDASG1.Controllers
         User user;
         
 
-        public IActionResult Settings()
+        public IActionResult CardActivation()
         {
             return View();
         }
-
-        
-
-
-        
 
         [HttpGet]
         public IActionResult Transfer()
@@ -62,10 +57,10 @@ namespace PFDASG1.Controllers
             //}
 
             //// Redirect the user back to the Transfer page
-            return RedirectToAction("Transfer");
+            return RedirectToAction("Index");
         }
 
-        public IActionResult ViewAllCards()
+        public IActionResult Unknown()
         {
             return View();
         }

@@ -100,8 +100,8 @@
                 <div class="form-group step-content">
                     <img src="../img/checked.png" width="150" height="150" />
                     <p>Amount: <span id="reviewAmount">@Html.DisplayFor(model => model.Amount)</span></p>
-                    <p>Transfer to: <span id="reviewTransferTo"></span></p>
-                    <p>Description: <span id="reviewDescription"></span></p>
+                    <p>Transfer to: <span id="reviewTransferTo">@Model.receipient</span></p>
+                    <p>Description: <span id="reviewDescription">@Model.Description</span></p>
                 </div>
             </div>
 

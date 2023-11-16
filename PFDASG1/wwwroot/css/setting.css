@@ -180,7 +180,7 @@ Form
 .form button {
     width: 100%;
     outline: none !important;
-    background: linear-gradient(180deg, #49a09b, #3d8291);
+    background: linear-gradient(180deg, #ff0000, #e50000);
     text-transform: uppercase;
     font-weight: bold;
     border: none;
@@ -196,7 +196,7 @@ Form
 }
 
     .form button:hover {
-        background: linear-gradient(180deg, #3d8291, #49a09b);
+        background: linear-gradient(180deg, #e50000, #ff0000);
     }
 
     .form button .fa {
@@ -403,12 +403,4 @@ Credit Card
 
 .enlargePage {
     zoom: 1.6; /* Adjust the zoom factor as needed */
-}
-
-.enlarged-text .login-page .form {
-    font-size: 1.6em;
-}
-
-.enlarged-page .login-page .form {
-    zoom: 1.6;
 }
