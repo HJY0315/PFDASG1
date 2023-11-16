@@ -148,8 +148,8 @@ namespace PFDASG1.DAL
 
             return transactionViewModel.TransactionId;
         }
-            public List<Transactions> getalltransactions(int userid)
-        {   
+        public List<Transactions> getalltransactions(int userid)
+        {
 
             //Create a SqlCommand object from connection object
             SqlCommand cmd = conn.CreateCommand();
@@ -207,7 +207,7 @@ ORDER BY
                 reader.Close();
                 conn.Close();
                 return new List<Transactions>();
-            }  
+            }
         }
     }
 }
