@@ -11,14 +11,22 @@ namespace PFDASG1.Models
         public int accountId { get; set; }
 
         [Required(ErrorMessage = "Card number is required.")]
-        [Display(Name = "Card Number")]
-        [StringLength(16, ErrorMessage = "Card number cannot exceed 16 characters.")]
-        public string cardNumber { get; set; }
+        [Display(Name = "Card Number1")]
+        [StringLength(16, ErrorMessage = "Card number cannot exceed 4 characters.")]
+        public string cardNumber1 { get; set; }
+
+        [Required(ErrorMessage = "Card number is required.")]
+        [Display(Name = "Card Number2")]
+        [StringLength(16, ErrorMessage = "Card number cannot exceed 4 characters.")]
+        public string cardNumber2 { get; set; }
 
         [Required(ErrorMessage = "Expiration date is required.")]
-        [Display(Name = "Expiration Date")]
-        //[DateRange(DateTime.Today, DateTime.Today.AddYears(10), ErrorMessage = "Expiration date must be within the next 10 years.")]
-        public DateTime expirationDate { get; set; }
+        [Display(Name = "Expiration Month")]
+        public DateTime expirationMonth { get; set; }
+
+        [Required(ErrorMessage = "Expiration date is required.")]
+        [Display(Name = "Expiration Year")]
+        public DateTime expirationYear { get; set; }
 
         [Required(ErrorMessage = "CVV is required.")]
         [Display(Name = "CVV")]

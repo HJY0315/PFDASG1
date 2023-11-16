@@ -27,6 +27,9 @@ namespace PFDASG1.DAL
         {
             message = "";
             int cardID = 0;
+
+            string concatenatedCardNumber = $"{cardinfo.cardNumber1}{cardinfo.cardNumber2}";
+
             //Create a SqlCommand object from connection object
             SqlCommand cmd = conn.CreateCommand();
             //Specify the SELECT SQL statement 
@@ -38,10 +41,12 @@ namespace PFDASG1.DAL
             //Read all records until the end
             while (reader.Read())
             {
-                if ((reader.GetString(2) == cardinfo.cardNumber) &&
-                (reader.GetString(6).ToLower() == cardinfo.cardHolderName.ToLower()) && (reader.GetDateTime(3) == cardinfo.expirationDate) &&
+                string last8DigitsOfCardNumber = reader.GetString(2).Substring(Math.Max(0, reader.GetString(2).Length - 8));
+
+                if ((last8DigitsOfCardNumber == concatenatedCardNumber) &&
+                (reader.GetString(6).ToLower() == cardinfo.cardHolderName.ToLower()) && (reader.GetDateTime(3).Month == cardinfo.expirationMonth.Month) &&
                 (reader.GetString(4) == cardinfo.cvv) && (reader.GetString(8) == cardinfo.securityQuestion) &&
-                (reader.GetString(9) == cardinfo.answer))
+                (reader.GetString(9) == cardinfo.answer) && (reader.GetDateTime(3).Year == cardinfo.expirationYear.Year))
                 {
                     if (reader.GetString(5) == "Unactivated")
                     {

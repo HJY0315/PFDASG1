@@ -20,12 +20,14 @@ namespace PFDASG1.Controllers
         }
 
         [HttpPost]
-        public IActionResult CardActivation(CreditCard cardinfo)
+        public IActionResult CardActivation(CreditCard cardinfo, string selectedMonth)
         {
             // Access the form data through the model properties
-            var cardNumber = cardinfo.cardNumber;
+            var cardNumber1 = cardinfo.cardNumber1;
+            var cardNumber2 = cardinfo.cardNumber2;
             var cardHolder = cardinfo.cardHolderName;
-            var expirationDate = cardinfo.expirationDate;
+            var expirationMonth = cardinfo.expirationMonth;
+            var expirationYear = cardinfo.expirationYear;
             var ccv = cardinfo.cvv;
             var securityQuestion = cardinfo.securityQuestion;
             var securityAnswer = cardinfo.answer;
