@@ -37,22 +37,22 @@ namespace PFDASG1.Controllers
 
             //try
             //{
-                // Retrieve the phone number from the form
-                string phoneNumber = transactionViewModel.phoneNumber;
-                User user = TransactionsContext.GetUserFromPhoneNumber(phoneNumber);
+            // Retrieve the phone number from the form
+            string phoneNumber = transactionViewModel.phoneNumber;
+            User user = TransactionsContext.GetUserFromPhoneNumber(phoneNumber);
 
-                transactionViewModel.receipient = user;
-                transactionViewModel.TransactionDate = DateTime.Now;
-                transactionViewModel.senderID = userId;
-                transactionViewModel.AccountId = userId;
+            transactionViewModel.receipient = user;
+            transactionViewModel.TransactionDate = DateTime.Now;
+            transactionViewModel.senderID = userId;
+            transactionViewModel.AccountId = userId;
             // Create a new Transactions object
 
             // Add the transaction to the TransactionsContext
             TransactionsContext.Add(transactionViewModel);
 
-                // Set the TempData variables to display a success message
-                TempData["message"] = "Money has successfully been transferred";
-                TempData["status"] = "success";
+            // Set the TempData variables to display a success message
+            TempData["message"] = "Money has successfully been transferred";
+            TempData["status"] = "success";
             //}
             //catch (Exception ex)
             //{

@@ -50,7 +50,7 @@ namespace PFDASG1.DAL
 
             // Close the connection to the database
             //conn.Close();
-          
+
             SqlDataReader reader = cmd.ExecuteReader();
 
             User user = new User();
@@ -102,7 +102,7 @@ namespace PFDASG1.DAL
             //    throw new ArgumentException("Invalid recipient phone number format.");
             //}
 
-            
+
 
             //if (transactionViewModel.Amount > GetAccountBalance(transactionViewModel.senderID))
             //{
@@ -140,24 +140,23 @@ namespace PFDASG1.DAL
             SqlCommand cmd = conn.CreateCommand();
             //Specify the SELECT SQL statement 
             cmd.CommandText = @"SELECT
-   t.transactionId,
-   t.description,
-   t.accountId,
-   t.amount,
-   t.transactionDate,
-   t.receiverId,
-   t.senderId
-
+  t.transactionId,
+  t.description,
+  t.accountId,
+  t.amount,
+  t.transactionDate,
+  t.receiverId,
+  t.senderId
 FROM
-   Transactions AS t
+  Transactions AS t
 INNER JOIN
-   Accounts AS a
+  Accounts AS a
 ON
-   t.accountId = a.accountId
+  t.accountId = a.accountId
 WHERE
-   a.userId = @userId
+  (a.userId = @userId AND (t.senderId = a.accountId OR t.receiverId = a.accountId))
 ORDER BY
-   t.transactionDate DESC;";
+  t.transactionDate DESC;";
             cmd.Parameters.AddWithValue("@userID", userid);
             //Open a database connection
             conn.Open();

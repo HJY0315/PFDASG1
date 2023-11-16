@@ -44,9 +44,9 @@ namespace PFDASG1.Controllers
 
 
 
-                TempData["message"] = "Money has successfully been transferred";
-                TempData["status"] = "success";
-                return View("Transfer");
+                //TempData["message"] = "Money has successfully been transferred";
+                //TempData["status"] = "success";
+                //return View("Transfer");
 
         //        TempData["message"] = $"Failed to Transfer. Error: {ex.Message}";
         //        TempData["status"] = "danger";
