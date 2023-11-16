@@ -28,8 +28,14 @@
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>
 
+    <style>
+        .enlarged-login-content {
+            /* Add your styles for enlarged login content here */
+            transform: scale(1.2); /* Adjust the scale factor as needed */
+        }
+    </style>
 </head>
-<body class="enlargePage">
+<body>
     <header>
         @await Html.PartialAsync("Navbar.cshtml")
     </header>
@@ -83,6 +89,13 @@
             </form>
         </div>
     </div>
+
+    <script>
+        function toggleEnlargedLoginContent() {
+            const loginPageContent = document.querySelector('.login-page .form');
+            loginPageContent.classList.toggle('enlarged-login-content');
+        }
+    </script>
 
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/annyang-setup.js" asp-append-version="true"></script>

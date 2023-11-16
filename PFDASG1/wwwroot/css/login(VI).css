@@ -288,3 +288,11 @@ Form
 .enlargePage {
     zoom: 1.6; /* Adjust the zoom factor as needed */
 }
+
+.enlarged-text .login-page .form {
+    font-size: 1.6em;
+}
+
+.enlarged-page .login-page .form {
+    zoom: 1.6;
+}
