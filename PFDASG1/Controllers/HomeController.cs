@@ -49,16 +49,18 @@ namespace PFDASG1.Controllers
             {
                 HttpContext.Session.SetString("Name", Name);
                 HttpContext.Session.SetInt32("id", id);
+                
+
                 return RedirectToAction("Index", "VisuallyImpaired");
             }
-
-
             else
             {
                 TempData["Message"] = "Invalid login credentials";
                 return View();
             }
         }
+
+
 
 
 
