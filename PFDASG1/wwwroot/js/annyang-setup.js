@@ -21,6 +21,8 @@
             'Go to payment page': goToTransferPage,
             'Enter': searchEnter,
             'balance': getBalance,
+            'Next': clickNextButton,
+            'Skip': clickSkipButton,
             
             
         };
@@ -31,12 +33,12 @@
 
         function goToLoginPage() {
             window.location.href = '/Home/Login';
-            speakResponse("You are at the login page.");
+            
         }
 
         function goToHomePage() {
             window.location.href = '/Home/Index';
-            speakResponse("You are at the home page.");
+            
         }
 
         function goToCardActivation() {
@@ -68,6 +70,20 @@
             speakResponse("Access code entered.");
         }
 
+        function clickNextButton() {
+            var nextButton = document.getElementById('nextButton');
+            if (nextButton) {
+                nextButton.click();
+            }
+        }
+
+        function clickSkipButton() {
+            var skipButton = document.getElementById('skipButton');
+            if (skipButton) {
+                skipButton.click();
+            }
+        }
+
         function enterPIN(pin) {
             pin = pin.replace(/\s/g, '');
             document.getElementById('pinInput').value = pin;
@@ -84,6 +100,8 @@
             speakResponse("Logging out.");
         }
 
+
+
         function search() {
             if (window.location.pathname.toLowerCase() === '/home/index' || window.location.pathname === '/') {
                 document.getElementById('searchDemo').focus();
@@ -96,11 +114,10 @@
 
         function typeIn(value) {
             if (window.location.pathname.toLowerCase() === '/visuallyimpaired/settings') {
-
                 const focusedInput = document.activeElement;
 
                 if (focusedInput.tagName === 'INPUT') {
-                    
+                    // Remove spaces from the input value
                     value = value.replace(/\s/g, '');
                     focusedInput.value = value;
                     speakResponse("Input entered, You can go to the next step now.");
@@ -108,12 +125,23 @@
                     speakResponse("No input field is focused.");
                 }
             } else if (window.location.pathname.toLowerCase() === '/home/index' || window.location.pathname === '/') {
-                
+                // Remove spaces from the input value
                 value = value.replace(/\s/g, '');
                 document.getElementById('searchDemo').value = value;
                 speakResponse("Input entered, You can go to the next step now.");
+            } else if (window.location.pathname.toLowerCase() === '/visuallyimpaired/transfer') {
+                const focusedInput = document.activeElement;
+
+                if (focusedInput.tagName === 'INPUT') {
+                    // Remove spaces from the input value
+                    value = value.replace(/\s/g, '');
+                    focusedInput.value = value;
+                    speakResponse("Input entered, You can go to the next step now.");
+                } else {
+                    speakResponse("No input field is focused.");
+                }
             } else {
-                
+                // Remove spaces from the input value
                 value = value.replace(/\s/g, '');
                 document.getElementById('search').value = value;
                 const inputEvent = new Event('input', { bubbles: true });
@@ -121,6 +149,7 @@
                 speakResponse("Input entered, press enter to search.");
             }
         }
+
 
 
 
