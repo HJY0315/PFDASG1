@@ -42,7 +42,23 @@
             <div class="total-balance">
             @if (Model != null)
             {
-                <h1 style="text-align:center;">Total Balance: $@(Model.Sum(item => item.Amount).ToString("0.00"))</h1>
+                decimal totalBalance = 0;
+
+                // Add amounts for non-sender transactions
+                foreach (var item in Model)
+                {
+                    if (item.SenderID != item.AccountId)
+                    {
+                        totalBalance += item.Amount;
+                    }
+                }
+
+                // Subtract amounts for sender transactions
+                var senderTransactions = Model.Where(item => item.SenderID == item.AccountId);
+                decimal amountToSubtract = senderTransactions.Sum(item => item.Amount);
+                totalBalance -= amountToSubtract;
+
+                <h1 style="text-align:center;">Total Balance: $@totalBalance.ToString("0.00")</h1>
             }
             else
             {

@@ -62,7 +62,7 @@ namespace PFDASG1.Controllers
             //}
 
             //// Redirect the user back to the Transfer page
-            return RedirectToAction("Transfer");
+            return RedirectToAction("Index");
         }
 
         public IActionResult ViewAllCards()
