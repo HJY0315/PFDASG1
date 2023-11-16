@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using PFDASG1.DAL;
 using PFDASG1.Models;
 using System.Diagnostics.Metrics;
+using System.Xml.Linq;
 
 namespace PFDASG1.Controllers
 {
@@ -17,12 +18,20 @@ namespace PFDASG1.Controllers
         public IActionResult CardActivation()
         {
             ViewData["CardActivation"] = null;
+            if (HttpContext.Session.GetString("Name") != null)
+            {
+                ViewData["ShowSQSetUp"] = false; //if user is logged in, then dn setup
+            }
             return View();
         }
 
         [HttpPost]
         public IActionResult CardActivation(CreditCard cardinfo, string selectedMonth)
         {
+            if (HttpContext.Session.GetString("Name") != null)
+            {
+                ViewData["ShowSQSetUp"] = false; //if user is logged in, then dn setup
+            }
             // Access the form data through the model properties
             var cardNumber1 = cardinfo.cardNumber1;
             var cardNumber2 = cardinfo.cardNumber2;
@@ -32,40 +41,53 @@ namespace PFDASG1.Controllers
             var ccv = cardinfo.cvv;
             var securityQuestionNo = cardinfo.securityQuestion;
             var securityAnswer = cardinfo.answer;
-            var securityQuestion = "";
+            var inputSecurityQuestion = "";
 
             if (securityQuestionNo == "1")
             {
-                securityQuestion = "Where is your primary school?";
+                inputSecurityQuestion = "Where is your primary school?";
             }
             else if (securityQuestionNo == "2")
             {
-                securityQuestion = "Who is your best friend?";
+                inputSecurityQuestion = "Who is your best friend?";
             }
             else if (securityQuestionNo == "3")
             {
-                securityQuestion = "Do you have any musical background?";
+                inputSecurityQuestion = "Do you have any musical background?";
             }
-
-
             string msg = "";
-            int cardID = CardActivationContext.cardVerification(cardinfo,out msg, securityQuestion);
-            if (msg == "")
+            var loggedinUserName = HttpContext.Session.GetString("Name");
+            var loggedinUserID = HttpContext.Session.GetInt32("id");
+
+            string userIdAsString = loggedinUserID.Value.ToString();
+            CardActivationContext.VerifySecurityQuestionAnswer(userIdAsString, cardinfo, inputSecurityQuestion, out msg);
+
+            if (msg != "")
             {
-                bool ActivationSuccess = CardActivationContext.UpdateCardStatus(cardID);
-                if (ActivationSuccess)
+                ViewData["CardActivation"] = msg;
+            }
+            else //if they pass verification
+            {
+                int cardID = CardActivationContext.cardVerification(cardinfo, out msg);
+                if (msg == "")
                 {
-                    ViewData["CardActivation"] = "Card Activated Successfully";
+                    bool ActivationSuccess = CardActivationContext.UpdateCardStatus(cardID);
+                    if (ActivationSuccess)
+                    {
+                        ViewData["CardActivation"] = "Card Activated Successfully";
+                    }
+                    else
+                    {
+                        ViewData["CardActivation"] = "Card Activation Failed";
+                    }
                 }
                 else
                 {
-                    ViewData["CardActivation"] = "Card Activation Failed";
+                    ViewData["CardActivation"] = msg; //if the card is alr been activated
                 }
             }
-            else
-            {
-                ViewData["CardActivation"] = msg; //if the card is alr been activated
-            }
+
+
 
             return View();
         }

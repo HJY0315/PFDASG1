@@ -24,7 +24,7 @@ namespace PFDASG1.DAL
             conn = new SqlConnection(strConn);
         }
 
-        public int cardVerification(CreditCard cardinfo, out string message, string securityQuestion)
+        public int cardVerification(CreditCard cardinfo, out string message)
         {
             message = "";
             int cardID = 0;
@@ -47,8 +47,7 @@ namespace PFDASG1.DAL
                 if ((last8DigitsOfCardNumber == concatenatedCardNumber) &&
                 (reader.GetString(6).ToLower() == cardinfo.cardHolderName.ToLower()) &&
                 (reader.GetDateTime(3).Month == cardinfo.expirationMonth) && (reader.GetDateTime(3).Year == cardinfo.expirationYear) &&
-                (reader.GetString(4) == cardinfo.cvv) && (reader.GetString(7).ToLower() == securityQuestion.ToLower() && 
-                (reader.GetString(8).ToLower() == cardinfo.answer.ToLower())))
+                (reader.GetString(4) == cardinfo.cvv))
                 {
                     if (reader.GetString(5) == "Unactivated")
                     {
@@ -60,6 +59,10 @@ namespace PFDASG1.DAL
                         message = "Card had been activated before. Please try again.";
                         break;
                     }
+                }
+                else
+                {
+                    message = "Invalid card information.";
                 }
             }
 
@@ -95,6 +98,37 @@ namespace PFDASG1.DAL
             }
 
             return updateSuccessful;
+        }
+
+        public bool VerifySecurityQuestionAnswer(string userID, CreditCard cardinfo, string question, out string message)
+        {
+            bool success = false;
+            message = "";
+            //Create a SqlCommand object from connection object
+            SqlCommand cmd = conn.CreateCommand();
+            //Specify the SELECT SQL statement 
+            cmd.CommandText = "SELECT securityQuestion, answer FROM Users WHERE userId = @userId";
+            cmd.Parameters.AddWithValue("@userId", userID);
+            //Open a database connection
+            conn.Open();
+            //Execute the SELECT SQL through a DataReader
+            SqlDataReader reader = cmd.ExecuteReader();
+            // Read all the records (if exist)
+            while (reader.Read())
+            {
+                if ((reader.GetString(0) == question) && (reader.GetString(1).ToLower() == cardinfo.answer.ToLower()))
+                {
+                    success = true;
+                }
+                else
+                {
+                    message = "Verification unsuccessful. Please try again.";
+                    break;
+                }
+            }
+
+            conn.Close();
+            return success;
         }
     }
 }
