@@ -396,3 +396,7 @@ Credit Card
     .the-most img {
         max-width: 100%;
     }
+
+.enlarged-text {
+    font-size: 1.6em;
+}

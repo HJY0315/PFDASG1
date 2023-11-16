@@ -132,10 +132,15 @@
 
         document.getElementById('search').addEventListener('input', handleSearch);
 
+        function handleSpeechToText(input) {
+            document.getElementById('search').value = input;
+            const inputEvent = new Event('input', { bubbles: true });
+            document.getElementById('search').dispatchEvent(inputEvent);
+        }
+
         //for focus the user onto result section
         document.getElementById('search').addEventListener('keypress', function(event){
             if (event.key === 'Enter') {
-                document.getElementById('search').addEventListener('input', handleSearch);
                 const resultSection = document.getElementById('search_result');
                 if (resultSection){
                     resultSection.tabIndex = -1;
@@ -144,7 +149,7 @@
             }
         });
     </script>
-
+    <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/annyang-setup.js" asp-append-version="true"></script>
 </body>
 </html>

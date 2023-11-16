@@ -75,10 +75,6 @@
         </div>
         <div id="tutorialContent" aria-live="assertive">
             <p tabindex="1">
-                Do you want to activate the accessibility mode? You will be able to access speech recognition,
-                speech-to-text and other useful functions that aim to help people with disabilities access our website.
-                We will provide a tutorial for you to familiarize with the application of those functionalities.
-                You can press control key to cancel or space bar to activate accessibility mode.
             </p>
         </div>
 
@@ -119,7 +115,7 @@
                 case 1:
                     tutorialContent.innerHTML = `<p>Do you want to activate the accessibility mode? This mode includes features such as 
                         voice recognition, which can be useful for some users. A tutorial will be provided.
-                        To Cancel, Control + b. To Activate, control + n. </p>`;
+                                To Cancel, Shift + b. To Activate, Shift + n. </p>`;
                     cancelButton.textContent = "Cancel";
                     cancelButton.removeEventListener('click', previousTutorialStep);
                     cancelButton.addEventListener('click', close);   //before activation we have cancel button
@@ -196,6 +192,10 @@
         // Decrement the current step
         currentStep--;
 
+        if (currentStep === 0) {
+            close();
+        }
+
         // Update the tutorial content for the new step
         updateTutorialContent();
     }
@@ -207,8 +207,9 @@
         if (!annyang.isListening()) {
             startListening();
             activateCount++;
-            localStorage.setItem("activateCount", activateCount);
+            sessionStorage.setItem("activateCount", activateCount);
         }
+        toggleEnlargedText();
     }
 
     function close() {
@@ -253,11 +254,33 @@
         }
 
         if (event.shiftKey && event.key === "N" && document.activeElement.tagName !== "INPUT") {
-            activateAccessibility();
-            nextTutorialStep();
+            if (currentStep === 1) {
+                activateAccessibility();
+                nextTutorialStep();
+            } else if (currentStep === 2 && activateCount === 2) {
+                nextTutorialStep();
+            }
+            else if (currentStep === 2 && activateCount < 2) {
+                speakResponse("Please toggle the accessibility mode using control + space.");
+            }
+            else if (currentStep === 3) {
+                const searchDemoValue = document.getElementById('searchDemo').value.trim();
+                if (searchDemoValue !== '') {
+                    nextTutorialStep();
+                }
+                else {
+                    speakResponse("Please enter something into search bar.");
+                }
+            }
+            else if (currentStep === 4) {
+                nextTutorialStep();
+            }
+            else if (currentStep === 5) {
+                nextTutorialStep();
+            }
         } 
         else if (event.shiftKey && event.key === "B" && document.activeElement.tagName !== "INPUT") {
-            close();
+            previousTutorialStep();
         }
 
         if ((event.ctrlKey || event.metaKey) && event.key === " " && document.activeElement.tagName !== "INPUT") {
@@ -267,7 +290,7 @@
         }
     });
     </script>
-
+    <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/annyang-setup.js" asp-append-version="true"></script>
 </body>
 </html>

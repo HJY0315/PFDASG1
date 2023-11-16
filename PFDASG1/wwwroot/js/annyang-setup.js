@@ -19,7 +19,7 @@ if (annyang) {
         'Search': search,
         'Type in *value': typeIn,
         'Go to payment page': goToTransferPage,
-        
+        'Enter': searchEnter,
     };
 
 
@@ -102,11 +102,17 @@ if (annyang) {
         }
         else {
             document.getElementById('search').value = value;
+            const inputEvent = new Event('input', { bubbles: true });
+            document.getElementById('search').dispatchEvent(inputEvent);
             speakResponse("Input entered, press enter to search.");
         }
         
     }
 
+    function searchEnter() {
+        const enterEvent = new KeyboardEvent('keypress', { 'key': 'Enter' });
+        document.getElementById('search').dispatchEvent(enterEvent);
+    }
 
     function goToTransferPage() {
         window.location.href = '/VisuallyImpaired/Transfer';

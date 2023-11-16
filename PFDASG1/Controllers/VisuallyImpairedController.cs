@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PFDASG1.DAL;
 using PFDASG1.Models;
+using System.Diagnostics.Metrics;
 
 namespace PFDASG1.Controllers
 {
@@ -10,7 +11,7 @@ namespace PFDASG1.Controllers
         private SearchDAL SearchDAL = new SearchDAL();
         TransactionsDAL TransactionsContext = new TransactionsDAL();
         User user;
-
+        
 
         public IActionResult Settings()
         {
@@ -26,35 +27,6 @@ namespace PFDASG1.Controllers
         public IActionResult Transfer()
         {
             return View();
-        }
-
-
-
-        [HttpPost]
-        public IActionResult Transfer(Transactions transaction)
-        {
-            ModelState.Remove("TransactionDate");
-            ModelState.Remove("NRIC");
-            ModelState.Remove("MobileNumber");
-            ModelState.Remove("AccountId");
-
-            int userId = (int)HttpContext.Session.GetInt32("id");
-            if (ModelState.IsValid)
-            {
-                //transaction = new Transactions();
-                TransactionsContext.Add(transaction, userId);
-                TempData["message"] = "Money has successfully been transferred";
-                TempData["status"] = "success";
-
-                return RedirectToAction("Index"); // Redirect to a success page
-            }
-            else
-            {
-
-                return View(transaction);
-            }
-            // If the model state is not valid, return to the form with validation errors
-
         }
 
         public IActionResult ViewAllCards()
