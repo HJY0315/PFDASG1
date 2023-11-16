@@ -47,5 +47,7 @@ namespace PFDASG1.Models
 
         [Display(Name = "Answer")]
         public string answer { get; set; }
+
+        public SecurityQuestion SQ { get; set; }
     }
 }

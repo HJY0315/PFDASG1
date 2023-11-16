@@ -33,10 +33,12 @@ if (annyang) {
 
     function goToLoginPage() {
         window.location.href = '/Home/Login';
+        speakResponse("You are at the login page")
     }
 
     function goToHomePage() {
         window.location.href = '/Home/Index';
+        speakResponse("You are at the home page")
     }
 
     function goToCardActivation() {
