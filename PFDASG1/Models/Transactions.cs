@@ -20,14 +20,7 @@ namespace PFDASG1.Models
         [Display(Name = "Sender ID")]
         public int SenderID { get; set; }
 
-        [Display(Name = "NRIC")]
-        [StringLength(9, ErrorMessage = "NRIC cannot exceed 9 characters.")]
-        public string NRIC { get; set; }
-
-        [Display(Name = "Mobile Number")]
-        [StringLength(8, ErrorMessage = "Mobile Number cannot exceed 8 characters.")]
-        public string MobileNumber { get; set; }
-
+        
         [Required(ErrorMessage = "Amount is required.")]
         [Display(Name = "Amount")]
         [Range(-9999999999.99, 9999999999.99, ErrorMessage = "Amount must be between -9999999999.99 and 9999999999.99.")]
