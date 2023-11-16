@@ -1,5 +1,4 @@
-﻿@model PFDASG1.Models.Transactions
-
+﻿@model PFDASG1.Models.TransactionViewModel
 @{
     Layout = null;
 }
@@ -40,48 +39,49 @@
                     <p class="item__title mt-1">Review</p>
                 </div>
             </div>
-
-          <div class="form-layout">
-                @*    <!-- Step 1: Select Account -->
+            
+            <div class="form-layout">
+                @*  <!-- Step 1: Select Account -->
                 <div class="form-group step-content">
-                    <label asp-for="AccountId">Choose Account</label>
-                    <select name="bankTransfer" id="bankTransfer" asp-for="AccountId">
-                        <option value="1">Please Select</option>
-                        <option value="2">Frank Card</option>
-                        <option value="3">Saving Account</option>
-                    </select>
+                <label asp-for="AccountId">Choose Account</label>
+                <select name="bankTransfer" id="bankTransfer" asp-for="AccountId">
+                <option value="1">Please Select</option>
+                <option value="2">Frank Card</option>
+                <option value="3">Saving Account</option>
+                </select>
                 </div>*@
 
-                <!-- Step 2: Select Payment Type -->
+                @*<!-- Step 2: Select Payment Type -->
                 <div class="form-group step-content">
                     <label asp-for="RecipientID">Search Recipient</label>
-                    <div class="form-group" id="mobileInput"">
-                        <label asp-for="MobileNumber"></label>
-                        <input type="text" id="mobileNumber" placeholder="Enter Mobile Number" maxlength="8" />
-                        <span asp-validation-for="MobileNumber" class="text-danger"></span>
-                    </div>
-                </div>  
-                   @* <select name="paymentType" id="paymentType" onchange="updatePaymentMethod()" asp-for="RecipientID">
+                    <select name="paymentType" id="paymentType" onchange="updatePaymentMethod()" asp-for="RecipientID">
                         <option value="1">Please Select</option>
-                        <option value="2">Mobile Number</option>
-                        
-                    </select>*@
+                        <option value="2">NRIC</option>
+                        <option value="3">Mobile Number</option>
+                    </select>
 
-                   @* <!-- Input for NRIC -->
+                    <!-- Input for NRIC -->
                     <div class="form-group" id="nricInput" style="display:none;">
                         <label asp-for="NRIC">Enter NRIC</label>
                         <input type="text" id="nric" placeholder="S1234567A" maxlength="9" />
                         <span asp-validation-for="NRIC" class="text-danger"></span>
-                    </div>*@
+                    </div>
 
                     <!-- Input for Mobile Number -->
-               @* <div class="form-group" id="mobileInput" style="display:none;">
-                    <label asp-for="MobileNumber">Enter Mobile Number</label>
-                    <input type="text" id="mobileNumber" placeholder="91234567" maxlength="8" />
-                    <span asp-validation-for="MobileNumber" class="text-danger"></span>
+                    <div class="form-group" id="mobileInput" style="display:none;">
+                        <label asp-for="MobileNumber">Enter Mobile Number</label>
+                        <input type="text" id="mobileNumber" placeholder="91234567" maxlength="8" />
+                        <span asp-validation-for="MobileNumber" class="text-danger"></span>
+                    </div>
                 </div>*@
-                
-
+                <!-- Step 2: Select Payment Type -->
+                <div class="form-group step-content">
+                <div class="form-group" id="mobileInput">
+                    <label></label>
+                    <input asp-for="phoneNumber" type="text" id="mobileNumber" placeholder="Enter Mobile Number" maxlength="8" />
+                    <span asp-validation-for="phoneNumber" class="text-danger"></span>
+                </div>
+                </div>
                 <!-- Step 3: Enter Amount -->
                 <div class="form-group step-content">
                     <label asp-for="Amount">Enter your Amount</label>

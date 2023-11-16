@@ -18,9 +18,10 @@ namespace PFDASG1.Models
         [Display(Name = "Access Code")] // Display name for AccessCode property
         public string AccessCode { get; set; }
 
-        [Required(ErrorMessage = "Phone number is required.")]
-        [RegularExpression(@"^\+65\d{8}$", ErrorMessage = "Phone number must be in the format +65XXXXXXXX.")]
-        [Display(Name = "Phone Number")] // Display name for phoneNumber property
+        [Display(Name = "Sender Tel No")]
+        [Required(ErrorMessage = "Please enter a sender telephone number!")]
+        [RegularExpression(@"^\+[^()\s]+$", ErrorMessage = "Invalid telephone number format.")]
+        [StringLength(20, ErrorMessage = "Sender telephone number cannot exceed 20 characters.")]
         public string phoneNumber { get; set; }
 
         [Required(ErrorMessage = "Pin is required.")]

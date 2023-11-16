@@ -21,7 +21,43 @@ namespace PFDASG1.Controllers
         [HttpGet]
         public IActionResult Transfer()
         {
-            return View();
+            TransactionViewModel transactionViewModel = new TransactionViewModel();
+            return View(transactionViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult Transfer(TransactionViewModel transactionViewModel)
+        {
+            int userId = (int)HttpContext.Session.GetInt32("id");
+
+            //try
+            //{
+            // Retrieve the phone number from the form
+            string phoneNumber = transactionViewModel.phoneNumber;
+            User user = TransactionsContext.GetUserFromPhoneNumber(phoneNumber);
+
+            transactionViewModel.receipient = user;
+            transactionViewModel.TransactionDate = DateTime.Now;
+            transactionViewModel.senderID = userId;
+            transactionViewModel.AccountId = userId;
+            // Create a new Transactions object
+
+            // Add the transaction to the TransactionsContext
+            TransactionsContext.Add(transactionViewModel);
+
+            // Set the TempData variables to display a success message
+            TempData["message"] = "Money has successfully been transferred";
+            TempData["status"] = "success";
+            //}
+            //catch (Exception ex)
+            //{
+            //    // Handle any errors that occur
+            //    TempData["message"] = "An error occurred during the transfer: " + ex.Message;
+            //    TempData["status"] = "error";
+            //}
+
+            //// Redirect the user back to the Transfer page
+            return RedirectToAction("Transfer");
         }
 
         public IActionResult Unknown()

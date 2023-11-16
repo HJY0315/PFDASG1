@@ -80,6 +80,7 @@
 
         <div class="buttons">
             <button tabindex="1" type="button" class="btn btn-secondary" id="cancelButton">Cancel</button>
+            <button tabindex="1" type="button" class="btn btn-primary" id="skipButton" >Skip</button>
             <button tabindex="1" type="button" class="btn btn-success" id="nextButton">Next</button>
         </div>
     </div>
@@ -101,6 +102,8 @@
         var storedStatus = sessionStorage.getItem("annyangStatus");
 
         activateCount = 0;
+
+        document.getElementById('skipButton').style.display = 'none';
     });
 
     // Variable to keep track of the current tutorial step
@@ -113,23 +116,23 @@
             // Check the current step and update content accordingly
             switch (currentStep) {
                 case 1:
-                    tutorialContent.innerHTML = `<p>Do you want to activate the accessibility mode? This mode includes features such as 
-                        voice recognition, which can be useful for some users. A tutorial will be provided.
+                    tutorialContent.innerHTML = `<p tabindex="1">Do you want to activate the accessibility mode? This mode includes features such as
+                                voice recognition, which can be useful for some users. A tutorial will be provided.
                                 To Cancel, Shift + b. To Activate, Shift + n. </p>`;
                     cancelButton.textContent = "Cancel";
                     cancelButton.removeEventListener('click', previousTutorialStep);
                     cancelButton.addEventListener('click', close);   //before activation we have cancel button
                     break;
                 case 2:
-                    tutorialContent.innerHTML = `<p>Tutorial Step 1: You can use the shortcut of control + space key to toggle the accessibility 
-                        mode on and off. Toggle it once and go to the next step</p>`;
+                    tutorialContent.innerHTML = `<p tabindex="1">Tutorial Step 1: You can use the shortcut of control + space key to toggle the accessibility
+                                mode on and off. Toggle it once and go to the next step</p>`;
                     cancelButton.textContent = "Previous";
                     cancelButton.removeEventListener('click', close);
                     cancelButton.addEventListener('click', previousTutorialStep); //in tutorial we only have previous button
                     break;
                 case 3:
-                    tutorialContent.innerHTML = `<p>Step 2: After login, there is a search bar in every page. You can use 
-                    the voice command 'Search' to focus on the search bar. Use 'Type In' voice command followed by your input to enter your information verbally.
+                    tutorialContent.innerHTML = `<p tabindex="1">Step 2: After login, there is a search bar in every page. You can use
+                            the voice command 'Search' to focus on the search bar. Use 'Type In' voice command followed by your input to enter your information verbally.
                      After that, press enter on keyboard.Try it out in the search bar below.</p>
                         <div class="search-wrapper">
                             <i class="search-icon bx bx-search"></i>
@@ -140,15 +143,15 @@
                     cancelButton.addEventListener('click', previousTutorialStep);
                     break;
                 case 4:
-                    tutorialContent.innerHTML = `<p>You can use 'Type in' command to fill up any of the input field in this website. Remember 
-                    the command carefully and utilize it to make your journey easier.</p>`;
+                    tutorialContent.innerHTML = `<p tabindex="1">You can use 'Type in' command to fill up any of the input field in this website. Remember
+                            the command carefully and utilize it to make your journey easier.</p>`;
                     cancelButton.textContent = "Previous";
                     cancelButton.removeEventListener('click', close);
                     cancelButton.addEventListener('click', previousTutorialStep);
                     break;
                 case 5:
-                    tutorialContent.innerHTML = `<p>Step 4: To navigate to different pages, use voice commands starting with 'Go to.' 
-                    For example, say 'Go to login page'. The system also may provide suggestion for you based on your inacurate voice command.</p>`;
+                    tutorialContent.innerHTML = `<p tabindex="1">Step 4: To navigate to different pages, use voice commands starting with 'Go to.'
+                            For example, say 'Go to login page'. The system also may provide suggestion for you based on your inacurate voice command.</p>`;
                     cancelButton.textContent = "Previous";
                     cancelButton.removeEventListener('click', close);
                     cancelButton.addEventListener('click', previousTutorialStep);
@@ -208,9 +211,10 @@
             startListening();
             activateCount++;
             sessionStorage.setItem("activateCount", activateCount);
-        }
             toggleEnlargedText();
             toggleEnlargedPage();
+        }
+            
 
     }
 
@@ -224,8 +228,9 @@
     document.getElementById('nextButton').addEventListener('click', function () {
         if (currentStep === 1) {
             activateAccessibility();
+            document.getElementById('skipButton').style.display = "block";
             nextTutorialStep();
-        } else if (currentStep === 2 && activateCount === 2) {
+        } else if (currentStep === 2 && activateCount >= 2) {
             nextTutorialStep();
         }
         else if (currentStep === 2 && activateCount < 2){
@@ -248,6 +253,8 @@
         }
     });
 
+        document.getElementById('skipButton').addEventListener('click', close);
+
     document.addEventListener("keydown", function (event) {
         // Check if centerDiv exists
         var centralDiv = document.getElementById("centerDiv");
@@ -255,24 +262,36 @@
             return;
         }
 
-        if (event.shiftKey && event.key === "N" && document.activeElement.tagName !== "INPUT") {
+        if (event.key === "N" && document.activeElement.tagName !== "INPUT") {
             if (currentStep === 1) {
                 activateAccessibility();
                 nextTutorialStep();
-            } else if (currentStep === 2 && activateCount === 2) {
+                document.getElementById("skipButton").style.display = "block";
+            } else if (currentStep === 2 && activateCount >= 2) {
                 nextTutorialStep();
             }
             else if (currentStep === 2 && activateCount < 2) {
                 speakResponse("Please toggle the accessibility mode using control + space.");
             }
             else if (currentStep === 3) {
-                const searchDemoValue = document.getElementById('searchDemo').value.trim();
-                if (searchDemoValue !== '') {
-                    nextTutorialStep();
-                }
-                else {
-                    speakResponse("Please enter something into search bar.");
-                }
+                    const searchDemoInput = document.getElementById('searchDemo');
+                    const searchDemoValue = searchDemoInput.value.trim();
+
+                    searchDemoInput.addEventListener('keydown', function (event) {
+                        if (event.key === 'Enter') {
+                            if (document.activeElement === searchDemoInput && searchDemoValue !== '') {
+                                nextTutorialStep();
+                            } else {
+                                speakResponse("Please enter something into the search bar.");
+                            }
+                        }
+                    });
+
+                    if (searchDemoValue !== '') {
+                        nextTutorialStep();
+                    } else {
+                        speakResponse("Please enter something into the search bar.");
+                    }
             }
             else if (currentStep === 4) {
                 nextTutorialStep();
@@ -281,7 +300,7 @@
                 nextTutorialStep();
             }
         } 
-        else if (event.shiftKey && event.key === "B" && document.activeElement.tagName !== "INPUT") {
+        else if (event.key === "B" && document.activeElement.tagName !== "INPUT") {
             previousTutorialStep();
         }
 
