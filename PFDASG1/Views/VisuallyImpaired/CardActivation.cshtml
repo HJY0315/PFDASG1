@@ -53,11 +53,7 @@
 </head>
 
 <body>
-    <header>
-
-   
-
-    </header>
+  
     @if (ViewData["ShowSQSetUp"] == null)
         {  
             <form class="form" autocomplete="off" novalidate>
@@ -65,8 +61,9 @@
             <!-- Initial security question fieldset -->
             <fieldset class="security-question-fieldset">
                 <div class="security-question-inputs">
+                        <label for="security-questions">Security Questions</label>
                 <div class="select">
-                    <label for="security-questions">Security Questions</label>
+                    
                     <select class="security-question-dropdown" id="select">
                         <option>Questions</option>
                         <option value="1">Where is your primary school?</option>
@@ -84,7 +81,7 @@
             </form>
       
     }
-}
+
 
     else{
     
@@ -233,7 +230,7 @@
             <button class="btn"><i class="fa fa-lock"></i> submit</button>
         </form>
     </div>
-
+    }
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     @*    <script src="script.js"></script>*@
 
