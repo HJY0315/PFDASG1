@@ -66,12 +66,12 @@
             <fieldset class="security-question-fieldset">
                 <div class="security-question-inputs">
                 <div class="select">
+                    <label for="security-questions">Security Questions</label>
                     <select class="security-question-dropdown" id="select">
                         <option>Questions</option>
                         <option value="1">Where is your primary school?</option>
                         <option value="2">Who is your best friend?</option>
                         <option value="3">Do you have any musical background?</option>
-                        <option value="4">Others</option>
                     </select>
                 </div>
                 <input type="text" class="security-question" maxlength="20" style="margin-top:10px; border: none; display:none;" placeholder="Questions" required />
@@ -216,7 +216,6 @@
                                 <option value="1">Where is your primary school?</option>
                                 <option value="2">Who is your best friend?</option>
                                 <option value="3">Do you have any musical background?</option>
-                                <option value="4">Others</option>
                             </select>
                         </div>
                         <input asp-for="securityQuestion" type="text" class="security-question" maxlength="20" style="margin-top:10px; border: none; display:none;" placeholder="Questions" required/>
