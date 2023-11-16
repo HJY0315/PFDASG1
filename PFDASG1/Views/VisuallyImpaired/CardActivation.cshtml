@@ -2,19 +2,29 @@
 @using Microsoft.AspNetCore.Http
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 @{
-    Layout = null;
+     Layout = null;
     int userid = 0;
-    if (HttpContextAccessor.HttpContext != null)
+    var session = HttpContextAccessor.HttpContext;
+
+    if (session != null)
     {
-        userid = HttpContextAccessor.HttpContext.Session.GetInt32("id") ?? 0;
-        <partial name="Navbar"/>
+        userid = session.Session.GetInt32("id") ?? 0;
+
+        if (userid > 0)
+        {
+            // User is logged in, load the appropriate navbar
+            <partial name="_navbar" />
+        }
+        else
+        {
+            // User is not logged in, load an alternate navbar or handle the scenario
+            <partial name="Navbar" />
+        }
     }
-    else{
-        <partial name="_navbar"/>
-    }
-    Layout = null;
+
 }
-}
+
+
 <!DOCTYPE html>
 <html>
 <head>
