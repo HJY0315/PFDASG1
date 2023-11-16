@@ -33,7 +33,7 @@
     <header>
         @await Html.PartialAsync("_navbar.cshtml")
     </header>
-   @* @if(Model == null)
+@*    @if(Model == null)
     {
         foreach(var item in Model)
         {
@@ -64,7 +64,7 @@
       
     }
 
-    else{
+    else{ *@
     
     <div class="checkout">
         <div class="credit-card-box">
@@ -203,7 +203,7 @@
                     </div>
                 </fieldset>
                 <!-- Add button -->
-                @*<button class="btn-add-question"><i class="fas fa-plus"></i>Add more questions</button>*@
+                @* <button class="btn-add-question"><i class="fas fa-plus"></i>Add more questions</button> *@
             </div>
             @if (ViewData["CardActivation"] != null)
             {
@@ -212,7 +212,6 @@
             <button class="btn"><i class="fa fa-lock"></i> submit</button>
         </form>
     </div>
-    }
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     @*    <script src="script.js"></script>*@
