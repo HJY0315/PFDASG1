@@ -10,9 +10,8 @@
     <!-- Use Unicode character encoding - multi-language compatibility -->
     <meta charset="utf-8">
 
-    <!-- Set the initial view zooming scale for mobile device -->
-    <meta name="viewport" content="width = device-width,
- initial-scale = 1" />
+    <!-- Set the initial view zooming scale for mobile devices -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>OCBC</title>
 
@@ -37,7 +36,7 @@
     <header>
         @await Html.PartialAsync("_navbar.cshtml")
     </header>
-    
+
     <section hidden id="search_result" style="padding-bottom:30px">
         <fieldset class="FormContent">
             <legend>Search result</legend>
@@ -74,8 +73,11 @@
         </div>
     </fieldset>
 
+    <!-- Your existing script for annyang setup -->
+    <script src="~/js/annyang-setup.js" asp-append-version="true"></script>
+
     <script>
-        //keep user focus stay on search bar
+        // Keep user focus stay on the search bar
         window.addEventListener('load', function () {
             const searchInput = document.getElementById('search');
             if (searchInput) {
@@ -84,16 +86,18 @@
         });
 
         const searchResults = @Html.Raw(Json.Serialize(Model));
+        console.log(searchResults);
 
         function populateColumns(results) {
-            const columns = [document.getElementById('column1'), document.getElementById('column2'), document.getElementById('column3')];
-            let columnIndex = 0;
+            const resultSection = document.querySelector('#search_result');
+            const columns = resultSection.querySelectorAll('.flex-column');
 
             columns.forEach(column => {
                 column.innerHTML = '';
             });
 
-            results.slice(0, 12).forEach(result => {
+            results.slice(0, columns.length * 4).forEach((result, index) => {
+                const columnIndex = index % columns.length;
                 const listItem = document.createElement('li');
                 listItem.className = 'flex-item';
                 const link = document.createElement('a');
@@ -102,15 +106,27 @@
                 listItem.appendChild(link);
 
                 columns[columnIndex].appendChild(listItem);
-                columnIndex = (columnIndex + 1) % columns.length;
+
+                // Speak out the result
+                const resultNumber = getOrdinalNumber(index + 1);
+                speakResponse(`${resultNumber} result is: ${result.pageTitle}`);
             });
 
-            const resultSection = document.querySelector('#search_result');
             resultSection.removeAttribute('hidden');
         }
 
+
+        function getOrdinalNumber(number) {
+            const suffixes = ['th', 'st', 'nd', 'rd'];
+            const relevantDigits = (number < 30) ? number % 20 : number % 10;
+            const suffix = (relevantDigits <= 3) ? suffixes[relevantDigits] : suffixes[0];
+            return `${number}${suffix}`;
+        }
+
+        // Additional code from your previous message (if any)
+
         function handleSearch() {
-            const searchTerm = document.getElementById('search').value.trim().toLowerCase(); //trim() get rid of spaces at both ends of string
+            const searchTerm = document.getElementById('search').value.trim().toLowerCase(); // trim() gets rid of spaces at both ends of the string
 
             if (searchTerm === '') {
                 // If the search bar is blank, hide the results section
@@ -129,7 +145,6 @@
             }
         }
 
-
         document.getElementById('search').addEventListener('input', handleSearch);
 
         function handleSpeechToText(input) {
@@ -138,18 +153,20 @@
             document.getElementById('search').dispatchEvent(inputEvent);
         }
 
-        //for focus the user onto result section
-        document.getElementById('search').addEventListener('keypress', function(event){
+        // For focus the user onto the result section
+        document.getElementById('search').addEventListener('keypress', function (event) {
             if (event.key === 'Enter') {
                 const resultSection = document.getElementById('search_result');
-                if (resultSection){
+                if (resultSection) {
                     resultSection.tabIndex = -1;
                     resultSection.focus();
                 }
             }
         });
     </script>
+
+    <!-- Your existing site.js script -->
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/js/annyang-setup.js" asp-append-version="true"></script>
+
 </body>
 </html>
