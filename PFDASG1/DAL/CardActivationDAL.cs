@@ -1,5 +1,6 @@
 ﻿using PFDASG1.Models;
 using System.Data.SqlClient;
+using System.Security;
 
 namespace PFDASG1.DAL
 {
@@ -23,7 +24,7 @@ namespace PFDASG1.DAL
             conn = new SqlConnection(strConn);
         }
 
-        public int cardVerification(CreditCard cardinfo, out string message)
+        public int cardVerification(CreditCard cardinfo, out string message, string securityQuestion)
         {
             message = "";
             int cardID = 0;
@@ -44,21 +45,25 @@ namespace PFDASG1.DAL
                 string last8DigitsOfCardNumber = reader.GetString(2).Substring(Math.Max(0, reader.GetString(2).Length - 8));
 
                 if ((last8DigitsOfCardNumber == concatenatedCardNumber) &&
-                (reader.GetString(6).ToLower() == cardinfo.cardHolderName.ToLower()) && (reader.GetDateTime(3).Month == cardinfo.expirationMonth.Month) &&
-                (reader.GetString(4) == cardinfo.cvv) && (reader.GetString(8) == cardinfo.securityQuestion) &&
-                (reader.GetString(9) == cardinfo.answer) && (reader.GetDateTime(3).Year == cardinfo.expirationYear.Year))
+                (reader.GetString(6).ToLower() == cardinfo.cardHolderName.ToLower()) &&
+                (reader.GetDateTime(3).Month == cardinfo.expirationMonth) && (reader.GetDateTime(3).Year == cardinfo.expirationYear) &&
+                (reader.GetString(4) == cardinfo.cvv) && (reader.GetString(7).ToLower() == securityQuestion.ToLower() && 
+                (reader.GetString(8).ToLower() == cardinfo.answer.ToLower())))
                 {
                     if (reader.GetString(5) == "Unactivated")
                     {
-                        cardID = Convert.ToInt32(reader.GetString(0));
+                        cardID = reader.GetInt32(0);
                         break;
                     }
                     else
                     {
                         message = "Card had been activated before. Please try again.";
+                        break;
                     }
                 }
             }
+
+            conn.Close();
             return cardID;
         }
 

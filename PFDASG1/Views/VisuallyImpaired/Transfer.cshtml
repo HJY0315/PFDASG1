@@ -85,14 +85,14 @@
                 <!-- Step 3: Enter Amount -->
                 <div class="form-group step-content">
                     <label asp-for="Amount">Enter your Amount</label>
-                    <input type="text" id="amount" asp-for="Amount" required/>
+                    <input type="number" id="amount" asp-for="Amount" required ="" />
                     <span asp-validation-for="Amount" class="text-danger"></span>
 
                  @*   <label asp-for="RemainingBalance">Remaining Balance:</label>
                     <span id="remainingBalance">@Model.accountBalance</span>*@
 
                     <label asp-for="Description">Description</label>
-                    <input type="text" id="description" asp-for="Description" required />
+                    <input type="text" id="description" asp-for="Description" />
                     <span asp-validation-for="Description" class="text-danger"></span>
                 </div>
 
@@ -186,6 +186,11 @@
         // Assume you have a variable to track the current page
         let currentPage = 1;
 
+        function speakConfirmation() {
+            const msg = new SpeechSynthesisUtterance('Transfer confirmed!');
+            window.speechSynthesis.speak(msg);
+        }
+
         function nextPrev(n) {
             // Update the current page based on the navigation
             currentPage += n;
@@ -195,10 +200,9 @@
             if (currentPage === 1) {
                 // Change the button text to "Confirm"
                 document.getElementById('nextButton').innerText = 'Confirm';
-                // Update the onclick event to call a different function for confirmation
+                // Update the onclick event to call the speakConfirmation function
                 document.getElementById('nextButton').onclick = function () {
-                    // Call your confirmation function here
-                    //confirmTransfer();
+                    speakConfirmation();
                     // Move to the next page after confirmation
                     nextPrev(1);
                 };
