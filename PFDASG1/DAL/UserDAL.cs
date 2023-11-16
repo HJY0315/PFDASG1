@@ -45,6 +45,7 @@ namespace PFDASG1.DAL
                     break; // Exit the while loop
                 }
             }
+            conn.Close();
             return authenticated;
         }
 

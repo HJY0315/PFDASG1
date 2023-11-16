@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using PFDASG1.DAL;
 using PFDASG1.Models;
 using System.Diagnostics.Metrics;
+using System.Transactions;
+using System.Xml.Linq;
 
 namespace PFDASG1.Controllers
 {
@@ -17,12 +19,21 @@ namespace PFDASG1.Controllers
         public IActionResult CardActivation()
         {
             ViewData["CardActivation"] = null;
+            if (HttpContext.Session.GetString("Name") != null)
+            {
+                ViewData["ShowSQSetUp"] = false; //if user is logged in, then dn setup
+            }
             return View();
         }
 
         [HttpPost]
         public IActionResult CardActivation(CreditCard cardinfo, string selectedMonth)
         {
+            ViewBag.UserName = HttpContext.Session.GetString("Name");
+            if (HttpContext.Session.GetString("Name") != null)
+            {
+                ViewData["ShowSQSetUp"] = false; //if user is logged in, then dn setup
+            }
             // Access the form data through the model properties
             var cardNumber1 = cardinfo.cardNumber1;
             var cardNumber2 = cardinfo.cardNumber2;
@@ -32,40 +43,53 @@ namespace PFDASG1.Controllers
             var ccv = cardinfo.cvv;
             var securityQuestionNo = cardinfo.securityQuestion;
             var securityAnswer = cardinfo.answer;
-            var securityQuestion = "";
+            var inputSecurityQuestion = "";
 
             if (securityQuestionNo == "1")
             {
-                securityQuestion = "Where is your primary school?";
+                inputSecurityQuestion = "Where is your primary school?";
             }
             else if (securityQuestionNo == "2")
             {
-                securityQuestion = "Who is your best friend?";
+                inputSecurityQuestion = "Who is your best friend?";
             }
             else if (securityQuestionNo == "3")
             {
-                securityQuestion = "Do you have any musical background?";
+                inputSecurityQuestion = "Do you have any musical background?";
             }
-
-
             string msg = "";
-            int cardID = CardActivationContext.cardVerification(cardinfo,out msg, securityQuestion);
-            if (msg == "")
+            var loggedinUserName = HttpContext.Session.GetString("Name");
+            var loggedinUserID = HttpContext.Session.GetInt32("id");
+
+            string userIdAsString = loggedinUserID.Value.ToString();
+            CardActivationContext.VerifySecurityQuestionAnswer(userIdAsString, cardinfo, inputSecurityQuestion, out msg);
+
+            if (msg != "")
             {
-                bool ActivationSuccess = CardActivationContext.UpdateCardStatus(cardID);
-                if (ActivationSuccess)
+                ViewData["CardActivation"] = msg;
+            }
+            else //if they pass verification
+            {
+                int cardID = CardActivationContext.cardVerification(cardinfo, out msg);
+                if (msg == "")
                 {
-                    ViewData["CardActivation"] = "Card Activated Successfully";
+                    bool ActivationSuccess = CardActivationContext.UpdateCardStatus(cardID);
+                    if (ActivationSuccess)
+                    {
+                        ViewData["CardActivation"] = "Card Activated Successfully";
+                    }
+                    else
+                    {
+                        ViewData["CardActivation"] = "Card Activation Failed";
+                    }
                 }
                 else
                 {
-                    ViewData["CardActivation"] = "Card Activation Failed";
+                    ViewData["CardActivation"] = msg; //if the card is alr been activated
                 }
             }
-            else
-            {
-                ViewData["CardActivation"] = msg; //if the card is alr been activated
-            }
+
+
 
             return View();
         }
@@ -74,6 +98,7 @@ namespace PFDASG1.Controllers
         public IActionResult Transfer()
         {
             TransactionViewModel transactionViewModel = new TransactionViewModel();
+           
             return View(transactionViewModel);
         }
 
@@ -97,7 +122,8 @@ namespace PFDASG1.Controllers
             // Add the transaction to the TransactionsContext
             TransactionsContext.Add(transactionViewModel);
 
-          
+            decimal remainingBalance = TransactionsContext.GetAccountBalance(userId);
+            ViewBag.amount = remainingBalance;
             //}
             //catch (Exception ex)
             //{
@@ -115,16 +141,79 @@ namespace PFDASG1.Controllers
             return View();
         }
 
-        public IActionResult Index()
+
+        [HttpGet]
+        public IActionResult GetCurrentBalance()
         {
-            // Use the userName parameter as needed in this action
-            string Name = HttpContext.Session.GetString("Name");
-            ViewBag.UserName = Name;
-            int Id = HttpContext.Session.GetInt32("id") ?? 0;
-            List<Transactions> transactions = TransactionsContext.getalltransactions(Id);
-            return View(transactions);
+            // Get the user's ID from the session
+            int sessionId = HttpContext.Session.GetInt32("id") ?? 0;
+
+            // Retrieve all transactions for the specified user
+            List<Transactions> transactions = TransactionsContext.getalltransactions(sessionId);
+
+            // Initialize the total balance variable
+            decimal totalBalance = 0;
+
+            // Add amounts for non-sender transactions
+            foreach (var item in transactions)
+            {
+                if (item.SenderID != sessionId)
+                {
+                    totalBalance += item.Amount;
+                }
+            }
+
+            // Subtract amounts for sender transactions
+            var senderTransactions = transactions.Where(item => item.SenderID == sessionId);
+            decimal amountToSubtract = senderTransactions.Sum(item => item.Amount);
+            totalBalance -= amountToSubtract;
+
+            // Return the total balance
+            return Json(new { totalBalance });
         }
 
+
+
+        public IActionResult Index(int userId, decimal amount)
+        {
+            // Get the user's name from the session
+            string userName = HttpContext.Session.GetString("Name");
+            ViewBag.UserName = userName;
+
+            // Get the user's ID from the session
+            int sessionId = HttpContext.Session.GetInt32("id") ?? 0;
+
+            // Retrieve transactions based on the session ID
+            List<Transactions> transactions = TransactionsContext.getalltransactions(sessionId);
+            // Initialize the total balance variable
+            decimal totalBalance = 0;
+
+            // Add amounts for non-sender transactions
+            foreach (var item in transactions)
+            {
+                if (item.SenderID != sessionId)
+                {
+                    totalBalance += item.Amount;
+                }
+                else
+                {
+                    totalBalance -= item.Amount;
+                }
+            }
+
+            // Subtract amounts for sender transactions
+            var senderTransactions = transactions.Where(item => item.SenderID == sessionId);
+            decimal amountToSubtract = senderTransactions.Sum(item => item.Amount);
+            totalBalance -= amountToSubtract;
+            decimal despostamount = totalBalance - amountToSubtract;
+            decimal withdrawlamount = despostamount - amountToSubtract;
+
+            ViewBag.amountToSubtract = amountToSubtract;
+            ViewBag.totalBalance = despostamount;
+
+
+            return View(transactions);
+        }
 
         public IActionResult Search()
         {
