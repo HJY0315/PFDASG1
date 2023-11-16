@@ -22,11 +22,11 @@ namespace PFDASG1.Models
 
         [Required(ErrorMessage = "Expiration date is required.")]
         [Display(Name = "Expiration Month")]
-        public DateTime expirationMonth { get; set; }
+        public int expirationMonth { get; set; }
 
         [Required(ErrorMessage = "Expiration date is required.")]
         [Display(Name = "Expiration Year")]
-        public DateTime expirationYear { get; set; }
+        public int expirationYear { get; set; }
 
         [Required(ErrorMessage = "CVV is required.")]
         [Display(Name = "CVV")]

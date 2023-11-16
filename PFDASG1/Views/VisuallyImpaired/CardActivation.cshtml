@@ -206,7 +206,10 @@
                     <!-- Add button -->
                     @*<button class="btn-add-question"><i class="fas fa-plus"></i>Add more questions</button>*@
                 </div>
-            
+                @if (ViewData["CardActivation"] != null)
+                {
+                    <span class="form-control-plaintext text-danger">@ViewData["CardActivation"]</span>
+                }
                 <button class="btn"><i class="fa fa-lock"></i> submit</button>
             </form>
         </div>
