@@ -31,7 +31,7 @@
 
 <body>
     <header>
-        @await Html.PartialAsync("_navbar.cshtml")
+        <partial name="_navbar" />
     </header>
         <form class="form" autocomplete="off" asp-controller="VisuallyImpaired" asp-action="SQSetUp" method="post" novalidate>
             <div id="security-questions-container">
