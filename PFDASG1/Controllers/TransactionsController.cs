@@ -29,7 +29,7 @@ namespace PFDASG1.Controllers
                 Transactions transaction = new Transactions();
                 
                 
-                TransactionsContext.Add(transaction);
+                TransactionsContext.Add(transaction, userId);
 
 
 

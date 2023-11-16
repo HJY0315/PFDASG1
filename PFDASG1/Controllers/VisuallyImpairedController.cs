@@ -17,13 +17,17 @@ namespace PFDASG1.Controllers
         {
             return View();
         }
-    
+
+        
+
+
+        
+
+        [HttpGet]
         public IActionResult Transfer()
         {
             return View();
         }
-
-
 
         public IActionResult ViewAllCards()
         {
@@ -39,7 +43,7 @@ namespace PFDASG1.Controllers
             List<Transactions> transactions = TransactionsContext.getalltransactions(Id);
             return View(transactions);
         }
-  
+
 
         public IActionResult Search()
         {

@@ -1,4 +1,5 @@
-﻿@{
+﻿@model PFDASG1.Models.Transactions
+@{
     Layout = null;
 }
 
@@ -19,94 +20,93 @@
         @await Html.PartialAsync("_navbar.cshtml")
     </header>
     <div class="transfer-form container mt-5">
-         
-        <div class="form-step-list">
-            <div class="form-step-item active">
-                <span class="item__step">1</span>
-                <p class="item__title mt-1">Select Account</p>
-            </div>
-            <div class="form-step-item text-center">
-                <span class="item__step">2</span>
-                <p class="item__title mt-1">Search Recipient</p>
-            </div>
-            <div class="form-step-item text-center">
-                <span class="item__step">3</span>
-                <p class="item__title mt-1">Enter Amount</p>
-            </div>
-            <div class="form-step-item text-right">
-                <span class="item__step">4</span>
-                <p class="item__title mt-1">Review</p>
-            </div>
-        </div>
-
-        <div class="form-layout">
-            <!-- Step 1: Select Account --><!-- Backend for Frank card number and saving acct number-->
-            <div class="form-group step-content">
-                <label for="bankTransfer">Choose Account</label>
-                <select name="bankTransfer" id="bankTransfer">
-                    <option value="1">Please Select</option>
-                    <option value="2">Frank Card </option>
-                    <option value="3">Saving Account </option>
-                </select>
-            </div>
-
-            <!-- Step 2: Select Payment Type -->
-            <div class="form-group step-content">
-                <label for="paymentType">Search Recipient</label>
-                <select name="paymentType" id="paymentType" onchange="updatePaymentMethod()">
-                    <option value="1">Please Select</option>
-                    <option value="2">NRIC</option>
-                    <option value="3">Mobile Number</option>
-                </select>
-
-                <!-- Input for NRIC -->
-                <div class="form-group" id="nricInput" style="display:none;">
-                    <label for="nric">Enter NRIC</label>
-                    <input type="text" id="nric" placeholder="S1234567A" maxlength="9"/>
-                    @Html.Display("NRIC")
+        <form asp-controller="VisuallyImpaired" asp-action="Transfer" method="post">
+            <div class="form-step-list">
+                <div class="form-step-item active">
+                    <span class="item__step">1</span>
+                    <p class="item__title mt-1">Select Account</p>
                 </div>
-
-                <!-- Input for Mobile Number -->
-                <div class="form-group" id="mobileInput" style="display:none;">
-                    <label for="mobileNumber">Enter Mobile Number</label>
-                    <input type="text" id="mobileNumber" placeholder="91234567" maxlength="8"/>
-                    @Html.Display("MobileNumber")
+                <div class="form-step-item text-center">
+                    <span class="item__step">2</span>
+                    <p class="item__title mt-1">Search Recipient</p>
+                </div>
+                <div class="form-step-item text-center">
+                    <span class="item__step">3</span>
+                    <p class="item__title mt-1">Enter Amount</p>
+                </div>
+                <div class="form-step-item text-right">
+                    <span class="item__step">4</span>
+                    <p class="item__title mt-1">Review</p>
                 </div>
             </div>
 
-            <!--hide unhide balance-->
-            <!-- Step 3: Enter Amount --><!-- Backend for validation for amount and add the $ thingy-->
-            <div class="form-group step-content">
-                <label for="amount">Enter your Amount</label>
-                <input type="text" id="amount" required/> <br />
-                @Html.Display("Amount")
-                <label for="description">Description</label>
-                <input type="text" id="description" required />
-                @Html.Display("Description")
-            </div>
+            <div class="form-layout">
+                <!-- Step 1: Select Account -->
+                <div class="form-group step-content">
+                    <label asp-for="AccountId">Choose Account</label>
+                    <select name="bankTransfer" id="bankTransfer" asp-for="AccountId">
+                        <option value="1">Please Select</option>
+                        <option value="2">Frank Card</option>
+                        <option value="3">Saving Account</option>
+                    </select>
+                </div>
 
-            <!-- Step 4: Review --><!-- Backend for validation for amount and add the $ thingy-->
-            <div class="form-group step-content">
-                <img src="../img/checked.png" width="150" height="150" />
-                <p>Amount: <span id="reviewAmount">@Html.Display("Amount")</span></p>
-                <p>Transfer to: <span id="reviewTransferTo"></span></p>
-                <p>Description: <span id="reviewDescription"></span></p>
+                <!-- Step 2: Select Payment Type -->
+                <div class="form-group step-content">
+                    <label asp-for="RecipientID">Search Recipient</label>
+                    <select name="paymentType" id="paymentType" onchange="updatePaymentMethod()" asp-for="RecipientID">
+                        <option value="1">Please Select</option>
+                        <option value="2">NRIC</option>
+                        <option value="3">Mobile Number</option>
+                    </select>
+
+                    <!-- Input for NRIC -->
+                    <div class="form-group" id="nricInput" style="display:none;">
+                        <label asp-for="NRIC">Enter NRIC</label>
+                        <input type="text" id="nric" placeholder="S1234567A" maxlength="9" />
+                        <span asp-validation-for="NRIC" class="text-danger"></span>
+                    </div>
+
+                    <!-- Input for Mobile Number -->
+                    <div class="form-group" id="mobileInput" style="display:none;">
+                        <label asp-for="MobileNumber">Enter Mobile Number</label>
+                        <input type="text" id="mobileNumber" placeholder="91234567" maxlength="8" />
+                        <span asp-validation-for="MobileNumber" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Step 3: Enter Amount -->
+                <div class="form-group step-content">
+                    <label asp-for="Amount">Enter your Amount</label>
+                    <input type="text" id="amount" asp-for="Amount" required />
+                    <span asp-validation-for="Amount" class="text-danger"></span>
+
+                    <label asp-for="Description">Description</label>
+                    <input type="text" id="description" asp-for="Description" required />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <!-- Step 4: Review -->
+                <div class="form-group step-content">
+                    <img src="../img/checked.png" width="150" height="150" />
+                    <p>Amount: <span id="reviewAmount">@Html.DisplayFor(model => model.Amount)</span></p>
+                    <p>Transfer to: <span id="reviewTransferTo"></span></p>
+                    <p>Description: <span id="reviewDescription"></span></p>
+                </div>
             </div>
-        </div>
 
         <!-- Next and Previous Buttons -->
-         <div class="form-navigation mt-5">
-                <button class="btn btn-primary" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
-                <button class="btn btn-primary" id="nextBtn" onclick="nextPrev(0)">Next</button>
-            </div>
-        
+        <div class="form-navigation mt-5">
+            <button class="btn btn-primary" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
+            <button class="btn btn-primary" id="nextBtn" onclick="nextPrev(0)">Next</button>
+        </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>
     <script>
-        let currentStep = 0;    
+        let currentStep = 0;
         const formSteps = document.querySelectorAll('.form-step-item');
         const formContents = document.querySelectorAll('.form-group.step-content');
 
@@ -240,7 +240,7 @@
             } else if (paymentType === '3') {
                 nricInput.style.display = 'none';
                 mobileInput.style.display = 'block';
-            } 
+            }
             else {
                 // Handle other payment methods if needed
                 nricInput.style.display = 'none';

@@ -23,38 +23,52 @@ namespace PFDASG1.DAL
             conn = new SqlConnection(strConn);
         }
 
-        public int Add(Transactions transaction)
-        {
-            // Create a SqlCommand object from the connection object
-            SqlCommand cmd = conn.CreateCommand();
+        //private bool IsValidPhoneNumber(string phoneNumber)
+        //{
+        //    // Validate the format and length of the phone number
+        //    // ...
+        //}
 
-            // Specify an INSERT SQL statement
-            cmd.CommandText = @"INSERT INTO Transactions (transactionId, description, accountId, amount, transactionDate, recipientId, senderId)
-                        OUTPUT INSERTED.MemberID
-                        VALUES (@transactionId, @description, @accountId, @amount, @transactionDate, @recipientId, @accountId)";
+        //public int Add(Transactions transaction, int senderId)
+        //{
+        //    if (!IsValidPhoneNumber(transaction.RecipientID))
+        //    {
+        //        throw new ArgumentException("Invalid recipient phone number format.");
+        //    }
 
-            cmd.Parameters.AddWithValue("@transactionId", transaction.TransactionId);
-            cmd.Parameters.AddWithValue("@description", transaction.Description);
-            cmd.Parameters.AddWithValue("@accountId", transaction.AccountId);
-            cmd.Parameters.AddWithValue("@amount", transaction.Amount);
-            cmd.Parameters.AddWithValue("@transactionDate", transaction.TransactionDate);
-            cmd.Parameters.AddWithValue("@recipientId", transaction.RecipientID);
+        //    // Retrieve recipient's account ID using the validated phone number
+        //    int recipientId = GetAccountIdFromPhoneNumber(transaction.RecipientID);
 
-            // Ensure that the sender ID is always set to the account ID
-            cmd.Parameters.AddWithValue("@senderId", transaction.AccountId);
+        //    // Verify that the sender has sufficient funds to make the transfer
+        //    if (transaction.Amount > GetAccountBalance(senderId))
+        //    {
+        //        throw new InvalidOperationException("Insufficient funds for transaction.");
+        //    }
 
-            // Open a connection to the database
-            conn.Open();
+        //    // Create a SqlCommand object from the connection object
+        //    SqlCommand cmd = conn.CreateCommand();
 
-            // Execute the INSERT SQL statement and retrieve the auto-generated transaction ID
-            transaction.TransactionId = (int)cmd.ExecuteScalar();
+        //    // Specify an INSERT SQL statement
+        //    cmd.CommandText = @"INSERT INTO Transactions (transactionId, description, accountId, amount, transactionDate, receiverId, senderId)
+        //                OUTPUT INSERTED.MemberID
+        //                VALUES (@transactionId, @description, @accountId, @amount, @transactionDate, @receiverId, @senderId)";
 
-            // Close the connection to the database
-            conn.Close();
+        //    // Add parameters with validated and sanitized values
+        //    cmd.Parameters.AddWithValue("@transactionId", transaction.TransactionId);
+        //    cmd.Parameters.AddWithValue("@description", transaction.Description);
+        //    cmd.Parameters.AddWithValue("@accountId", senderId);
+        //    cmd.Parameters.AddWithValue("@amount", transaction.Amount);
+        //    cmd.Parameters.AddWithValue("@transactionDate", DateTime.Now);
+        //    cmd.Parameters.AddWithValue("@receiverId", recipientId);
+        //    cmd.Parameters.AddWithValue("@senderId", senderId);
 
-            // Return the transaction ID
-            return transaction.TransactionId;
-        }
+        //    // Execute the INSERT SQL statement and retrieve the auto-generated transaction ID
+        //    conn.Open();
+        //    transaction.TransactionId = (int)cmd.ExecuteScalar();
+        //    conn.Close();
+
+        //    return transaction.TransactionId;
+        //}
         public List<Transactions> getalltransactions(int userid)
         {
 
