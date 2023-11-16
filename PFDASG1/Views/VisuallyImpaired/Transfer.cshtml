@@ -121,6 +121,10 @@
         const formSteps = document.querySelectorAll('.form-step-item');
         const formContents = document.querySelectorAll('.form-group.step-content');
 
+        setTimeout(function () {
+            $('#mobileNumber').focus();
+        }, 500);
+
         function showStep(stepIndex) {
             formSteps.forEach((step, index) => {
                 step.classList.toggle('active', index === stepIndex);
@@ -255,6 +259,9 @@
 
         //    updateReviewContent();
         //}
+
+
+        
 
     </script>
     <script src="~/js/site.js" asp-append-version="true"></script>
