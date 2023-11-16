@@ -4,6 +4,7 @@ using System.Transactions;
 using PFDASG1.Models;
 using System.Data.SqlClient;
 using System.Data;
+using System.Text.RegularExpressions;
 
 namespace PFDASG1.DAL
 {
@@ -25,75 +26,137 @@ namespace PFDASG1.DAL
 
         //private bool IsValidPhoneNumber(string phoneNumber)
         //{
-        //    // Validate the format and length of the phone number
-        //    // ...
+        //    // Regular expression pattern for validating phone numbers
+        //    const string phoneNumberRegexPattern = @"^\d{10}$";
+
+        //    // Create a Regex object using the pattern
+        //    Regex phoneNumberRegex = new Regex(phoneNumberRegexPattern);
+
+        //    // Match the input phone number against the pattern
+        //    return phoneNumberRegex.IsMatch(phoneNumber);
         //}
-
-        //public int Add(Transactions transaction, int senderId)
-        //{
-        //    if (!IsValidPhoneNumber(transaction.RecipientID))
-        //    {
-        //        throw new ArgumentException("Invalid recipient phone number format.");
-        //    }
-
-        //    // Retrieve recipient's account ID using the validated phone number
-        //    int recipientId = GetAccountIdFromPhoneNumber(transaction.RecipientID);
-
-        //    // Verify that the sender has sufficient funds to make the transfer
-        //    if (transaction.Amount > GetAccountBalance(senderId))
-        //    {
-        //        throw new InvalidOperationException("Insufficient funds for transaction.");
-        //    }
-
-        //    // Create a SqlCommand object from the connection object
-        //    SqlCommand cmd = conn.CreateCommand();
-
-        //    // Specify an INSERT SQL statement
-        //    cmd.CommandText = @"INSERT INTO Transactions (transactionId, description, accountId, amount, transactionDate, receiverId, senderId)
-        //                OUTPUT INSERTED.MemberID
-        //                VALUES (@transactionId, @description, @accountId, @amount, @transactionDate, @receiverId, @senderId)";
-
-        //    // Add parameters with validated and sanitized values
-        //    cmd.Parameters.AddWithValue("@transactionId", transaction.TransactionId);
-        //    cmd.Parameters.AddWithValue("@description", transaction.Description);
-        //    cmd.Parameters.AddWithValue("@accountId", senderId);
-        //    cmd.Parameters.AddWithValue("@amount", transaction.Amount);
-        //    cmd.Parameters.AddWithValue("@transactionDate", DateTime.Now);
-        //    cmd.Parameters.AddWithValue("@receiverId", recipientId);
-        //    cmd.Parameters.AddWithValue("@senderId", senderId);
-
-        //    // Execute the INSERT SQL statement and retrieve the auto-generated transaction ID
-        //    conn.Open();
-        //    transaction.TransactionId = (int)cmd.ExecuteScalar();
-        //    conn.Close();
-
-        //    return transaction.TransactionId;
-        //}
-        public List<Transactions> getalltransactions(int userid)
+        public User GetUserFromPhoneNumber(string phoneNumber)
         {
+            // Open a connection to the database
+            conn.Open();
+
+            // Create a SqlCommand object to retrieve the account ID
+            SqlCommand cmd = conn.CreateCommand();
+            cmd.CommandText = @"SELECT * FROM Users u JOIN Accounts a ON u.userId = a.userId WHERE u.phoneNumber = @phoneNumber";
+            cmd.Parameters.AddWithValue("@phoneNumber", phoneNumber); // Add the phone number to the query
+
+            // Execute the query and retrieve the account ID
+            //User user = (User)cmd.ExecuteReaderAsync();
+
+            // Close the connection to the database
+            //conn.Close();
+
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            User user = new User();
+            while (reader.Read())
+            {
+                user.Userid = reader.GetInt32(0);
+                user.Name = reader.GetString(1);
+                user.AccessCode = reader.GetString(2);
+                user.phoneNumber = reader.GetString(3);
+                user.Pin = reader.GetString(4);
+                user.NRIC = reader.GetString(5);
+            }
+
+            reader.Close();
+            conn.Close();
+            // Return the retrieved account ID
+            return user;
+        }
+        public decimal GetAccountBalance(int senderId)
+        {
+            // Open a connection to the database
+            conn.Open();
+
+            // Create a SqlCommand object to retrieve the account balance
+            SqlCommand cmd = conn.CreateCommand();
+            cmd.CommandText = "SELECT accountBalance FROM Accounts WHERE userId = @senderId";
+            cmd.Parameters.AddWithValue("@senderId", senderId);
+
+            // Execute the query and retrieve the account balance
+            //decimal accountBalance = (decimal)cmd.ExecuteScalar();
+            SqlDataReader reader = cmd.ExecuteReader();
+            Account account = new Account();
+            while (reader.Read())
+            {
+                account.accountBalance = reader.GetDecimal(2);
+            }
+            reader.Close();
+            // Close the connection to the database
+            conn.Close();
+
+            // Return the retrieved account balance
+            return account.accountBalance;
+        }
+
+        public int Add(TransactionViewModel transactionViewModel)
+        {
+            //if (!IsValidPhoneNumber(num))
+            //{
+            //    throw new ArgumentException("Invalid recipient phone number format.");
+            //}
+
+
+
+            //if (transactionViewModel.Amount > GetAccountBalance(transactionViewModel.senderID))
+            //{
+            //    throw new InvalidOperationException("Insufficient funds for transaction.");
+            //}
+
+            conn.Open();
+
+            // Create a SqlCommand object to insert the transaction data
+            SqlCommand cmd = conn.CreateCommand();
+            cmd.CommandText = @"INSERT INTO Transactions ( description, accountId, amount, transactionDate, receiverId, senderId)
+                            VALUES ( @description, @accountId, @amount, @transactionDate, @receiverId, @senderId)";
+
+
+            // Add parameters with validated and sanitized values
+            //cmd.Parameters.AddWithValue("@transactionId", transactionViewModel.TransactionId);
+            cmd.Parameters.AddWithValue("@description", transactionViewModel.Description);
+            cmd.Parameters.AddWithValue("@accountId", transactionViewModel.senderID);
+            cmd.Parameters.AddWithValue("@amount", transactionViewModel.Amount);
+            cmd.Parameters.AddWithValue("@transactionDate", DateTime.Now);
+            cmd.Parameters.AddWithValue("@receiverId", transactionViewModel.receipient.Userid);
+            cmd.Parameters.AddWithValue("@senderId", transactionViewModel.senderID);
+
+            // Execute the INSERT SQL statement
+            cmd.ExecuteNonQuery();
+
+            conn.Close();
+
+            return transactionViewModel.TransactionId;
+        }
+        public List<Transactions> getalltransactions(int userid)
+        {   
 
             //Create a SqlCommand object from connection object
             SqlCommand cmd = conn.CreateCommand();
             //Specify the SELECT SQL statement 
             cmd.CommandText = @"SELECT
-   t.transactionId,
-   t.description,
-   t.accountId,
-   t.amount,
-   t.transactionDate,
-   t.receiverId,
-   t.senderId
-
+  t.transactionId,
+  t.description,
+  t.accountId,
+  t.amount,
+  t.transactionDate,
+  t.receiverId,
+  t.senderId
 FROM
-   Transactions AS t
+  Transactions AS t
 INNER JOIN
-   Accounts AS a
+  Accounts AS a
 ON
-   t.accountId = a.accountId
+  t.accountId = a.accountId
 WHERE
-   a.userId = @userId
+  (a.userId = @userId AND (t.senderId = a.accountId OR t.receiverId = a.accountId))
 ORDER BY
-   t.transactionDate DESC;";
+  t.transactionDate DESC;";
             cmd.Parameters.AddWithValue("@userID", userid);
             //Open a database connection
             conn.Open();
