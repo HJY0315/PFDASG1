@@ -1,0 +1,160 @@
+﻿@model PFDASG1.Models.SecurityQuestion
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Use Unicode character encoding - multi-language compatibility -->
+    <meta charset="utf-8">
+
+    <!-- Set the initial view zooming scale for mobile device -->
+    <meta name="viewport" content="width = device-width,
+ initial-scale = 1" />
+
+    <title>OCBC</title>
+
+    <!-- Reference to customized styling for this website -->
+    @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />*@
+    <link rel="stylesheet" type="text/css" href="~/css/setting.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+    <!-- Bootstrap JavaScript (Popper.js is required for dropdowns) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>
+
+</head>
+
+<body>
+    <header>
+        @await Html.PartialAsync("_navbar.cshtml")
+    </header>
+        <form class="form" autocomplete="off" asp-controller="VisuallyImpaired" asp-action="SQSetUp" method="post" novalidate>
+            <div id="security-questions-container">
+            <!-- Initial security question fieldset -->
+            <fieldset class="security-question-fieldset">
+                <div class="security-question-inputs">
+                <div class="select">
+                    <select asp-for="SQ" class="security-question-dropdown" id="select">
+                        <option>Questions</option>
+                        <option value="1">Where is your primary school?</option>
+                        <option value="2">Who is your best friend?</option>
+                        <option value="3">Do you have any musical background?</option>
+                        <option value="4">Others</option>
+                    </select>
+                </div>
+                    <input type="text" class="security-question" asp-for="SQ" maxlength="20" style="margin-top:10px; border: none; display:none;" placeholder="Questions" required />
+                    <input type="text" class="security-answer" asp-for="answer" maxlength="20" style="margin-top:10px; border: none;" placeholder="Answer" required />
+                </div>
+            </fieldset>
+
+            <button type="submit" class="btn-add-question">Submit</button>
+            </div>
+        </form>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    @*    <script src="script.js"></script>*@
+
+    <script>
+        //$(document).ready(function () {
+        //  /*  var maxQuestions = 3;*/ // Set the maximum number of additional questions
+
+        //    $('#security-questions-container').on('click', '.security-question', function (e) {
+        //        e.preventDefault();
+
+        //        // Check if the maximum number of questions is reached
+        //        //if ($('#security-questions-container .security-question-fieldset').length >= maxQuestions) {
+        //        //    alert('You can add a maximum of ' + maxQuestions + ' extra questions.');
+        //        //    return;
+        //        //}
+
+        //        var newSecurityQuestionFieldset = $('.security-question-fieldset:first').clone();
+
+        //        // Clear the selected option and input value
+        //        newSecurityQuestionFieldset.find('.security-question-dropdown').val('Questions');
+        //        newSecurityQuestionFieldset.find('.security-answer').val('');
+
+        //        // Insert the new question and answer fieldset before the "Add" button
+        //        $(this).before(newSecurityQuestionFieldset);
+        //    });
+        //});
+        // Add an event listener to the select dropdown
+        // Get references to the select element and the input field for custom questions
+
+        $('.input-cart-number').on('keyup change', function () {
+            $t = $(this);
+
+            if ($t.val().length > 3) {
+                $t.next().focus();
+            }
+
+            var card_number = '';
+            $('.input-cart-number').each(function (index) {
+                if (index < 2) {
+                    card_number += 'xxxx ';
+                } else {
+                    card_number += $(this).val() + ' ';
+                    if ($(this).val().length == 4) {
+                        $(this).next().focus();
+                    }
+                }
+            })
+
+            $('.credit-card-box .number').html(card_number);
+        });
+
+        $('#card-holder').on('keyup change', function () {
+            $t = $(this);
+            $('.credit-card-box .card-holder div').html($t.val());
+        });
+
+        $('#card-expiration-month, #card-expiration-year').change(function () {
+            m = $('#card-expiration-month option').index($('#card-expiration-month option:selected'));
+            m = (m < 10) ? '0' + m : m;
+            y = $('#card-expiration-year').val().substr(2, 2);
+            $('.card-expiration-date div').html(m + '/' + y);
+        })
+
+        $('#card-ccv').on('focus', function () {
+            $('.credit-card-box').addClass('hover');
+        }).on('blur', function () {
+            $('.credit-card-box').removeClass('hover');
+        }).on('keyup change', function () {
+            $('.ccv div').html($(this).val());
+        });
+
+        setTimeout(function () {
+            $('#card-number-2').focus();
+        }, 500);
+
+        const ActivationMsg = document.getElementById('CardActivationMsg').innerHTML;
+
+        if (ActivationMsg == "Card Activated Successfully") {
+            if (sessionStorage.getItem("annyangStatus" == "true"){
+                speakResponse("Card activated successfully.")
+            }
+        }
+        else if (ActivationMsg == "Card Activation Failed") {
+            if (sessionStorage.getItem("annyangStatus" == "true"){
+                speakResponse("Card activation failed.")
+            }
+        }
+
+        $(document).ready(function () {
+            $('#card-expiration-month').change(function () {
+                var selectedMonth = $(this).val();
+                $('#selected-month').val(selectedMonth);
+            });
+        });
+
+    </script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/annyang-setup.js" asp-append-version="true"></script>
+    <script src="~/js/search.js" asp-append-version="true"></script>
+
+</body>
+</html>
