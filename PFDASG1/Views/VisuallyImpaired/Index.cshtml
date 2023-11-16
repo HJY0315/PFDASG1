@@ -1,5 +1,12 @@
 ﻿@model IEnumerable<PFDASG1.Models.Transactions>
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 @{
+    int userid = 0;
+    if (HttpContextAccessor.HttpContext != null)
+    {
+        userid = HttpContextAccessor.HttpContext.Session.GetInt32("id") ?? 0;
+    }
     Layout = null;
 }
 
@@ -47,14 +54,14 @@
                 // Add amounts for non-sender transactions
                 foreach (var item in Model)
                 {
-                    if (item.SenderID != item.AccountId)
+                    if (item.SenderID != @userid)
                     {
                         totalBalance += item.Amount;
                     }
                 }
 
                 // Subtract amounts for sender transactions
-                var senderTransactions = Model.Where(item => item.SenderID == item.AccountId);
+                var senderTransactions = Model.Where(item => item.SenderID == @userid);
                 decimal amountToSubtract = senderTransactions.Sum(item => item.Amount);
                 totalBalance -= amountToSubtract;
 
@@ -88,7 +95,7 @@
                                 <tr>
                                     <td>@item.TransactionDate</td>
                                     <td>@item.Description</td>
-                                    <td>@(item.RecipientID == item.AccountId ? "+" : "-")@item.Amount.ToString("0.00")</td>
+                                    <td>@(item.RecipientID == @userid ? "+" : "-")@item.Amount.ToString("0.00")</td>
                                     <td>@item.RecipientID</td>
                                     <td>@item.SenderID</td>
                                 </tr>

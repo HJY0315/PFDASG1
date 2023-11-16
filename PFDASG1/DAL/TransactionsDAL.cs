@@ -169,10 +169,10 @@ INNER JOIN
 ON
   t.accountId = a.accountId
 WHERE
-  (a.userId = @userId AND (t.senderId = a.accountId OR t.receiverId = a.accountId))
+  (t.senderId = @id OR t.receiverId = @id)
 ORDER BY
-  t.transactionDate DESC;";
-            cmd.Parameters.AddWithValue("@userID", userid);
+  t.transactionDate DESC";
+            cmd.Parameters.AddWithValue("@id", userid);
             //Open a database connection
             conn.Open();
             //Execute the SELECT SQL through a DataReader
