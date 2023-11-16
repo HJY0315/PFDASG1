@@ -291,6 +291,20 @@
         setTimeout(function () {
             $('#card-number-2').focus();
         }, 500);
+
+        const ActivationMsg = document.getElementById('CardActivationMsg').innerHTML;
+
+        if (ActivationMsg == "Card Activated Successfully") {
+            if (sessionStorage.getItem("annyangStatus" == "true"){
+                speakResponse("Card activated successfully.")
+            }
+        }
+        else if (ActivationMsg == "Card Activation Failed"){
+            if (sessionStorage.getItem("annyangStatus" == "true"){
+                speakResponse("Card activation failed.")
+            }
+        }
+
     </script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/annyang-setup.js" asp-append-version="true"></script>

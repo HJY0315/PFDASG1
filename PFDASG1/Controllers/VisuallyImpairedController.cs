@@ -10,11 +10,45 @@ namespace PFDASG1.Controllers
     {
         private SearchDAL SearchDAL = new SearchDAL();
         TransactionsDAL TransactionsContext = new TransactionsDAL();
+        CardActivationDAL CardActivationContext = new CardActivationDAL();
         User user;
         
 
         public IActionResult CardActivation()
         {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult CardActivation(CreditCard cardinfo)
+        {
+            // Access the form data through the model properties
+            var cardNumber = cardinfo.cardNumber;
+            var cardHolder = cardinfo.cardHolderName;
+            var expirationDate = cardinfo.expirationDate;
+            var ccv = cardinfo.cvv;
+            var securityQuestion = cardinfo.securityQuestion;
+            var securityAnswer = cardinfo.answer;
+
+            string msg = "";
+            int cardID = CardActivationContext.cardVerification(cardinfo,out msg);
+            if (msg != "")
+            {
+                bool ActivationSuccess = CardActivationContext.UpdateCardStatus(cardID);
+                if (ActivationSuccess)
+                {
+                    ViewData["CardActivation"] = "Card Activated Successfully";
+                }
+                else
+                {
+                    ViewData["CardActivation"] = "Card Activation Failed";
+                }
+            }
+            else
+            {
+                ViewData["CardActivation"] = msg; //if the card is alr been activated
+            }
+
             return View();
         }
 
@@ -45,9 +79,7 @@ namespace PFDASG1.Controllers
             // Add the transaction to the TransactionsContext
             TransactionsContext.Add(transactionViewModel);
 
-            // Set the TempData variables to display a success message
-            TempData["message"] = "Money has successfully been transferred";
-            TempData["status"] = "success";
+          
             //}
             //catch (Exception ex)
             //{
