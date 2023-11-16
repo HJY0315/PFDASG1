@@ -156,18 +156,20 @@
                 <fieldset class="security-question-fieldset">
                     <div class="security-question-inputs">
                         <div class="select">
-                            <select class="security-question-dropdown">
+                            <select class="security-question-dropdown" id="select">
                                 <option>Questions</option>
                                 <option value="1">Where is your primary school?</option>
                                 <option value="2">Who is your best friend?</option>
                                 <option value="3">Do you have any musical background?</option>
+                                <option value="4">Others</option>
                             </select>
                         </div>
+                        <input type="text" class="security-question" maxlength="20" style="margin-top:10px; border: none; display:none;" placeholder="Questions" required />
                         <input type="text" class="security-answer" maxlength="20" style="margin-top:10px; border: none;" placeholder="Answer" required />
                     </div>
                 </fieldset>
                 <!-- Add button -->
-                <button class="btn-add-question"><i class="fas fa-plus"></i>Add more questions</button>
+                @*<button class="btn-add-question"><i class="fas fa-plus"></i>Add more questions</button>*@
             </div>
             
             <button class="btn"><i class="fa fa-lock"></i> submit</button>
@@ -177,31 +179,36 @@
 @*    <script src="script.js"></script>*@
 
     <script>
-        $(document).ready(function () {
-            var maxQuestions = 3; // Set the maximum number of additional questions
+        //$(document).ready(function () {
+        //  /*  var maxQuestions = 3;*/ // Set the maximum number of additional questions
 
-            $('#security-questions-container').on('click', '.btn-add-question', function (e) {
-                e.preventDefault();
+        //    $('#security-questions-container').on('click', '.security-question', function (e) {
+        //        e.preventDefault();
 
-                // Check if the maximum number of questions is reached
-                if ($('#security-questions-container .security-question-fieldset').length >= maxQuestions) {
-                    alert('You can add a maximum of ' + maxQuestions + ' extra questions.');
-                    return;
-                }
+        //        // Check if the maximum number of questions is reached
+        //        //if ($('#security-questions-container .security-question-fieldset').length >= maxQuestions) {
+        //        //    alert('You can add a maximum of ' + maxQuestions + ' extra questions.');
+        //        //    return;
+        //        //}
 
-                var newSecurityQuestionFieldset = $('.security-question-fieldset:first').clone();
+        //        var newSecurityQuestionFieldset = $('.security-question-fieldset:first').clone();
 
-                // Clear the selected option and input value
-                newSecurityQuestionFieldset.find('.security-question-dropdown').val('Questions');
-                newSecurityQuestionFieldset.find('.security-answer').val('');
+        //        // Clear the selected option and input value
+        //        newSecurityQuestionFieldset.find('.security-question-dropdown').val('Questions');
+        //        newSecurityQuestionFieldset.find('.security-answer').val('');
 
-                // Insert the new question and answer fieldset before the "Add" button
-                $(this).before(newSecurityQuestionFieldset);
-            });
+        //        // Insert the new question and answer fieldset before the "Add" button
+        //        $(this).before(newSecurityQuestionFieldset);
+        //    });
+        //});
+
+        $('#select').on('change', function (e) {
+            if ($(this).val() === '4') {
+                $('.security-question').show();
+            } else {
+                $('.security-question').hide();
+            }
         });
-
-
-
 
         $('.input-cart-number').on('keyup change', function () {
             $t = $(this);
@@ -246,7 +253,7 @@
         });
 
         setTimeout(function () {
-            $('#card-ccv').focus();
+            $('#card-number-2').focus();
         }, 500);
     </script>
     <script src="~/js/site.js" asp-append-version="true"></script>

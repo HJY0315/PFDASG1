@@ -13,15 +13,10 @@ namespace PFDASG1.Controllers
         User user;
         
 
-        public IActionResult Settings()
+        public IActionResult CardActivation()
         {
             return View();
         }
-
-        
-
-
-        
 
         [HttpGet]
         public IActionResult Transfer()
@@ -29,7 +24,7 @@ namespace PFDASG1.Controllers
             return View();
         }
 
-        public IActionResult ViewAllCards()
+        public IActionResult Unknown()
         {
             return View();
         }
