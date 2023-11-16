@@ -169,11 +169,11 @@
             try {
                 conn.Open(); // Establish connection to the database
 
-                string query = "SELECT SUM(Amount) AS totalWithdrawAmount FROM transactions WHERE SenderID = @userId AND Description LIKE '%withdraw%'"; // Example SQL query
+                string query = "SELECT SUM(Amount) AS totalWithdrawAmount FROM transactions WHERE SenderID = userId AND Description LIKE '%withdraw%'"; // Example SQL query
 
                 SqlCommand command = new SqlCommand(query, conn);
 
-                SqlParameter userIdParameter = new SqlParameter("@userId", userId);
+                SqlParameter userIdParameter = new SqlParameter("userId", userId);
                 command.Parameters.Add(userIdParameter); // Add parameter to the command
 
                 SqlDataReader reader = command.ExecuteReader(); // Execute the query and retrieve results
@@ -206,11 +206,11 @@
             //conn = new SqlConnection(strConn);
 
             //// Write SQL query
-            //var query = 'SELECT SUM(Amount) AS totalDepositAmount FROM transactions WHERE SenderID = @userId AND Description LIKE "%deposit%"';
+            //var query = 'SELECT SUM(Amount) AS totalDepositAmount FROM transactions WHERE SenderID = userId AND Description LIKE "%deposit%"';
 
 
             //var statement = conn.prepare(query);
-            //statement.bind('@userId', @userId);
+            //statement.bind('userId', userId);
             //statement.execute();
             //var result = statement.get_result();
 
