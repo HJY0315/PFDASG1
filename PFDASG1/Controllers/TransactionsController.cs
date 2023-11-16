@@ -28,7 +28,10 @@ namespace PFDASG1.Controllers
                 int userId = (int)HttpContext.Session.GetInt32("Userid");
                 Transactions transaction = new Transactions();
                 
+                
                 //TransactionsContext.Add(transaction, userId);
+
+
 
                 TempData["message"] = "Money has successfully been transferred";
                 TempData["status"] = "success";
