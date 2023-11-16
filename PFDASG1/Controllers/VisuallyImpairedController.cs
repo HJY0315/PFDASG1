@@ -75,6 +75,7 @@ namespace PFDASG1.Controllers
         public IActionResult Transfer()
         {
             TransactionViewModel transactionViewModel = new TransactionViewModel();
+           
             return View(transactionViewModel);
         }
 
@@ -98,7 +99,8 @@ namespace PFDASG1.Controllers
             // Add the transaction to the TransactionsContext
             TransactionsContext.Add(transactionViewModel);
 
-          
+            decimal remainingBalance = TransactionsContext.GetAccountBalance(userId);
+            ViewBag.amount = remainingBalance;
             //}
             //catch (Exception ex)
             //{

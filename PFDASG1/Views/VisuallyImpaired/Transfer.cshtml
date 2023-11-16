@@ -17,6 +17,7 @@
 
 <body>
     <header>
+
         @await Html.PartialAsync("_navbar.cshtml")
     </header>
     <div class="transfer-form container mt-5">
@@ -88,8 +89,9 @@
                     <input type="number" id="amount" asp-for="Amount" required ="" />
                     <span asp-validation-for="Amount" class="text-danger"></span>
 
-                 @*   <label asp-for="RemainingBalance">Remaining Balance:</label>
-                    <span id="remainingBalance">@Model.accountBalance</span>*@
+                  @*  <label>Remaining Balance:</label>
+                    <p>$@ViewBag.amount</p>*@
+
 
                     <label asp-for="Description">Description</label>
                     <input type="text" id="description" asp-for="Description" />
