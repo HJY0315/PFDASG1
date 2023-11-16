@@ -10,11 +10,47 @@ namespace PFDASG1.Controllers
     {
         private SearchDAL SearchDAL = new SearchDAL();
         TransactionsDAL TransactionsContext = new TransactionsDAL();
+        CardActivationDAL CardActivationContext = new CardActivationDAL();
         User user;
         
 
         public IActionResult CardActivation()
         {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult CardActivation(CreditCard cardinfo, string selectedMonth)
+        {
+            // Access the form data through the model properties
+            var cardNumber1 = cardinfo.cardNumber1;
+            var cardNumber2 = cardinfo.cardNumber2;
+            var cardHolder = cardinfo.cardHolderName;
+            var expirationMonth = cardinfo.expirationMonth;
+            var expirationYear = cardinfo.expirationYear;
+            var ccv = cardinfo.cvv;
+            var securityQuestion = cardinfo.securityQuestion;
+            var securityAnswer = cardinfo.answer;
+
+            string msg = "";
+            int cardID = CardActivationContext.cardVerification(cardinfo,out msg);
+            if (msg != "")
+            {
+                bool ActivationSuccess = CardActivationContext.UpdateCardStatus(cardID);
+                if (ActivationSuccess)
+                {
+                    ViewData["CardActivation"] = "Card Activated Successfully";
+                }
+                else
+                {
+                    ViewData["CardActivation"] = "Card Activation Failed";
+                }
+            }
+            else
+            {
+                ViewData["CardActivation"] = msg; //if the card is alr been activated
+            }
+
             return View();
         }
 

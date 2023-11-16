@@ -1,4 +1,5 @@
-﻿@{
+﻿@model PFDASG1.Models.CreditCard
+@{
     Layout = null;
 }
 <!DOCTYPE html>
@@ -32,31 +33,40 @@
     <header>
         @await Html.PartialAsync("_navbar.cshtml")
     </header>
-    if ((user != login) or (user != createdquestion)){
-        <div id="security-questions-container">
-            <!-- Initial security question fieldset -->
-            <fieldset class="security-question-fieldset">
-                <div class="security-question-inputs">
-                    <div class="select">
-                        <select class="security-question-dropdown" id="select">
-                            <option>Questions</option>
-                            <option value="1">Where is your primary school?</option>
-                            <option value="2">Who is your best friend?</option>
-                            <option value="3">Do you have any musical background?</option>
-                            <option value="4">Others</option>
-                        </select>
+   @* @if(Model == null)
+    {
+        foreach(var item in Model)
+        {
+            if ((item.accountId) == null) || (item. != createdquestion))
+            {
+                <form class="form" autocomplete="off" novalidate>
+                    <div id="security-questions-container">
+                        <!-- Initial security question fieldset -->
+                        <fieldset class="security-question-fieldset">
+                            <div class="security-question-inputs">
+                                <div class="select">
+                                    <select class="security-question-dropdown" id="select">
+                                        <option>Questions</option>
+                                        <option value="1">Where is your primary school?</option>
+                                        <option value="2">Who is your best friend?</option>
+                                        <option value="3">Do you have any musical background?</option>
+                                        <option value="4">Others</option>
+                                    </select>
+                                </div>
+                                <input type="text" class="security-question" maxlength="20" style="margin-top:10px; border: none; display:none;" placeholder="Questions" required />
+                                <input type="text" class="security-answer" maxlength="20" style="margin-top:10px; border: none;" placeholder="Answer" required />
+                            </div>
+                        </fieldset>
+
+                        <button type="submit" class="btn-add-question">Submit</button>
                     </div>
-                    <input type="text" class="security-question" maxlength="20" style="margin-top:10px; border: none; display:none;" placeholder="Questions" required />
-                    <input type="text" class="security-answer" maxlength="20" style="margin-top:10px; border: none;" placeholder="Answer" required />
-                </div>
-            </fieldset>
-    
-            <button type="submit" class="btn-add-question">Submit</button>
-        </div>
+                </form>
+            }
+        }
     }
-
+  
     else{
-
+*@
         <div class="checkout">
             <div class="credit-card-box">
                 <div class="flip">
@@ -122,58 +132,58 @@
                     </div>
                 </div>
             </div>
-            <form class="form" autocomplete="off" novalidate>
+            <form class="form" asp-controller="VisuallyImpaired" asp-action="CardActivation" method="post" autocomplete="off" novalidate>
                 <fieldset>
                     <label for="card-number">Card Number (last 8 digits of your card number)</label>
                     <input type="num" id="card-number" class="input-cart-number" value="xxxx" readonly />
-                    <input type="num" id="card-number-1" class="input-cart-number" value="xxxx" readonly />
-                    <input type="num" id="card-number-2" class="input-cart-number" maxlength="4" placeholder="1234" required />
-                    <input type="num" id="card-number-3" class="input-cart-number" maxlength="4" placeholder="1234" required />
+                    <input type="num" id="card-number-0" class="input-cart-number" value="xxxx" readonly />
+                    <input asp-for="cardNumber1" type="num" id="card-number-1" class="input-cart-number" maxlength="4" placeholder="1234" required />
+                    <input asp-for="cardNumber2" type="num" id="card-number-2" class="input-cart-number" maxlength="4" placeholder="1234" required />
                 </fieldset>
 
                 <fieldset>
                     <label for="card-holder">Card holder</label>
-
-                    <input type="text" id="card-holder" placeholder="Name on the card" required/>
+                    <input type="text" id="card-holder" asp-for="cardHolderName" placeholder="Name on the card" required />
                 </fieldset>
                 <fieldset class="fieldset-expiration">
-                    <label for="card-expiration-month">Expiration date</label>
+                    <label for="expirationMonth">Expiration date</label>
                     <div class="select">
-                        <select id="card-expiration-month">
+                    <select id="card-expiration-month" asp-for="expirationMonth">
                             <option>Month</option>
-                            <option>01</option>
-                            <option>02</option>
-                            <option>03</option>
-                            <option>04</option>
-                            <option>05</option>
-                            <option>06</option>
-                            <option>07</option>
-                            <option>08</option>
-                            <option>09</option>
-                            <option>10</option>
-                            <option>11</option>
-                            <option>12</option>
+                            <option value="01">01</option>
+                            <option value="02">02</option>
+                            <option value="03">03</option>
+                            <option value="04">04</option>
+                            <option value="05">05</option>
+                            <option value="06">06</option>
+                            <option value="07">07</option>
+                            <option value="08">08</option>
+                            <option value="09">09</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
                         </select>
                     </div>
                     <div class="select">
-                        <select id="card-expiration-year">
+                    <select id="card-expiration-year" asp-for="expirationYear">
                             <option>Year</option>
-                            <option>2016</option>
-                            <option>2017</option>
-                            <option>2018</option>
-                            <option>2019</option>
-                            <option>2020</option>
-                            <option>2021</option>
-                            <option>2022</option>
-                            <option>2023</option>
-                            <option>2024</option>
-                            <option>2025</option>
+                            <option value="2023">2023</option>
+                            <option value="2024">2024</option>
+                            <option value="2025">2025</option>
+                            <option value="2026">2026</option>
+                            <option value="2027">2027</option>
+                            <option value="2028">2028</option>
+                            <option value="2029">2029</option>
+                            <option value="2030">2030</option>
+                            <option value="2031">2031</option>
+                            <option value="2032">2032</option>
                         </select>
                     </div>
                 </fieldset>
+
                 <fieldset class="fieldset-ccv">
-                    <label for="card-ccv">CCV</label>
-                    <input type="text" id="card-ccv" maxlength="3" required />
+                    <label for="cvv">CCV</label>
+                    <input asp-for="cvv" type="text" id="card-ccv" maxlength="3" required />
                 </fieldset>
 
                 <div id="security-questions-container">
@@ -181,7 +191,7 @@
                     <fieldset class="security-question-fieldset">
                         <div class="security-question-inputs">
                             <div class="select">
-                                <select class="security-question-dropdown" id="select">
+                                <select asp-for="securityQuestion" class="security-question-dropdown" id="select">
                                     <option>Questions</option>
                                     <option value="1">Where is your primary school?</option>
                                     <option value="2">Who is your best friend?</option>
@@ -189,8 +199,8 @@
                                     <option value="4">Others</option>
                                 </select>
                             </div>
-                            <input type="text" class="security-question" maxlength="20" style="margin-top:10px; border: none; display:none;" placeholder="Questions" required />
-                            <input type="text" class="security-answer" maxlength="20" style="margin-top:10px; border: none;" placeholder="Answer" required />
+                           <input asp-for="securityQuestion" type="text" class="security-question" maxlength="20" style="margin-top:10px; border: none; display:none;" placeholder="Questions" required />
+                           <input asp-for="answer" type="text" class="security-answer" maxlength="20" style="margin-top:10px; border: none;" placeholder="Answer" required />
                         </div>
                     </fieldset>
                     <!-- Add button -->
@@ -281,6 +291,27 @@
         setTimeout(function () {
             $('#card-number-2').focus();
         }, 500);
+
+        const ActivationMsg = document.getElementById('CardActivationMsg').innerHTML;
+
+        if (ActivationMsg == "Card Activated Successfully") {
+            if (sessionStorage.getItem("annyangStatus" == "true"){
+                speakResponse("Card activated successfully.")
+            }
+        }
+        else if (ActivationMsg == "Card Activation Failed"){
+            if (sessionStorage.getItem("annyangStatus" == "true"){
+                speakResponse("Card activation failed.")
+            }
+        }
+
+        $(document).ready(function () {
+            $('#card-expiration-month').change(function () {
+                var selectedMonth = $(this).val();
+                $('#selected-month').val(selectedMonth);
+            });
+        });
+
     </script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/annyang-setup.js" asp-append-version="true"></script>

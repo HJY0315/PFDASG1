@@ -4,29 +4,48 @@ namespace PFDASG1.Models
 {
     public class CreditCard
     {
-        [Required(ErrorMessage = "Credit card ID is required.")]
         [Display(Name = "Credit Card ID")]
         public int creditCardId { get; set; }
 
-        [Required(ErrorMessage = "Account ID is required.")]
         [Display(Name = "Account ID")]
         public int accountId { get; set; }
 
         [Required(ErrorMessage = "Card number is required.")]
-        [Display(Name = "Card Number")]
-        [StringLength(20, ErrorMessage = "Card number cannot exceed 20 characters.")]
-        [RegularExpression(@"^[0-9]{16}$", ErrorMessage = "Card number must be 16 digits long.")]
-        public string cardNumber { get; set; }
+        [Display(Name = "Card Number1")]
+        [StringLength(16, ErrorMessage = "Card number cannot exceed 4 characters.")]
+        public string cardNumber1 { get; set; }
+
+        [Required(ErrorMessage = "Card number is required.")]
+        [Display(Name = "Card Number2")]
+        [StringLength(16, ErrorMessage = "Card number cannot exceed 4 characters.")]
+        public string cardNumber2 { get; set; }
 
         [Required(ErrorMessage = "Expiration date is required.")]
-        [Display(Name = "Expiration Date")]
-        //[DateRange(DateTime.Today, DateTime.Today.AddYears(10), ErrorMessage = "Expiration date must be within the next 10 years.")]
-        public DateTime expirationDate { get; set; }
+        [Display(Name = "Expiration Month")]
+        public DateTime expirationMonth { get; set; }
+
+        [Required(ErrorMessage = "Expiration date is required.")]
+        [Display(Name = "Expiration Year")]
+        public DateTime expirationYear { get; set; }
 
         [Required(ErrorMessage = "CVV is required.")]
         [Display(Name = "CVV")]
         [StringLength(3, ErrorMessage = "CVV must be 3 characters long.")]
         [RegularExpression(@"^[0-9]{3}$", ErrorMessage = "CVV must be 3 digits long.")]
         public string cvv { get; set; }
+
+        [Required(ErrorMessage = "Card Holder Name is required")]
+        [Display(Name = "Card Holder Name")]
+        [StringLength(25, ErrorMessage = "Card Holder Name cannot exceed 25 characters")]
+        public string cardHolderName { get; set; }
+
+        [Display(Name = "Card Status")]
+        public string cardStatus { get; set; }
+
+        [Display(Name = "Security Question")]
+        public string securityQuestion { get; set; }
+
+        [Display(Name = "Answer")]
+        public string answer { get; set; }
     }
 }
