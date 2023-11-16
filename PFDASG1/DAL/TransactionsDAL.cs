@@ -110,7 +110,22 @@ namespace PFDASG1.DAL
             //}
 
             conn.Open();
+            SqlCommand deductCmd = conn.CreateCommand();
+            deductCmd.CommandText = @"UPDATE Accounts SET accountBalance = accountBalance - @amount WHERE accountId = @senderId";
+            deductCmd.Parameters.AddWithValue("@amount", transactionViewModel.Amount);
+            deductCmd.Parameters.AddWithValue("@senderId", transactionViewModel.senderID);
 
+            // Execute the UPDATE SQL statement
+            deductCmd.ExecuteNonQuery();
+
+            // Create a SQL statement to add the transaction amount to the recipient's account balance
+            SqlCommand addCmd = conn.CreateCommand();
+            addCmd.CommandText = @"UPDATE Accounts SET accountBalance = accountBalance + @amount WHERE accountId = @receiverId";
+            addCmd.Parameters.AddWithValue("@amount", transactionViewModel.Amount);
+            addCmd.Parameters.AddWithValue("@receiverId", transactionViewModel.receipient.Userid);
+
+            // Execute the UPDATE SQL statement
+            addCmd.ExecuteNonQuery();
             // Create a SqlCommand object to insert the transaction data
             SqlCommand cmd = conn.CreateCommand();
             cmd.CommandText = @"INSERT INTO Transactions ( description, accountId, amount, transactionDate, receiverId, senderId)
@@ -133,7 +148,7 @@ namespace PFDASG1.DAL
 
             return transactionViewModel.TransactionId;
         }
-        public List<Transactions> getalltransactions(int userid)
+            public List<Transactions> getalltransactions(int userid)
         {   
 
             //Create a SqlCommand object from connection object
