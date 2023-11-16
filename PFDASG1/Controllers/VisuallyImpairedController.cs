@@ -29,6 +29,7 @@ namespace PFDASG1.Controllers
         [HttpPost]
         public IActionResult CardActivation(CreditCard cardinfo, string selectedMonth)
         {
+            ViewBag.UserName = HttpContext.Session.GetString("Name");
             if (HttpContext.Session.GetString("Name") != null)
             {
                 ViewData["ShowSQSetUp"] = false; //if user is logged in, then dn setup

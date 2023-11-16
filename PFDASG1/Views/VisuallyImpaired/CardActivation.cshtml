@@ -1,6 +1,19 @@
 ﻿@model PFDASG1.Models.CreditCard
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 @{
     Layout = null;
+    int userid = 0;
+    if (HttpContextAccessor.HttpContext != null)
+    {
+        userid = HttpContextAccessor.HttpContext.Session.GetInt32("id") ?? 0;
+        <partial name="Navbar"/>
+    }
+    else{
+        <partial name="_navbar"/>
+    }
+    Layout = null;
+}
 }
 <!DOCTYPE html>
 <html>
@@ -31,7 +44,9 @@
 
 <body>
     <header>
-        @await Html.PartialAsync("_navbar.cshtml")
+
+   
+
     </header>
     @if (ViewData["ShowSQSetUp"] == null)
         {  

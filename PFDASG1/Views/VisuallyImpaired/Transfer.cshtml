@@ -18,7 +18,7 @@
 <body>
     <header>
 
-        @await Html.PartialAsync("_navbar.cshtml")
+        <partial name="_navbar" />
     </header>
     <div class="transfer-form container mt-5">
         <form asp-controller="VisuallyImpaired" asp-action="Transfer" method="post">
