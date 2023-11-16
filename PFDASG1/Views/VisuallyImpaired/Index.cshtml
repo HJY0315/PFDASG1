@@ -72,7 +72,7 @@
                 <p>No data available</p>
             }
 
-            <canvas id="doughnutChart" style="width:350px; height:100%;"></canvas>
+            <canvas id="doughnutChart" style="width:350px; height:350px;"></canvas>
             </div>
             <div class="transaction-history">
                 <fieldset class="FormContent">
@@ -111,15 +111,19 @@
     }
 
     <script>
+
         document.addEventListener("DOMContentLoaded", function () {
-            // Data for the chart
+            // Fetch withdraw and deposit amounts from the database
+            var withdrawAmount = getWithdrawAmountFromDatabase();
+            var depositAmount = getDepositAmountFromDatabase();
+
+            // Update the chart data
             var data = {
-                labels: ["Withdraw","Deposit"],
+                labels: ["Withdraw", "Deposit"],
                 datasets: [
                     {
-                        
-                        data: [900, 100, 400, 200, 250], // Example account balances
-                        backgroundColor: ["#2C3E50", "#FC4349", "#6DBCDB", "#F7E248", "#D7DADB"],
+                        data: [withdrawAmount, depositAmount],
+                        backgroundColor: ["#2C3E50", "#FC4349"],
                     },
                 ],
             };
@@ -146,10 +150,129 @@
             ctx.font = "24px Arial";
             ctx.fillStyle = "#000";
             ctx.textAlign = "center";
-            ctx.fillText("$18,000", centerX, centerY);
+            ctx.fillText(calculateTotalBalance().toFixed(2), centerX, centerY);
             ctx.font = "16px Arial";
             ctx.fillText("Total Balance", centerX, centerY + 30);
         });
+
+        function getWithdrawAmountFromDatabase() {
+            int userId = 0;
+
+            if (HttpContextAccessor.HttpContext != null) {
+                userId = HttpContextAccessor.HttpContext.Session.GetInt32("id") ?? 0;
+            }
+
+            // Establish database connection
+            string strConn = Configuration.GetConnectionString("OCBCConnectionString");
+            SqlConnection conn = new SqlConnection(strConn);
+
+            try {
+                conn.Open(); // Establish connection to the database
+
+                string query = "SELECT SUM(Amount) AS totalWithdrawAmount FROM transactions WHERE SenderID = userId AND Description LIKE '%withdraw%'"; // Example SQL query
+
+                SqlCommand command = new SqlCommand(query, conn);
+
+                SqlParameter userIdParameter = new SqlParameter("userId", userId);
+                command.Parameters.Add(userIdParameter); // Add parameter to the command
+
+                SqlDataReader reader = command.ExecuteReader(); // Execute the query and retrieve results
+
+                // Process the retrieved data
+                var totalWithdrawAmount = 0;
+                if (reader.Read()) {
+                    totalWithdrawAmount = parseFloat(reader.GetString("totalWithdrawAmount"));
+                }
+
+                reader.Close(); // Close the reader object
+                conn.Close(); // Close the connection to the database
+                return totalWithdrawAmount;
+            }
+            catch (SqlException ex)
+            {
+                // Handle database-related errors
+                return 0; // Replace with appropriate error handling
+            }
+        }
+
+
+
+
+
+
+        function getDepositAmountFromDatabase() {
+            //// Establish database connection
+            // string strConn = Configuration.GetConnectionString("OCBCConnectionString");
+            //conn = new SqlConnection(strConn);
+
+            //// Write SQL query
+            //var query = 'SELECT SUM(Amount) AS totalDepositAmount FROM transactions WHERE SenderID = userId AND Description LIKE "%deposit%"';
+
+
+            //var statement = conn.prepare(query);
+            //statement.bind('userId', userId);
+            //statement.execute();
+            //var result = statement.get_result();
+
+            //var totalDepositAmount = 0;
+            //if (result.fetch_assoc()) {
+            //    totalDepositAmount = parseFloat(result.fetch_assoc()['totalDepositAmount']);
+            //}
+
+
+            //// Close database connection
+            //connection.close();
+
+            //// Return total deposit amount
+            //return totalDepositAmount;
+        }
+
+        function calculateTotalBalance() {
+            // Calculate total balance based on withdraw and deposit amounts
+            return withdrawAmount + depositAmount;
+        }
+
+
+
+        //document.addEventListener("DOMContentLoaded", function () {
+        //    // Data for the chart
+        //    var data = {
+        //        labels: ["Withdraw","Deposit"],
+        //        datasets: [
+        //            {
+                        
+        //                data: [900, 100, 400, 200, 250], // Example account balances
+        //                backgroundColor: ["#2C3E50", "#FC4349", "#6DBCDB", "#F7E248", "#D7DADB"],
+        //            },
+        //        ],
+        //    };
+
+        //    // Chart options
+        //    var options = {
+        //        responsive: false,
+        //        maintainAspectRatio: true,
+        //    };
+
+        //    // Get the chart canvas and create the doughnut chart
+        //    var ctx = document.getElementById("doughnutChart").getContext("2d");
+        //    var myDoughnutChart = new Chart(ctx, {
+        //        type: "doughnut",
+        //        data: data,
+        //        options: options,
+        //    });
+
+        //    // Get the center of the chart
+        //    var centerX = ctx.canvas.width / 2;
+        //    var centerY = ctx.canvas.height / 2;
+
+        //    // Manually add text inside the chart
+        //    ctx.font = "24px Arial";
+        //    ctx.fillStyle = "#000";
+        //    ctx.textAlign = "center";
+        //    ctx.fillText("$18,000", centerX, centerY);
+        //    ctx.font = "16px Arial";
+        //    ctx.fillText("Total Balance", centerX, centerY + 30);
+        //});
     </script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/search.js" asp-append-version="true"></script>

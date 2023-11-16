@@ -203,6 +203,17 @@ Form
         margin-right: 6px;
     }
 
+.security-question-inputs1 {
+    width: 80%;
+    margin: 130px;
+}
+
+.submit-button {
+    width: 80%;
+    margin-left: 130px;
+    margin-top:50px;
+}
+
 /*--------------------
 Checkout
 --------------------*/
