@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using PFDASG1.DAL;
 using PFDASG1.Models;
 using System.Diagnostics.Metrics;
+using System.Transactions;
 
 namespace PFDASG1.Controllers
 {
@@ -99,16 +100,79 @@ namespace PFDASG1.Controllers
             return View();
         }
 
-        public IActionResult Index()
+
+        [HttpGet]
+        public IActionResult GetCurrentBalance()
         {
-            // Use the userName parameter as needed in this action
-            string Name = HttpContext.Session.GetString("Name");
-            ViewBag.UserName = Name;
-            int Id = HttpContext.Session.GetInt32("id") ?? 0;
-            List<Transactions> transactions = TransactionsContext.getalltransactions(Id);
-            return View(transactions);
+            // Get the user's ID from the session
+            int sessionId = HttpContext.Session.GetInt32("id") ?? 0;
+
+            // Retrieve all transactions for the specified user
+            List<Transactions> transactions = TransactionsContext.getalltransactions(sessionId);
+
+            // Initialize the total balance variable
+            decimal totalBalance = 0;
+
+            // Add amounts for non-sender transactions
+            foreach (var item in transactions)
+            {
+                if (item.SenderID != sessionId)
+                {
+                    totalBalance += item.Amount;
+                }
+            }
+
+            // Subtract amounts for sender transactions
+            var senderTransactions = transactions.Where(item => item.SenderID == sessionId);
+            decimal amountToSubtract = senderTransactions.Sum(item => item.Amount);
+            totalBalance -= amountToSubtract;
+
+            // Return the total balance
+            return Json(new { totalBalance });
         }
 
+
+
+        public IActionResult Index(int userId, decimal amount)
+        {
+            // Get the user's name from the session
+            string userName = HttpContext.Session.GetString("Name");
+            ViewBag.UserName = userName;
+
+            // Get the user's ID from the session
+            int sessionId = HttpContext.Session.GetInt32("id") ?? 0;
+
+            // Retrieve transactions based on the session ID
+            List<Transactions> transactions = TransactionsContext.getalltransactions(sessionId);
+            // Initialize the total balance variable
+            decimal totalBalance = 0;
+
+            // Add amounts for non-sender transactions
+            foreach (var item in transactions)
+            {
+                if (item.SenderID != sessionId)
+                {
+                    totalBalance += item.Amount;
+                }
+                else
+                {
+                    totalBalance -= item.Amount;
+                }
+            }
+
+            // Subtract amounts for sender transactions
+            var senderTransactions = transactions.Where(item => item.SenderID == sessionId);
+            decimal amountToSubtract = senderTransactions.Sum(item => item.Amount);
+            totalBalance -= amountToSubtract;
+            decimal despostamount = totalBalance - amountToSubtract;
+            decimal withdrawlamount = despostamount - amountToSubtract;
+
+            ViewBag.amountToSubtract = amountToSubtract;
+            ViewBag.totalBalance = despostamount;
+
+
+            return View(transactions);
+        }
 
         public IActionResult Search()
         {
