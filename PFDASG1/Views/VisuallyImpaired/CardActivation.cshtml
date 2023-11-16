@@ -98,7 +98,7 @@
                 </div>
             </div>
         </div>
-        <form class="form" autocomplete="off" novalidate>
+        <form class="form" autocomplete="off" novalidate asp-controller="VisuallyImpaired" asp-action="CardActivation" method="post">
             <fieldset>
                 <label for="card-number">Card Number (last 8 digits of your card number)</label>
                 <input type="num" id="card-number" class="input-cart-number" value="xxxx" readonly />
@@ -169,6 +169,10 @@
                         <input type="text" class="security-answer" maxlength="20" style="margin-top:10px; border: none;" placeholder="Answer" required />
                     </div>
                 </fieldset>
+                @if (ViewData["CardActivation"] != null)
+                {
+                    <span class="form-control-plaintext text-danger" id="CardActivationMsg">@ViewData["CardActivation"]</span>
+                }
                 <!-- Add button -->
                 @*<button class="btn-add-question"><i class="fas fa-plus"></i>Add more questions</button>*@
             </div>
@@ -256,6 +260,20 @@
         setTimeout(function () {
             $('#card-number-2').focus();
         }, 500);
+
+        const ActivationMsg = document.getElementById('CardActivationMsg').innerHTML;
+
+        if (ActivationMsg == "Card Activated Successfully") {
+            if (sessionStorage.getItem("annyangStatus" == "true"){
+                speakResponse("Card activated successfully.")
+            }
+        }
+        else if (ActivationMsg == "Card Activation Failed"){
+            if (sessionStorage.getItem("annyangStatus" == "true"){
+                speakResponse("Card activation failed.")
+            }
+        }
+
     </script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/annyang-setup.js" asp-append-version="true"></script>
