@@ -1,5 +1,4 @@
-﻿@model PFDASG1.Models.TransactionViewModel
-
+﻿@model PFDASG1.Models.Transactions
 @{
     Layout = null;
 }
@@ -23,20 +22,20 @@
     <div class="transfer-form container mt-5">
         <form asp-controller="VisuallyImpaired" asp-action="Transfer" method="post">
             <div class="form-step-list">
-                <div class="form-step-item active">
+               @* <div class="form-step-item active">
                     <span class="item__step">1</span>
                     <p class="item__title mt-1">Select Account</p>
-                </div>
+                </div>*@
                 <div class="form-step-item text-center">
-                    <span class="item__step">2</span>
+                    <span class="item__step">1</span>
                     <p class="item__title mt-1">Search Recipient</p>
                 </div>
                 <div class="form-step-item text-center">
-                    <span class="item__step">3</span>
+                    <span class="item__step">2</span>
                     <p class="item__title mt-1">Enter Amount</p>
                 </div>
                 <div class="form-step-item text-right">
-                    <span class="item__step">4</span>
+                    <span class="item__step">3</span>
                     <p class="item__title mt-1">Review</p>
                 </div>
             </div>
@@ -54,38 +53,36 @@
 
                 <!-- Step 2: Select Payment Type -->
                 <div class="form-group step-content">
-@*                    <label="RecipientID>Search Recipient</label>*@
-                    <div class="form-group" id="mobileInput">
-                        <label></label>
-                        <input asp-for="phoneNumber" type="text" id="mobileNumber" placeholder="Enter Mobile Number" maxlength="8" />
-                        <span asp-validation-for="phoneNumber" class="text-danger"></span>
-                    </div>
-                  @*  <select name="paymentType" id="paymentType" onchange="updatePaymentMethod()" asp-for="RecipientID">
+                    <label asp-for="RecipientID">Search Recipient</label>
+                    <select name="paymentType" id="paymentType" onchange="updatePaymentMethod()" asp-for="RecipientID">
                         <option value="1">Please Select</option>
-                       @* <option value="2">NRIC</option>*@
-                     @*   <option value="2">Mobile Number</option>
-                    </select>*@
+                        <option value="2">NRIC</option>
+                        <option value="3">Mobile Number</option>
+                    </select>
 
                     <!-- Input for NRIC -->
-                @*    <div class="form-group" id="nricInput" style="display:none;">
+                    <div class="form-group" id="nricInput" style="display:none;">
                         <label asp-for="NRIC">Enter NRIC</label>
                         <input type="text" id="nric" placeholder="S1234567A" maxlength="9" />
                         <span asp-validation-for="NRIC" class="text-danger"></span>
                     </div>*@
 
                     <!-- Input for Mobile Number -->
-                    @*<div class="form-group" id="mobileInput" style="display:none;">
-                        <label asp-for="phoneNumber">Enter Mobile Number</label>
+                    <div class="form-group" id="mobileInput" style="display:none;">
+                        <label asp-for="MobileNumber">Enter Mobile Number</label>
                         <input type="text" id="mobileNumber" placeholder="91234567" maxlength="8" />
-                        <span asp-validation-for="phoneNumber" class="text-danger"></span>
-                    </div>*@
+                        <span asp-validation-for="MobileNumber" class="text-danger"></span>
+                    </div>
                 </div>
 
                 <!-- Step 3: Enter Amount -->
                 <div class="form-group step-content">
                     <label asp-for="Amount">Enter your Amount</label>
-                    <input type="text" id="amount" asp-for="Amount" required />
+                    <input type="text" id="amount" asp-for="Amount" required value="$"/>
                     <span asp-validation-for="Amount" class="text-danger"></span>
+
+                 @*   <label asp-for="RemainingBalance">Remaining Balance:</label>
+                    <span id="remainingBalance">@Model.accountBalance</span>*@
 
                     <label asp-for="Description">Description</label>
                     <input type="text" id="description" asp-for="Description" required />
@@ -148,7 +145,7 @@
 
             // Update the review content
             reviewAmount.textContent = amount;
-            reviewTransferTo.textContent = getTransferToText(paymentType);
+            //reviewTransferTo.textContent = getTransferToText(paymentType);
 
             // Display the description in the review
             const description = document.getElementById('description').value;
@@ -184,7 +181,7 @@
 
             // Perform your page navigation logic here
 
-            if (currentPage === 2) {
+            if (currentPage === 1) {
                 // Change the button text to "Confirm"
                 document.getElementById('nextBtn').innerText = 'Confirm';
                 // Update the onclick event to call a different function for confirmation

@@ -43,15 +43,10 @@ namespace PFDASG1.Controllers
 
 
 
-        //        TempData["message"] = "Money has successfully been transferred";
-        //        TempData["status"] = "success";
-        //        return View("Transfer");
 
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Log the exception details
-        //        Console.WriteLine($"Error: {ex.Message}\nStackTrace: {ex.StackTrace}");
+                TempData["message"] = "Money has successfully been transferred";
+                TempData["status"] = "success";
+                return View("Transfer");
 
         //        TempData["message"] = $"Failed to Transfer. Error: {ex.Message}";
         //        TempData["status"] = "danger";

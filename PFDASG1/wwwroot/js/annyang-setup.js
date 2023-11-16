@@ -158,6 +158,7 @@ if (annyang) {
 
 document.addEventListener("keydown", function (event) {
     if ((event.ctrlKey || event.metaKey) && event.key === " " && document.activeElement.tagName !== "INPUT") {
+        event.preventDefault();
         if (annyang && annyang.isListening()) {
             stopListening();
         } else {
