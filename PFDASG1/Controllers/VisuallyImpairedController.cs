@@ -11,14 +11,50 @@ namespace PFDASG1.Controllers
         TransactionsDAL TransactionsContext = new TransactionsDAL();
         User user;
 
+
         public IActionResult Settings()
         {
             return View();
         }
-    
+
+        
+
+
+        
+
+        [HttpGet]
         public IActionResult Transfer()
         {
             return View();
+        }
+
+
+
+        [HttpPost]
+        public IActionResult Transfer(Transactions transaction)
+        {
+            ModelState.Remove("TransactionDate");
+            ModelState.Remove("NRIC");
+            ModelState.Remove("MobileNumber");
+            ModelState.Remove("AccountId");
+
+            int userId = (int)HttpContext.Session.GetInt32("id");
+            if (ModelState.IsValid)
+            {
+                //transaction = new Transactions();
+                TransactionsContext.Add(transaction, userId);
+                TempData["message"] = "Money has successfully been transferred";
+                TempData["status"] = "success";
+
+                return RedirectToAction("Index"); // Redirect to a success page
+            }
+            else
+            {
+
+                return View(transaction);
+            }
+            // If the model state is not valid, return to the form with validation errors
+
         }
 
         public IActionResult ViewAllCards()
@@ -35,7 +71,7 @@ namespace PFDASG1.Controllers
             List<Transactions> transactions = TransactionsContext.getalltransactions(Id);
             return View(transactions);
         }
-  
+
 
         public IActionResult Search()
         {
