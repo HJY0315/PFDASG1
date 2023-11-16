@@ -33,11 +33,9 @@ namespace PFDASG1.Controllers
 
 
 
-
-
                 TempData["message"] = "Money has successfully been transferred";
                 TempData["status"] = "success";
-                return View("Transfer");
+                return View("Transfer", "VisuallyImpaired");
 
             }
             catch (Exception ex)
