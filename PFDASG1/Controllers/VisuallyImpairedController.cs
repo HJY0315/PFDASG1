@@ -35,6 +35,7 @@ namespace PFDASG1.Controllers
         [HttpPost]
         public IActionResult CardActivation(CreditCard cardinfo, SecurityQuestion questionAnswer = null)
         {
+            ViewBag.UserName = HttpContext.Session.GetString("Name");
             if (HttpContext.Session.GetString("Name") != null)
             {
                 TempData["ShowSQSetUp"] = false; //if user is logged in, then dn setup
@@ -143,8 +144,7 @@ namespace PFDASG1.Controllers
             // Add the transaction to the TransactionsContext
             TransactionsContext.Add(transactionViewModel);
 
-            decimal remainingBalance = TransactionsContext.GetAccountBalance(userId);
-            ViewBag.amount = remainingBalance;
+
             //}
             //catch (Exception ex)
             //{

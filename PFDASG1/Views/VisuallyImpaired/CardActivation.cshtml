@@ -1,7 +1,30 @@
 ﻿@model PFDASG1.Models.CreditCard
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 @{
-    Layout = null;
+     Layout = null;
+    int userid = 0;
+    var session = HttpContextAccessor.HttpContext;
+
+    if (session != null)
+    {
+        userid = session.Session.GetInt32("id") ?? 0;
+
+        if (userid > 0)
+        {
+            // User is logged in, load the appropriate navbar
+            <partial name="_navbar" />
+        }
+        else
+        {
+            // User is not logged in, load an alternate navbar or handle the scenario
+            <partial name="Navbar" />
+        }
+    }
+
 }
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -31,7 +54,9 @@
 
 <body>
     <header>
-        @await Html.PartialAsync("_navbar.cshtml")
+
+   
+
     </header>
     <div class="checkout">
         <div class="credit-card-box">
@@ -184,6 +209,8 @@
     @*    <script src="script.js"></script>*@
 
     <script>
+
+        
         //$(document).ready(function () {
         //  /*  var maxQuestions = 3;*/ // Set the maximum number of additional questions
 
@@ -252,8 +279,10 @@
         });
 
         setTimeout(function () {
-            $('#card-number-2').focus();
+            $('#card-number-1').focus();
         }, 500);
+
+        
 
         const ActivationMsg = document.getElementById('CardActivationMsg').innerHTML;
 
