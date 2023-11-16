@@ -302,3 +302,7 @@ Form
 .enlarged-text {
     font-size: 1.6em;
 }
+
+.enlargePage {
+    zoom: 1.6; /* Adjust the zoom factor as needed */
+}

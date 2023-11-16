@@ -29,7 +29,7 @@
 
   
 </head>
-<body>
+<body class="enlargePage">
     <header>
         @await Html.PartialAsync("Navbar.cshtml")
     </header>
@@ -209,6 +209,7 @@
             activateCount++;
             sessionStorage.setItem("activateCount", activateCount);
         }
+        toggleEnlargedPage();
         toggleEnlargedText();
     }
 
