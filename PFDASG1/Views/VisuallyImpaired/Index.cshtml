@@ -85,8 +85,8 @@
                                 <th>Transaction Date</th>
                                 <th>Description</th>
                                 <th>Amount</th>
-                                <th>Receiver</th>
-                                <th>Sender</th>
+
+
                             </tr>
                         </thead>
                     <tbody>
@@ -100,8 +100,7 @@
                                     <td style="color: @(item.RecipientID == @userid ? "green" : "red"); font-weight:bold; font-size: 25px">
                                         @(item.RecipientID == @userid ? "+" : "-")@item.Amount.ToString("0.00")
                                     </td>
-                                    <td>@item.RecipientID</td>
-                                    <td>@item.SenderID</td>
+
                                 </tr>
                             }
                         }
