@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using PFDASG1.DAL;
 using PFDASG1.Models;
 using System.Diagnostics.Metrics;
+using System.Dynamic;
 using System.Transactions;
 using System.Xml.Linq;
 
@@ -14,35 +15,34 @@ namespace PFDASG1.Controllers
         TransactionsDAL TransactionsContext = new TransactionsDAL();
         CardActivationDAL CardActivationContext = new CardActivationDAL();
         User user;
-        
+
 
         public IActionResult CardActivation()
         {
             ViewData["CardActivation"] = null;
             if (HttpContext.Session.GetString("Name") != null)
             {
-                ViewData["ShowSQSetUp"] = false; //if user is logged in, then dn setup
+                TempData["ShowSQSetUp"] = false; //if user is logged in, then dn setup
             }
+            if (TempData["showSQSetUp"] == null)
+            {
+                return RedirectToAction("SQSetUp");
+            }
+
             return View();
         }
 
         [HttpPost]
-        public IActionResult CardActivation(CreditCard cardinfo, string selectedMonth)
+        public IActionResult CardActivation(CreditCard cardinfo, SecurityQuestion questionAnswer = null)
         {
             if (HttpContext.Session.GetString("Name") != null)
             {
-                ViewData["ShowSQSetUp"] = false; //if user is logged in, then dn setup
+                TempData["ShowSQSetUp"] = false; //if user is logged in, then dn setup
             }
-            // Access the form data through the model properties
-            var cardNumber1 = cardinfo.cardNumber1;
-            var cardNumber2 = cardinfo.cardNumber2;
-            var cardHolder = cardinfo.cardHolderName;
-            var expirationMonth = cardinfo.expirationMonth;
-            var expirationYear = cardinfo.expirationYear;
-            var ccv = cardinfo.cvv;
+
             var securityQuestionNo = cardinfo.securityQuestion;
-            var securityAnswer = cardinfo.answer;
             var inputSecurityQuestion = "";
+
 
             if (securityQuestionNo == "1")
             {
@@ -56,13 +56,37 @@ namespace PFDASG1.Controllers
             {
                 inputSecurityQuestion = "Do you have any musical background?";
             }
+
+            var sq = HttpContext.Session.GetString("SQ");
+            var answer = HttpContext.Session.GetString("answer");
+
             string msg = "";
-            var loggedinUserName = HttpContext.Session.GetString("Name");
-            var loggedinUserID = HttpContext.Session.GetInt32("id");
+            if ((sq != null) && (answer != null)) //have temp question and answer
+            {
+                if ((sq == cardinfo.securityQuestion))
+                {
+                    if (answer.ToString() == cardinfo.answer.ToString())
+                    {
+                        //i leave it empty on purpose
+                    }
+                    else
+                    {
+                        msg = "Verification failed.";
+                    }
+                }
+                else
+                {
+                    msg = "Verification failed.";
+                }
+            }
+            if (HttpContext.Session.GetString("Name") != null)
+            {
+                var loggedinUserName = HttpContext.Session.GetString("Name");
+                var loggedinUserID = HttpContext.Session.GetInt32("id");
 
-            string userIdAsString = loggedinUserID.Value.ToString();
-            CardActivationContext.VerifySecurityQuestionAnswer(userIdAsString, cardinfo, inputSecurityQuestion, out msg);
-
+                string userIdAsString = loggedinUserID.Value.ToString();
+                CardActivationContext.VerifySecurityQuestionAnswer(userIdAsString, cardinfo, inputSecurityQuestion, out msg);
+            }
             if (msg != "")
             {
                 ViewData["CardActivation"] = msg;
@@ -87,9 +111,7 @@ namespace PFDASG1.Controllers
                     ViewData["CardActivation"] = msg; //if the card is alr been activated
                 }
             }
-
-
-
+            
             return View();
         }
 
@@ -97,7 +119,7 @@ namespace PFDASG1.Controllers
         public IActionResult Transfer()
         {
             TransactionViewModel transactionViewModel = new TransactionViewModel();
-           
+
             return View(transactionViewModel);
         }
 
@@ -218,6 +240,24 @@ namespace PFDASG1.Controllers
         {
             List<Pages> pagesList = SearchDAL.GetAllPages();
             return View(pagesList);
+        }
+
+        public IActionResult SQSetUp()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult SQSetUp(SecurityQuestion questionAnswer)
+        {
+            if (HttpContext.Session.GetString("Name") != null)
+            {
+                TempData["ShowSQSetUp"] = false; //if user is logged in, then dn setup
+            }
+            HttpContext.Session.SetString("SQ", questionAnswer.SQ);
+            HttpContext.Session.SetString("answer", questionAnswer.answer);
+            TempData["showSQSetUp"] = false;
+            return RedirectToAction("CardActivation", new { questionAnswer = questionAnswer });
         }
 
     }
