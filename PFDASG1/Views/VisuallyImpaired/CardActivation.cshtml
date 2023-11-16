@@ -33,41 +33,36 @@
     <header>
         @await Html.PartialAsync("_navbar.cshtml")
     </header>
-   @* @if(Model == null)
+    @if(Model == null)
     {
-        foreach(var item in Model)
-        {
-            if ((item.accountId) == null) || (item. != createdquestion))
-            {
-                <form class="form" autocomplete="off" novalidate>
-                    <div id="security-questions-container">
-                        <!-- Initial security question fieldset -->
-                        <fieldset class="security-question-fieldset">
-                            <div class="security-question-inputs">
-                                <div class="select">
-                                    <select class="security-question-dropdown" id="select">
-                                        <option>Questions</option>
-                                        <option value="1">Where is your primary school?</option>
-                                        <option value="2">Who is your best friend?</option>
-                                        <option value="3">Do you have any musical background?</option>
-                                        <option value="4">Others</option>
-                                    </select>
-                                </div>
-                                <input type="text" class="security-question" maxlength="20" style="margin-top:10px; border: none; display:none;" placeholder="Questions" required />
-                                <input type="text" class="security-answer" maxlength="20" style="margin-top:10px; border: none;" placeholder="Answer" required />
-                            </div>
-                        </fieldset>
-
-                        <button type="submit" class="btn-add-question">Submit</button>
+        <form class="form" autocomplete="off" novalidate>
+            <div id="security-questions-container1">
+                <!-- Initial security question fieldset -->
+                <fieldset class="security-question-fieldset">
+                    <div class="security-question-inputs1">
+                        <div class="select">
+                            <select class="security-question-dropdown" id="select">
+                                <option>Questions</option>
+                                <option value="1">Where is your primary school?</option>
+                                <option value="2">Who is your best friend?</option>
+                                <option value="3">Do you have any musical background?</option>
+                                <option value="4">Others</option>
+                            </select>
+                        </div>
+                        <input type="text" class="security-question" maxlength="20" style="margin-top:10px; border: none; display:none;" placeholder="Questions" required />
+                        <input type="text" class="security-answer" maxlength="20" style="margin-top:10px; border: none;" placeholder="Answer" required />
                     </div>
-                </form>
-            }
-        }
+                </fieldset>
+                <div class="submit-button">
+                    <button type="submit" class="btn-submit-question">Submit</button>
+                </div>
+            </div>
+        </form>
     }
   
     else{
-*@
-        <div class="checkout">
+
+        <div class="checkout" style="display:none;" id="checkout">
             <div class="credit-card-box">
                 <div class="flip">
                     <div class="front">
@@ -168,16 +163,8 @@
                     <div class="select">
                         <select id="card-expiration-year">
                             <option>Year</option>
-                            <option>2016</option>
-                            <option>2017</option>
-                            <option>2018</option>
-                            <option>2019</option>
-                            <option>2020</option>
-                            <option>2021</option>
-                            <option>2022</option>
                             <option>2023</option>
                             <option>2024</option>
-                            <option>2025</option>
                         </select>
                     </div>
                 </fieldset>
@@ -237,6 +224,17 @@
         //        $(this).before(newSecurityQuestionFieldset);
         //    });
         //});
+        $(document).ready(function () {
+            $('.btn-submit-question').on('click', function (e) {
+                e.preventDefault();
+
+                // Show the next part after submitting the security question
+                $('#checkout').show(); // Show the checkout div
+                $('#security-questions-container').hide(); // Hide the security questions container
+            });
+        });
+
+
 
         $('#select').on('change', function (e) {
             if ($(this).val() === '4') {
@@ -245,6 +243,8 @@
                 $('.security-question').hide();
             }
         });
+
+
 
         $('.input-cart-number').on('keyup change', function () {
             $t = $(this);
