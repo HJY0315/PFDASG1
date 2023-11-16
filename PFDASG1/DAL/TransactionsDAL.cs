@@ -134,7 +134,7 @@ namespace PFDASG1.DAL
 
             // Add parameters with validated and sanitized values
             //cmd.Parameters.AddWithValue("@transactionId", transactionViewModel.TransactionId);
-            cmd.Parameters.AddWithValue("@description", transactionViewModel.Description);
+            cmd.Parameters.AddWithValue("@description", transactionViewModel.Description == null ? DBNull.Value : transactionViewModel.Description);
             cmd.Parameters.AddWithValue("@accountId", transactionViewModel.senderID);
             cmd.Parameters.AddWithValue("@amount", transactionViewModel.Amount);
             cmd.Parameters.AddWithValue("@transactionDate", DateTime.Now);
@@ -148,8 +148,8 @@ namespace PFDASG1.DAL
 
             return transactionViewModel.TransactionId;
         }
-            public List<Transactions> getalltransactions(int userid)
-        {   
+        public List<Transactions> getalltransactions(int userid)
+        {
 
             //Create a SqlCommand object from connection object
             SqlCommand cmd = conn.CreateCommand();
@@ -187,7 +187,7 @@ ORDER BY
                     new Transactions
                     {
                         TransactionId = reader.GetInt32(0),
-                        Description = reader.GetString(1),
+                        Description = reader.IsDBNull(1) ? null : reader.GetString(1), // Check if Description is null before setting it
                         AccountId = reader.GetInt32(2),
                         Amount = reader.GetDecimal(3),
                         TransactionDate = reader.GetDateTime(4),
@@ -207,7 +207,7 @@ ORDER BY
                 reader.Close();
                 conn.Close();
                 return new List<Transactions>();
-            }  
+            }
         }
     }
 }

@@ -16,6 +16,7 @@ namespace PFDASG1.Controllers
 
         public IActionResult CardActivation()
         {
+            ViewData["CardActivation"] = null;
             return View();
         }
 
@@ -29,12 +30,27 @@ namespace PFDASG1.Controllers
             var expirationMonth = cardinfo.expirationMonth;
             var expirationYear = cardinfo.expirationYear;
             var ccv = cardinfo.cvv;
-            var securityQuestion = cardinfo.securityQuestion;
+            var securityQuestionNo = cardinfo.securityQuestion;
             var securityAnswer = cardinfo.answer;
+            var securityQuestion = "";
+
+            if (securityQuestionNo == "1")
+            {
+                securityQuestion = "Where is your primary school?";
+            }
+            else if (securityQuestionNo == "2")
+            {
+                securityQuestion = "Who is your best friend?";
+            }
+            else if (securityQuestionNo == "3")
+            {
+                securityQuestion = "Do you have any musical background?";
+            }
+
 
             string msg = "";
-            int cardID = CardActivationContext.cardVerification(cardinfo,out msg);
-            if (msg != "")
+            int cardID = CardActivationContext.cardVerification(cardinfo,out msg, securityQuestion);
+            if (msg == "")
             {
                 bool ActivationSuccess = CardActivationContext.UpdateCardStatus(cardID);
                 if (ActivationSuccess)
