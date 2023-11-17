@@ -21,10 +21,7 @@
              <partial name="Navbar" />
         }
     }
-    else
-    {
-        <partial name="Navbar" />
-    }
+
 
 }
 
@@ -58,36 +55,7 @@
 
 <body>
   
-    @if (ViewData["ShowSQSetUp"] == null)
-        {  
-            <form class="form" autocomplete="off" novalidate>
-            <div id="security-questions-container">
-            <!-- Initial security question fieldset -->
-            <fieldset class="security-question-fieldset">
-                <div class="security-question-inputs">
-                        <label for="security-questions">Security Questions</label>
-                <div class="select">
-                    
-                    <select class="security-question-dropdown" id="select">
-                        <option>Questions</option>
-                        <option value="1">Where is your primary school?</option>
-                        <option value="2">Who is your best friend?</option>
-                        <option value="3">Do you have any musical background?</option>
-                    </select>
-                </div>
-                <input type="text" class="security-question" maxlength="20" style="margin-top:10px; border: none; display:none;" placeholder="Questions" required />
-                <input type="text" class="security-answer" maxlength="20" style="margin-top:10px; border: none;" placeholder="Answer" required />
-                </div>
-            </fieldset>
-
-            <button type="submit" class="btn-add-question">Submit</button>
-            </div>
-            </form>
-      
-    }
-
-
-    else{
+  
     
     <div class="checkout">
         <div class="credit-card-box">
@@ -117,11 +85,11 @@
                     <div class="number"></div>
                     <div class="card-holder">
                         <label>Card holder</label>
-                        <div></div>
+                        <div>1234 5678 1234 5678</div>
                     </div>
                     <div class="card-expiration-date">
                         <label>Expires</label>
-                        <div></div>
+                        <div>01/24</div>
                     </div>
                 </div>
                 <div class="back">
@@ -148,8 +116,8 @@
 
                     </div>
                     <div class="ccv">
-                        <label>CCV</label>
-                        <div></div>
+                        <label>CVV</label>
+                        <div>123</div>
                     </div>
                 </div>
             </div>
@@ -231,40 +199,14 @@
             {
                 <span class="form-control-plaintext text-danger">@ViewData["CardActivation"]</span>
             }
-            <button class="btn"><i class="fa fa-lock"></i> submit</button>
+            <button class="btn" id="SubmitButton"> <i class="fa fa-lock"></i> submit</button>
         </form>
     </div>
-    }
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     @*    <script src="script.js"></script>*@
 
     <script>
-
-        
-        //$(document).ready(function () {
-        //  /*  var maxQuestions = 3;*/ // Set the maximum number of additional questions
-
-        //    $('#security-questions-container').on('click', '.security-question', function (e) {
-        //        e.preventDefault();
-
-        //        // Check if the maximum number of questions is reached
-        //        //if ($('#security-questions-container .security-question-fieldset').length >= maxQuestions) {
-        //        //    alert('You can add a maximum of ' + maxQuestions + ' extra questions.');
-        //        //    return;
-        //        //}
-
-        //        var newSecurityQuestionFieldset = $('.security-question-fieldset:first').clone();
-
-        //        // Clear the selected option and input value
-        //        newSecurityQuestionFieldset.find('.security-question-dropdown').val('Questions');
-        //        newSecurityQuestionFieldset.find('.security-answer').val('');
-
-        //        // Insert the new question and answer fieldset before the "Add" button
-        //        $(this).before(newSecurityQuestionFieldset);
-        //    });
-        //});
-        // Add an event listener to the select dropdown
-        // Get references to the select element and the input field for custom questions
 
         $('.input-cart-number').on('keyup change', function () {
             $t = $(this);

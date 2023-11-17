@@ -29,6 +29,7 @@ if (annyang) {
         'balance': getBalance,
         'Next': clickNextButton,
         'Skip': clickSkipButton,
+        'Submit': clickSubmitButton,
     };
 
     function goToLoginPage() {
@@ -81,6 +82,13 @@ if (annyang) {
         var skipButton = document.getElementById('skipButton');
         if (skipButton) {
             skipButton.click();
+        }
+    }
+
+    function clickSubmitButton() {
+        var submitButton = document.getElementById('SubmitButton');
+        if (submitButton) {
+            submitButton.click();
         }
     }
 
