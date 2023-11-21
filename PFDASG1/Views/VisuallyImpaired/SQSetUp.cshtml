@@ -1,6 +1,26 @@
 ﻿@model PFDASG1.Models.SecurityQuestion
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 @{
     Layout = null;
+    int userid = 0;
+    var session = HttpContextAccessor.HttpContext;
+
+    if (session != null)
+    {
+        userid = session.Session.GetInt32("id") ?? 0;
+
+        if (userid > 0)
+        {
+            // User is logged in, load the appropriate navbar
+            <partial name="_navbar" />
+        }
+        else
+        {
+            // User is not logged in, load an alternate navbar or handle the scenario
+            <partial name="Navbar" />
+        }
+    }
 }
 <!DOCTYPE html>
 <html>
@@ -31,7 +51,7 @@
 
 <body>
     <header>
-        <partial name="_navbar" />
+       
     </header>
         <form class="form" autocomplete="off" asp-controller="VisuallyImpaired" asp-action="SQSetUp" method="post" novalidate>
             <div id="security-questions-container">

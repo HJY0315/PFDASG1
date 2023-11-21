@@ -85,7 +85,7 @@ Form
 .form fieldset {
     border: none;
     padding: 0;
-    padding: 10px 0;
+    padding: 15px 0;
     position: relative;
     clear: both;
 }
@@ -134,7 +134,7 @@ Form
         .form fieldset .select.input-cart-number {
             width: 82px;
             display: inline-block;
-            margin-right: 8px;
+            margin-right: 5px;
         }
 
             .form fieldset input.input-cart-number:last-child,
@@ -202,17 +202,6 @@ Form
     .form button .fa {
         margin-right: 6px;
     }
-
-.security-question-inputs1 {
-    width: 80%;
-    margin: 130px;
-}
-
-.submit-button {
-    width: 80%;
-    margin-left: 130px;
-    margin-top:50px;
-}
 
 /*--------------------
 Checkout
@@ -310,8 +299,8 @@ Credit Card
         position: absolute;
         width: 60px;
         height: 45px;
-        top: 20px;
-        left: 20px;
+        top: 90px;
+        left: 300px;
         background: linear-gradient(135deg, #ddccf0 0%, #d1e9f5 44%, #f8ece7 100%);
         border-radius: 8px;
     }
@@ -390,7 +379,7 @@ Credit Card
     }
 
         .credit-card-box .ccv label {
-            margin: -25px 0 14px;
+            margin: -30px 0 5px;
             color: #fff;
         }
 
