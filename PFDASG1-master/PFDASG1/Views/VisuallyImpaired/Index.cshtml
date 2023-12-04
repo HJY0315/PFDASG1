@@ -1,0 +1,141 @@
+﻿@model IEnumerable<PFDASG1.Models.Transactions>
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
+    int userid = 0;
+    if (HttpContextAccessor.HttpContext != null)
+    {
+        userid = HttpContextAccessor.HttpContext.Session.GetInt32("id") ?? 0;
+    }
+    Layout = null;
+}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Use Unicode character encoding - multi-language compatibility -->
+    <meta charset="utf-8">
+
+    <!-- Set the initial view zooming scale for mobile device -->
+    <meta name="viewport" content="width = device-width,
+ initial-scale = 1" />
+
+    <title>OCBC</title>
+
+    <!-- Reference to customized styling for this website -->
+    @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />*@
+    <link rel="stylesheet" type="text/css" href="~/css/site.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+    <!-- Bootstrap JavaScript (Popper.js is required for dropdowns) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>
+
+</head>
+
+<body>
+    <header>
+        @await Html.PartialAsync("_navbar.cshtml")
+    </header>
+
+
+    <div style="position: relative;">
+        <div id="progressText" class="progressLabel"></div>
+        <progress id="moneyProgress" value="0" max="100"></progress>
+       
+    </div>
+
+    <div class="flex-container">
+        <div class="flex-item">
+            <i class="fas fa-money-bill-wave"></i>
+            <span>Total Earning</span>
+            <span>$@ViewBag.totalBalance</span>*
+        </div>
+        <div class="flex-item">
+            <i class="fas fa-shopping-cart"></i>
+            <span>Total Spending</span>
+            <span>$@ViewBag.amountToSubtract</span>
+        </div>
+    </div>
+
+    @{
+    if (Model != null)
+    {
+            <div class="flex-table">
+                <div class="flex-header">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="expense">Expense</button>
+                    <button class="filter-btn" data-filter="income">Income</button>
+                </div>
+                <div class="flex-row header">
+                    <div class="flex-cell">Date</div>
+                    <div class="flex-cell">Description</div>
+                    <div class="flex-cell">Amount</div>
+                </div>
+                    @foreach (var item in Model)
+                {
+                        <div class="flex-row" data-type="@(item.RecipientID == @userid ? "income" : "expense")">
+                            <div class="flex-cell">@item.TransactionDate.Date.ToString("yyyy-MM-dd")</div>
+                            <div class="flex-cell">@item.Description</div>
+                            <div class="flex-cell" style="color: @(item.RecipientID == @userid ? "green" : "red"); font-weight:bold;">
+                                @(item.RecipientID == @userid ? "+" : "-")@item.Amount.ToString("0.00")
+                            </div>
+                        </div>
+                }
+                </div>
+        }
+    }
+    </div>
+
+    <footer>
+        <p>&copy; Please do not share or download your information.</p>
+    </footer>
+
+    <script>
+        const progressElement = document.getElementById('moneyProgress');
+        const progressTextLabel = document.getElementById('progressText');
+
+        const moneyValue = @ViewBag.amountToSubtract;
+        const maxValue = @ViewBag.totalBalance;
+
+        progressElement.value = moneyValue;
+        progressElement.max = maxValue;
+
+        // Update the text within the progress bar
+        progressTextLabel.textContent = `Your Card Balance: $${moneyValue}`;
+
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const rowsToFilter = document.querySelectorAll('.flex-row');
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+
+                const filterValue = button.getAttribute('data-filter');
+
+                rowsToFilter.forEach(row => {
+                    const rowType = row.getAttribute('data-type');
+                    if (filterValue === 'all') {
+                        row.style.display = 'flex';
+                    } else {
+                        row.style.display = rowType === filterValue ? 'flex' : 'none';
+                    }
+                });
+            });
+        });
+
+    </script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/search.js" asp-append-version="true"></script>
+    <script src="~/js/annyang-setup.js" asp-append-version="true"></script>
+</body>
+</html>

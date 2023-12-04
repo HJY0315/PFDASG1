@@ -3,6 +3,7 @@
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 
 
+
 @{
     int userid = 0;
     if (HttpContextAccessor.HttpContext != null)
@@ -121,7 +122,7 @@
                 datasets: [
                     {
                         data: [@ViewBag.amountToSubtract, @ViewBag.totalBalance],
-                        backgroundColor: ["#FC4349", "#0de809"],
+                        backgroundColor: ["#2C3E50", "#FC4349"],
                     },
                     
                 ],

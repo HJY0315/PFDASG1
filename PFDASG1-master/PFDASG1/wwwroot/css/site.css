@@ -1,0 +1,218 @@
+/*VisuallyImpaired/Index*/
+
+
+@import url(https://fonts.googleapis.com/css?family=Roboto:300);
+@import url(//fonts.googleapis.com/css?family=Oswald:400);
+
+html {
+    font-size: 15px;
+}
+
+.login-page {
+    width: 360px;
+    padding: 8% 0 0;
+    margin: auto;
+}
+
+h4 {
+    margin: 5px;
+}
+
+body {
+    background-color: white;
+    font-family: "Roboto", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+/* Styling for the search bar and icon*/
+.search-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.search-icon {
+    font-size: 20px;
+    margin-right: 10px;
+    color: #555;
+    Icon color
+}
+
+#search {
+    padding: 10px;
+    border: none;
+    border-radius: 25px;
+    background-color: #f2f2f2;
+    width: 250px;
+    margin-right: 15px;
+}
+
+Additional styling for the search bar in collapsed mode
+.navbar .search-wrapper.collapsed {
+    justify-content: flex-end;
+}
+
+.navbar .search-wrapper.collapsed #search {
+    width: 0;
+    padding: 0;
+    opacity: 0;
+}
+
+/*Progress bar*/
+progress {
+    width: 80%;
+    height: 100px;
+    accent-color: red;
+    text-align: center;
+    position: relative;
+    left: calc(20% - 70px);
+}
+
+.progressLabel {
+    position: relative;
+    text-align: center;
+    color: black;
+    font-weight: bold;
+    font-size: 25px;
+}
+
+/*container for spending, saving and goal*/
+/* Flex container styles */
+.flex-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #f8f8f8;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Flex item styles */
+.flex-item {
+    text-align: center;
+}
+
+/* Icon styles */
+i {
+    font-size: 24px;
+    margin-bottom: 8px;
+    color: #3498db;
+}
+
+/* Spacing and alignment */
+span {
+    display: block;
+    font-weight: bold;
+    color: #333;
+}
+
+/*Transaction history*/
+/* Flex table styles */
+.flex-table {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    top: 20px;
+    max-width: 800px;
+    margin: 0 auto; /* Center the table */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Header styles */
+.flex-header {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px 0;
+    background-color: #f8f8f8;
+    border-bottom: 1px solid #ccc;
+}
+
+.filter-btn {
+    padding: 8px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+    transition: background-color 0.3s ease;
+}
+
+    .filter-btn.active {
+        background-color: #3498db;
+        color: white;
+    }
+
+    .filter-btn:not(.active):hover {
+        background-color: #ddd;
+    }
+
+/* Row and cell styles */
+.flex-row {
+    display: flex;
+    border-bottom: 1px solid #ccc;
+}
+
+    .flex-row.header > .flex-cell {
+        font-weight: bold;
+    }
+
+
+    .flex-row:last-child {
+        border-bottom: none;
+    }
+
+.flex-cell {
+    flex: 1;
+    padding: 10px;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Income and expense styles */
+.income {
+    color: #2ecc71;
+    font-weight: bold;
+}
+
+.expense {
+    color: #e74c3c;
+    font-weight: bold;
+}
+
+/* Styles for specific columns */
+.flex-cell:nth-child(1) {
+    flex: 1; /* Adjust width of the Date column */
+}
+
+.flex-cell:nth-child(2) {
+    flex: 1; /* Adjust width of the Description column */
+    text-transform: capitalize;
+}
+
+.flex-cell:nth-child(3) {
+    flex: 1; /* Adjust width of the Amount column */
+}
+
+footer {
+    background-color: #777;
+    padding: 5px;
+    text-align: center;
+    color: white;
+    position: relative;
+    top: 40px;
+}
+
+
+/*functions*/
+.enlarged-text {
+    font-size: 1.6em;
+}
+
+.enlargePage {
+    zoom: 1.6; /* Adjust the zoom factor as needed */
+}

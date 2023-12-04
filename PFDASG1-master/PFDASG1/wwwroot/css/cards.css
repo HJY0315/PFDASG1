@@ -1,0 +1,169 @@
+﻿html{
+    font-size: 15px;
+}
+
+/* Card Styles */
+.card {
+    position: absolute;
+    width: 90%;
+    height: 120px;
+    margin-bottom: 10px;
+    padding: 0.7rem;
+    border-radius: 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    flex-direction: column;
+    box-shadow: 3px 3px 6px 0 rgba(10, 0, 10, 0.3);
+    cursor: pointer;
+}
+
+    .card .logo {
+        position: relative;
+        width: 40px;
+        height: 20px;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .card .circle {
+        position: absolute;
+        width: 20px;
+        height: 100%;
+        border-radius: 50%;
+    }
+
+        .card .circle.yellow {
+            background-color: #f19a1a;
+        }
+
+        .card .circle.red {
+            background-color: #f7030c;
+        }
+
+    .card .details {
+        width: 100%;
+        padding-top: 20px;
+        letter-spacing: 1px;
+    }
+
+    .card .number {
+        color: #fff;
+        text-shadow: 2px 2px 2px #000;
+        -webkit-mask-image: linear-gradient(-75deg, rgba(0, 0, 0, .6) 30%, #000 50%, rgba(0, 0, 0, .6) 70%);
+        -webkit-mask-size: 200%;
+        animation: shine 3s linear infinite;
+    }
+
+    .card .bottom {
+        display: flex;
+        justify-content: flex-start;
+        margin-top: 5px;
+    }
+
+    .card .name, .card .expiry {
+        color: #ededed;
+        font-size: 9px;
+    }
+
+    .card .expiry {
+        margin-left: 10px;
+    }
+
+/* Transaction Styles */
+.transaction {
+    padding: 10px;
+    display: flex;
+}
+
+    .transaction .image-wrapper {
+        width: 15%;
+    }
+
+    .transaction i {
+        width: 100%;
+        height: auto;
+    }
+
+    .transaction .vendor-details {
+        width: 55%;
+    }
+
+    .transaction .title {
+        font-size: 12px;
+        margin-bottom: 3px;
+    }
+
+    .transaction .description {
+        color: #5c5c5c;
+        font-size: 9px;
+    }
+
+    .transaction .transaction-details {
+        width: 30%;
+        display: flex;
+        justify-content: flex-end;
+        align-items: flex-end;
+        flex-direction: column;
+    }
+
+    .transaction .price {
+        font-size: 12px;
+        margin-bottom: 3px;
+    }
+
+    .transaction .date {
+        color: #5c5c5c;
+        font-size: 7px;
+    }
+
+/* Animation */
+@keyframes shine {
+    from {
+        -webkit-mask-position: 150%;
+    }
+
+    to {
+        -webkit-mask-position: -50%;
+    }
+}
+
+/* Styling for the search bar and icon */
+.search-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.search-icon {
+    font-size: 20px;
+    margin-right: 10px;
+    color: #555; /* Icon color */
+}
+
+#search {
+    padding: 10px;
+    border: none;
+    border-radius: 25px;
+    background-color: #f2f2f2;
+    width: 250px;
+    margin-right: 15px;
+}
+
+/* Additional styling for the search bar in collapsed mode */
+.navbar .search-wrapper.collapsed {
+    justify-content: flex-end;
+}
+
+    .navbar .search-wrapper.collapsed #search {
+        width: 0;
+        padding: 0;
+        opacity: 0;
+    }
+
+.enlarged-text {
+    font-size: 1.6em;
+}
+
+.enlargePage {
+    zoom: 1.6; /* Adjust the zoom factor as needed */
+}

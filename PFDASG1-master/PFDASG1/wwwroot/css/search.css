@@ -1,0 +1,158 @@
+﻿html {
+    font-size: 20px;
+}
+
+.imagetext {
+    position: relative;
+    text-align: center;
+    /*  overflow: hidden;*/
+}
+
+.text {
+    position: absolute;
+    bottom: 80%;
+    left: 15%;
+    font-size: 40px;
+    color: red;
+}
+
+/* Add the .blur and .blurry styles here */
+.blur {
+    overflow: hidden;
+    position: relative;
+}
+
+    .blur img {
+        width: 100%;
+        height: 100%;
+    }
+
+.blurry {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50%;
+    height: 100%;
+}
+
+    .blurry.alt {
+        right: auto;
+        left: 0;
+    }
+
+    .blurry.middle {
+        right: 50%;
+        transform: translateX(50%);
+    }
+
+
+/* Dropdown menu styles */
+.dropdown-menu {
+    background-color: #f8f9fa;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.dropdown-item {
+    color: #212529;
+}
+
+    .dropdown-item:hover,
+    .dropdown-item:focus {
+        background-color: #e9ecef;
+    }
+
+.dropdown-divider {
+    border-color: #e9ecef;
+}
+
+
+.flex {
+    display: flex;
+}
+
+.flex-column {
+    flex: 1;
+    margin: 10px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+}
+
+.FormContent {
+    position: relative;
+    bottom: 30px;
+    padding: 10px;
+    margin: auto;
+    width: 70%;
+    text-align: center;
+    justify-content: center;
+}
+
+fieldset {
+    top: 30px;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    padding: 20px;
+    background-color: #f2f2f2;
+}
+
+
+/* Add styles for the legend, headings, and links as needed */
+.flex p {
+    font-weight: bold;
+}
+
+.flex-item a {
+    text-decoration: none;
+    font-weight: bold;
+    color: red; /* Customize the link color */
+}
+
+/* Styling for the search bar and icon */
+.search-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.search-icon {
+    font-size: 20px;
+    margin-right: 10px;
+    color: #555; /* Icon color */
+}
+
+#search {
+    padding: 10px;
+    border: none;
+    border-radius: 25px;
+    background-color: #f2f2f2;
+    width: 250px;
+    margin-right: 15px;
+}
+
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+}
+
+.enlarged-text {
+    font-size: 1.6em;
+}
+
+.enlargePage {
+    zoom: 1.6; /* Adjust the zoom factor as needed */
+}
+

@@ -226,8 +226,8 @@ namespace PFDASG1.Controllers
             var senderTransactions = transactions.Where(item => item.SenderID == sessionId);
             decimal amountToSubtract = senderTransactions.Sum(item => item.Amount);
             totalBalance -= amountToSubtract;
-            decimal despostamount = totalBalance;
-            decimal withdrawlamount = totalBalance - amountToSubtract;
+            decimal despostamount = totalBalance - amountToSubtract;
+            decimal withdrawlamount = despostamount - amountToSubtract;
 
             ViewBag.amountToSubtract = amountToSubtract;
             ViewBag.totalBalance = despostamount;

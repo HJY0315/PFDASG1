@@ -1,0 +1,129 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Use Unicode character encoding - multi-language compatibility -->
+    <meta charset="utf-8">
+
+    <!-- Set the initial view zooming scale for mobile device -->
+    <meta name="viewport" content="width = device-width,
+ initial-scale = 1" />
+
+    <title>OCBC</title>
+
+    <!-- Reference to customized styling for this website -->
+    @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />*@
+    <link rel="stylesheet" type="text/css" href="~/css/login(VI).css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>
+
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+    <!-- Bootstrap JavaScript (Popper.js is required for dropdowns) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>
+</head>
+<body>
+    <header>
+        <partial name="Navbar" />
+    </header>
+   
+
+    <div class="login-page">
+        <div class="form">
+            <h4><b>Online Banking</b></h4>
+            <form class="register-form" id="register" style="display:none;">
+                   <fieldset>
+                <label for="card-number">Card Number (last 8 digits of your card number)</label>
+                <input type="num" id="card-number" class="input-cart-number" value="xxxx" readonly />
+                <input type="num" id="card-number-1" class="input-cart-number" value="xxxx" readonly />
+                <input type="num" id="card-number-2" class="input-cart-number" maxlength="4" placeholder="1234" required />
+                <input type="num" id="card-number-3" class="input-cart-number" maxlength="4" placeholder="1234" required />
+            </fieldset>
+
+                   <fieldset>
+                <label for="fieldset-pin">6-digit PIN</label>
+                <input type="password" id="card-holder" maxlength="6" required/>
+            </fieldset>
+
+             <fieldset class="fieldset-type">
+                <label for="card-expiration-month">Identification Type</label>
+                <div class="select">
+                    <select id="card-expiration-month">
+                        <option>Please select</option>
+                        <option>Singapore/PR NRIC</option>
+                        <option>Malaysian IC</option>
+                        <option>Passport</option>
+                    </select>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <label for="card-ccv">Identification No.</label>
+                <input type="text" id="card-ccv" maxlength="9" required />
+            </fieldset>
+
+                <button>create</button>
+                <p class="message">Already registered? <a href="#" onclick="toggle('register'); toggle('login')">Sign In</a></p>
+            </form>            
+
+            <form class="login-form" method="post" id="login" style="display:block;">
+                <input type="text" id="accessCodeInput" name="txtLoginID" placeholder="Access Code" maxlength="7"/>
+                <input type="password" id="pinInput" name="txtPin" placeholder="PIN" maxlength="6" />
+                <span style="color:red;">@TempData["Message"]</span>
+                <button class="login-button" id="login login_btn" >login</button>
+                <p class="message"><a href="#"><u>No Access Code/PIN? Click here.</u></a></p>
+                <p class="message">Don't have an Online Banking? <a href="#" onclick="toggle('login'); toggle('register')">Sign Up Now.</a></p>
+            </form>
+        </div>
+    </div>
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/annyang-setup.js" asp-append-version="true"></script>
+
+</body>
+</html>
+
+<script>
+
+    
+    
+
+    $('.message a').click(function () {
+        $('form').animate({ height: "toggle", opacity: "toggle" }, "slow");
+    });
+
+    const accessCodeInput = document.getElementById('accessCodeInput');
+
+    accessCodeInput.addEventListener('keydown', (event) => {
+        const charCode = event.which || event.keyCode;
+
+        if (charCode === 8) { // Check for backspace key
+            return; // Allow backspace
+        }
+
+        if (charCode < 48 || charCode > 57) {
+            event.preventDefault(); // Prevent non-numeric characters
+        }
+    });
+
+
+    const pinInput = document.getElementById('pinInput');
+
+    pinInput.addEventListener('keydown', (event) => {
+        const charCode = event.which || event.keyCode;
+
+        if (charCode === 8) { // Check for backspace key
+            return; // Allow backspace
+        }
+
+        if (charCode < 48 || charCode > 57) {
+            event.preventDefault(); // Prevent non-numeric characters
+        }
+    });
+</script>

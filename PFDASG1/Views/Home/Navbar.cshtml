@@ -1,0 +1,59 @@
+﻿<!-- A narrator-friendly navigation bar that expands horizontally at medium devices -->
+<nav class="navbar navbar-expand-md bg-light navbar-light sticky-top">
+
+    <!-- The brand(or icon) of the navbar -->
+    <a class="navbar-brand" href="~/Home/Index" style="margin-left:30px;">
+        <img src="../img/logo_ocbc.png" width="150" height="40" alt="OCBC Logo" />
+    </a>
+
+    <!-- Toggle/collapsible Button, also known as hamburger button -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#masterNavbar" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Links in the navbar, displayed as drop-down list when collapsed -->
+    <div class="collapse navbar-collapse" id="masterNavbar">
+        <!-- Links that are aligned to the left,
+        me-auto: margin-end, i.e., right margin, auto-adjusted -->
+        <ul class="navbar-nav mx-3" style="margin:15px;">
+            <li class="nav-item dropdown">
+                <a class="nav-link" href="#" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <b>Banking for individuals</b>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
+                    <li><a class="dropdown-item" href="#">FRANK by OCBC</a></li>
+                    <li><a class="dropdown-item" href="#">Personal Banking</a></li>
+                    <li><a class="dropdown-item" href="#">Premier Banking</a></li>
+                    <li><a class="dropdown-item" href="#">Premier Private Client</a></li>
+                    <li><a class="dropdown-item" href="#">Card Activation</a></li>
+                </ul>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link" href="#" id="dropdownMenuLink2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <b>Banking for business</b>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink2">
+                    <li><a class="dropdown-item" href="#">Business Banking</a></li>
+                    <li><a class="dropdown-item" href="#">Large Corporates</a></li>
+                </ul>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link" href="#" id="dropdownMenuLink3" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <b>OCBC Group</b>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink3">
+                    <li><a class="dropdown-item" href="#">About us</a></li>
+                    <li><a class="dropdown-item" href="#">Sustainability</a></li>
+                    <li><a class="dropdown-item" href="#">Careers</a></li>
+                    <li><a class="dropdown-item" href="#">Investors</a></li>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="~/Home/Login" style="color:#990000">
+                    <b>Login</b>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>

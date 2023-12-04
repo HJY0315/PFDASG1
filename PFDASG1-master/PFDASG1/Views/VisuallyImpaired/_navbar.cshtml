@@ -19,39 +19,21 @@
         <ul class="navbar-nav mx-3" style="margin:15px;">
             <li class="nav-item dropdown">
                 <a class="nav-link" href="#" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <b>Account</b>
+                    <b>View Account</b>
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
                     <li><a class="dropdown-item" href="~/VisuallyImpaired/Unknown">Cards</a></li>
-                    <li><a class="dropdown-item" href="#">Change Access Code/Pin</a></li>
-                    <li><a class="dropdown-item" href="#">Report Lost</a></li>
-                    <li><a class="dropdown-item" href="#">Change address</a></li>
-                    <li><a class="dropdown-item" href="#">Update Phone Number/Email</a></li>
                 </ul>
             </li>
             <li class="nav-item dropdown">
-                <a class="nav-link" href="#" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="nav-link" href="~/VisuallyImpaired/Transfer">
                     <b>Payments</b>
                 </a>
-                  <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
-                    <li><a class="dropdown-item" href="~/VisuallyImpaired/Transfer">Transfer</a></li>
-                    <li><a class="dropdown-item" href="#">Manage PayNow</a></li>
-                    <li><a class="dropdown-item" href="#">Manage OCBC OneTouch</a></li>
-                    <li><a class="dropdown-item" href="#">Manage transaction limits</a></li>
-                    <li><a class="dropdown-item" href="#">Manage UnionPay</a></li>
-                </ul>
             </li>
             <li class="nav-item dropdown">
-                <a class="nav-link" href="#" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <b>Card Services</b>
+                <a class="nav-link" href="~/VisuallyImpaired/CardActivation">
+                    <b>Card Activation</b>
                 </a>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
-                    <li><a class="dropdown-item" href="~/VisuallyImpaired/CardActivation">Card Activation</a></li>
-                    <li><a class="dropdown-item" href="#">Replace Card</a></li>
-                    <li><a class="dropdown-item" href="#">Reset card Pin</a></li>
-                    <li><a class="dropdown-item" href="#">Manage overseas card usuage</a></li>
-                    <li><a class="dropdown-item" href="#">Link/delink accounts</a></li>
-                </ul>
             </li>
             <li class="nav-item dropdown">
                 @Html.ActionLink("Logout", "Index", "Home", new { area = "" }, new { @class = "nav-link", style = "font-weight:bold; color:#990000" })
