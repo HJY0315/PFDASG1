@@ -44,105 +44,88 @@
 
 <body>
     <header>
-        <partial name="_navbar" />
+        @await Html.PartialAsync("_navbar.cshtml")
     </header>
 
-        <div class="content-wrapper">
-            <div class="total-balance">
-            @if (Model != null)
-            {
-                decimal totalBalance = 0;
 
-                // Add amounts for non-sender transactions
-                foreach (var item in Model)
-                {
-                    if (item.SenderID != @userid)
-                    {
-                        totalBalance += item.Amount;
-                    }
-                }
+    <div style="position: relative;">
+        <div id="progressText" class="progressLabel"></div>
+        <progress id="moneyProgress" value="0" max="100"></progress>
 
-                // Subtract amounts for sender transactions
-                var senderTransactions = Model.Where(item => item.SenderID == @userid);
-                decimal amountToSubtract = senderTransactions.Sum(item => item.Amount);
-                totalBalance -= amountToSubtract;
+    </div>
 
-                <h1 style="text-align:center;">Total Balance: $@totalBalance.ToString("0.00")</h1>
-            }
-            else
-            {
-                <p>No data available</p>
-            }
-
-            <canvas id="doughnutChart" style="width:350px; height:350px;"></canvas>
-            </div>
-            <div class="transaction-history">
-                <fieldset class="FormContent">
-                    <legend><b>Transaction History</b></legend>
-                    <table class="flex">
-                        <thead>
-                            <tr>
-                                <th>Transaction Date</th>
-                                <th>Description</th>
-                                <th>Amount</th>
-
-
-                            </tr>
-                        </thead>
-                    <tbody>
-                        @if (Model != null)
-                        {
-                            @foreach (var item in Model)
-                            {
-                                <tr>
-                                    <td>@item.TransactionDate</td>
-                                    <td>@item.Description</td>
-                                    <td style="color: @(item.RecipientID == @userid ? "green" : "red"); font-weight:bold; font-size: 25px">
-                                        @(item.RecipientID == @userid ? "+" : "-")@item.Amount.ToString("0.00")
-                                    </td>
-
-                                </tr>
-                            }
-                        }
-                    </tbody>
-
-
-                    </table>
-                </fieldset>
-            </div>
+    <div class="flex-container">
+        <div class="flex-item">
+            <i class="fas fa-money-bill-wave"></i>
+            <span>Total Earning</span>
+            <span>$@ViewBag.totalBalance</span>*
         </div>
+        <div class="flex-item">
+            <i class="fas fa-shopping-cart"></i>
+            <span>Total Spending</span>
+            <span>$@ViewBag.amountToSubtract</span>
+        </div>
+    </div>
+
+    @{
+        if (Model != null)
+        {
+            <div class="flex-table">
+                <div class="flex-header">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="expense">Expense</button>
+                    <button class="filter-btn" data-filter="income">Income</button>
+                </div>
+                <div class="flex-row header">
+                    <div class="flex-cell">Date</div>
+                    <div class="flex-cell">Description</div>
+                    <div class="flex-cell">Amount</div>
+                </div>
+                @foreach (var item in Model)
+                {
+                    <div class="flex-row" data-type="@(item.RecipientID == @userid ? "income" : "expense")">
+                        <div class="flex-cell">@item.TransactionDate.Date.ToString("yyyy-MM-dd")</div>
+                        <div class="flex-cell">@item.Description</div>
+                        <div class="flex-cell" style="color: @(item.RecipientID == @userid ? "green" : "red"); font-weight:bold;">
+                            @(item.RecipientID == @userid ? "+" : "-")@item.Amount.ToString("0.00")
+                        </div>
+                    </div>
+                }
+            </div>
+        }
     }
+    </div>
+
+    <footer>
+        <p>&copy; Please do not share or download your information.</p>
+    </footer>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
- 
-            const chartData = {
-                labels: ["Withdraw", "Deposit"],
-                datasets: [
-                    {
-                        data: [@ViewBag.amountToSubtract, @ViewBag.totalBalance],
-                        backgroundColor: ["#FC4349", "#0de809"],
-                    },
-                    
-                ],
-            };
-
-            const options = {
-                responsive: true,
-                maintainAspectRatio: true,
-            };
-
-            const ctx = document.getElementById("doughnutChart").getContext("2d");
-            const myDoughnutChart = new Chart(ctx, {
-                type: "doughnut",
-                data: chartData,
-                options: options,
+        const progressElement = document.getElementById('moneyProgress');
+        const progressTextLabel = document.getElementById('progressText');
+        const moneyValue = @ViewBag.amountToSubtract;
+        const maxValue = @ViewBag.totalBalance;
+        progressElement.value = moneyValue;
+        progressElement.max = maxValue;
+        // Update the text within the progress bar
+        progressTextLabel.textContent = `Your Card Balance: $${moneyValue}`;
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const rowsToFilter = document.querySelectorAll('.flex-row');
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                const filterValue = button.getAttribute('data-filter');
+                rowsToFilter.forEach(row => {
+                    const rowType = row.getAttribute('data-type');
+                    if (filterValue === 'all') {
+                        row.style.display = 'flex';
+                    } else {
+                        row.style.display = rowType === filterValue ? 'flex' : 'none';
+                    }
+                });
             });
         });
-
-
-
-
     </script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/search.js" asp-append-version="true"></script>
