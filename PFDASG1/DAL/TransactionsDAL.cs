@@ -69,6 +69,55 @@ namespace PFDASG1.DAL
             // Return the retrieved account ID
             return user;
         }
+
+        public List<User> GetUsersByPhoneNumber(string phoneNumber)
+        {
+            SqlCommand cmd = conn.CreateCommand();
+            cmd.CommandText = @"SELECT Userid, Name, AccessCode, phoneNumber, Pin, NRIC FROM Users WHERE phoneNumber = @phoneNumber";
+            cmd.Parameters.AddWithValue("@phoneNumber", phoneNumber); // Add the phone number to the query
+            conn.Open();
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            List<User> userList = new List<User>();
+
+            while (reader.Read())
+            {
+                int userid;
+                if (int.TryParse(reader["Userid"].ToString(), out userid))
+                {
+                    userList.Add(new User
+                    {
+                        Userid = userid,
+                        Name = reader["Name"].ToString(),
+                        AccessCode = reader["AccessCode"].ToString(),
+                        phoneNumber = phoneNumber,
+                        Pin = reader["Pin"].ToString(),
+                        NRIC = reader["NRIC"].ToString()
+                    // Other properties
+                });
+                }
+                else
+                {
+                    // Handle the case where the Userid is not a valid integer
+                    // For instance, log an error or handle it appropriately
+                    Console.WriteLine($"Invalid Userid value: {reader["Userid"].ToString()}");
+                    // Add a default user or handle the error case
+                }
+            }
+
+            // Close reader and connection after use
+            reader.Close();
+            conn.Close();
+
+            return userList;
+        }
+
+
+    
+
+
+
+
         //public decimal GetAccountBalance(int senderId)
         //{
         //    // Open a connection to the database

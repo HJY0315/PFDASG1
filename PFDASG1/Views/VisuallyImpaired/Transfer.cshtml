@@ -78,9 +78,10 @@
                 <!-- Step 2: Select Payment Type -->
                 <div class="form-group step-content">
                 <div class="form-group" id="mobileInput">
-                    <label></label>
+                    <label asp-for="phoneNumber"></label>
                     <input asp-for="phoneNumber" type="text" id="mobileNumber" placeholder="Enter Mobile Number" maxlength="8" />
                     <span asp-validation-for="phoneNumber" class="text-danger"></span>
+                        <p>Transfer to: <span id="reviewTransferTo">@Model.receipient</span></p>
                 </div>
                 </div>
                 <!-- Step 3: Enter Amount -->
@@ -242,6 +243,32 @@
             showStep(0);
         });
 
+        function searchPhoneNumber() {
+            const phoneNumber = document.getElementById('mobileNumber').value;
+
+            if (phoneNumber.length >= 6) {
+                $.ajax({
+                    type: 'GET',
+                    url: '/VisuallyImpaired/SearchPhoneNumber',
+                    data: { phoneNumber: phoneNumber },
+                    success: function (data) {
+                        if (data.length > 0) {
+                            // Update the 'userName' span with the retrieved name
+                            document.getElementById('userName').textContent = data[0].Name;
+                        } else {
+                            // Clear the 'userName' span if no user found
+                            document.getElementById('userName').textContent = '';
+                        }
+                    },
+                    error: function (error) {
+                        console.error('Error:', error);
+                    }
+                });
+            } else {
+                // Clear the 'userName' span if the input length is less than 6
+                document.getElementById('userName').textContent = '';
+            }
+        }
 
 
         //function updatePaymentMethod() {

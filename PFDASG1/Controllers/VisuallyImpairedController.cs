@@ -124,6 +124,14 @@ namespace PFDASG1.Controllers
             return View(transactionViewModel);
         }
 
+        [HttpGet]
+        public IActionResult SearchPhoneNumber(string phoneNumber)
+        {
+            List<User> userList = TransactionsContext.GetUsersByPhoneNumber(phoneNumber);
+
+            return View(userList);
+        }
+
         [HttpPost]
         public ActionResult Transfer(TransactionViewModel transactionViewModel)
         {
