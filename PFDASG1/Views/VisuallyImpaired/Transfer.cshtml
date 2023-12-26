@@ -80,8 +80,18 @@
                 <div class="form-group" id="mobileInput">
                     <label asp-for="phoneNumber"></label>
                     <input asp-for="phoneNumber" type="text" id="mobileNumber" placeholder="Enter Mobile Number" maxlength="8" />
-                    <span asp-validation-for="phoneNumber" class="text-danger"></span>
+                    <span asp-validation-for="phoneNumber" class="text-danger" id="phoneNo"></span>
                         <p>Transfer to: <span id="reviewTransferTo">@Model.receipient</span></p>
+                        <table id="recipientTable" class="table">
+                            <thead id="tableHeader" hidden>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Phone Number</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recipientTableBody">
+                            </tbody>
+                        </table>
                 </div>
                 </div>
                 <!-- Step 3: Enter Amount -->
@@ -180,35 +190,64 @@
         //    }
         //}
 
+        function inputValidation() {
+            // Get the parent div element by its class name
+            var formGroup = document.querySelector('.step-content');
+
+            // Get all span elements within the parent div
+            var spanElements = formGroup.querySelectorAll('span.text-danger');
+
+            var isValid = true;
+
+            // Loop through each span element to get the asp-validation-for attribute value
+            spanElements.forEach(function (span) {
+                var innerHTMLValue = span.getAttribute('id');
+                var input = span.previousElementSibling;
+                if (input && input.tagName.toLowerCase() === 'input') {
+                    var inputValue = input.value; // Get the value of the input
+                    if (innerHTMLValue == 'phoneNo') {
+                        if (inputValue.length !== 8) {
+                            span.innerHTML = "Please enter an 8-digit phone number!";
+                            isValid = false;
+                        }
+                    }
+                }
+            })
+
+            return isValid;
+        }
+
 
         function getDescriptionText(bankTransfer, paymentType) {
             // Customize this function based on your requirements
             return 'Payment for ' + getTransferToText(bankTransfer, paymentType);
         }
 
-        // Assume you have a variable to track the current page
-        let currentPage = 1;
 
         function speakConfirmation() {
             const msg = new SpeechSynthesisUtterance('Transfer confirmed!');
             window.speechSynthesis.speak(msg);
         }
 
+        let currentPage = 1;
+
         function nextPrev(n) {
             // Update the current page based on the navigation
             currentPage += n;
-
+            console.log(currentPage)
             // Perform your page navigation logic here
 
             if (currentPage === 1) {
-                // Change the button text to "Confirm"
-                document.getElementById('nextButton').innerText = 'Confirm';
-                // Update the onclick event to call the speakConfirmation function
-                document.getElementById('nextButton').onclick = function () {
-                    speakConfirmation();
-                    // Move to the next page after confirmation
-                    nextPrev(1);
-                };
+                var isvalidInput = inputValidation();
+                if (isvalidInput) {
+                    // Change the button text to "Confirm"
+                    document.getElementById('nextButton').innerText = 'Confirm';
+                    // Update the onclick event to call the speakConfirmation function
+                    document.getElementById('nextButton').onclick = function () {
+                            speakConfirmation();
+                            nextPrev(1);
+                    };
+                }
             } else if (currentPage === 4) {
                 // Reset the button text to "Next" for other pages
                 document.getElementById('nextButton').innerText = 'Next';
@@ -228,15 +267,16 @@
                 document.getElementById('nextButton').style.display = 'block';
             }
 
-
-
-            //// Perform your existing logic for updating the current step
-            if (currentPage < 0) {
-                currentPage = 0;
-            } else if (currentPage >= formSteps.length) {
-                currentPage = formSteps.length - 1;
+            var isvalidInput = inputValidation();
+            if (isvalidInput) {
+                //// Perform your existing logic for updating the current step
+                if (currentPage < 0) {
+                    currentPage = 0;
+                } else if (currentPage >= formSteps.length) {
+                    currentPage = formSteps.length - 1;
+                }
+                showStep(currentPage);
             }
-            showStep(currentPage);
         }
 
         document.addEventListener('DOMContentLoaded', function () {
@@ -246,29 +286,88 @@
         function searchPhoneNumber() {
             const phoneNumber = document.getElementById('mobileNumber').value;
 
-            if (phoneNumber.length >= 6) {
+            if (phoneNumber.length >= 4) {
                 $.ajax({
                     type: 'GET',
                     url: '/VisuallyImpaired/SearchPhoneNumber',
                     data: { phoneNumber: phoneNumber },
                     success: function (data) {
-                        if (data.length > 0) {
-                            // Update the 'userName' span with the retrieved name
-                            document.getElementById('userName').textContent = data[0].Name;
+                        const recipientTableBody = document.getElementById('recipientTableBody');
+                        const tableHeader = document.getElementById('tableHeader');
+
+                        // Clear previous table rows
+                        recipientTableBody.innerHTML = '';
+
+                        if (data && data.length > 0) {
+                            tableHeader.removeAttribute('hidden');
+                            data.forEach(user => {
+                                const row = document.createElement('tr'); // Create a new table row
+
+                                // Create table data cells for name and phone number
+                                const nameCell = document.createElement('td');
+                                nameCell.textContent = user.name;
+                                row.appendChild(nameCell);
+
+                                const phoneNumberCell = document.createElement('td');
+                                phoneNumberCell.textContent = user.phoneNumber;
+                                row.appendChild(phoneNumberCell);
+
+                                // Add click event to table row for selection
+                                row.addEventListener('click', function () {
+                                    // Remove 'selected' class from all rows
+                                    const rows = recipientTableBody.getElementsByTagName('tr');
+                                    for (const r of rows) {
+                                        r.classList.remove('selected');
+                                    }
+
+                                    // Add 'selected' class to the clicked row
+                                    row.classList.add('selected');
+
+                                    // Set values for mobileNumber and reviewTransferTo
+                                    document.getElementById('mobileNumber').value = user.phoneNumber;
+                                    document.getElementById('reviewTransferTo').textContent = user.name;
+
+                                    // Clear the table by setting its inner HTML to an empty string
+                                    recipientTableBody.innerHTML = '';
+
+                                    // Hide the table header after clearing the results
+                                    tableHeader.setAttribute('hidden', true);
+                                });
+
+                                recipientTableBody.appendChild(row); // Append the row to the table body
+                            });
                         } else {
-                            // Clear the 'userName' span if no user found
-                            document.getElementById('userName').textContent = '';
+                            tableHeader.setAttribute('hidden', true);
+                            const row = document.createElement('tr');
+                            const cell = document.createElement('td');
+                            cell.setAttribute('colspan', '2'); // Span across both columns
+                            cell.textContent = 'No users found';
+                            row.appendChild(cell);
+                            recipientTableBody.appendChild(row);
                         }
                     },
                     error: function (error) {
-                        console.error('Error:', error);
+                        console.error('Error:', error.responseText);
                     }
                 });
             } else {
-                // Clear the 'userName' span if the input length is less than 6
-                document.getElementById('userName').textContent = '';
+                // Clear the table body if the input length is less than 4
+                document.getElementById('recipientTableBody').innerHTML = '';
+
+                // Hide the table header if input length is less than 4
+                const tableHeader = document.getElementById('tableHeader');
+                if (!tableHeader.hasAttribute('hidden')) {
+                    tableHeader.setAttribute('hidden', true);
+                }
             }
         }
+
+
+
+        // Attach an event listener to the 'mobileNumber' input field to detect input changes
+        document.getElementById('mobileNumber').addEventListener('input', searchPhoneNumber);
+
+
 
 
         //function updatePaymentMethod() {

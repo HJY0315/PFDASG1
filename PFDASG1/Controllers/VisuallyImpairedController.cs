@@ -125,11 +125,12 @@ namespace PFDASG1.Controllers
         }
 
         [HttpGet]
-        public IActionResult SearchPhoneNumber(string phoneNumber)
+        public JsonResult SearchPhoneNumber(string phoneNumber)
         {
             List<User> userList = TransactionsContext.GetUsersByPhoneNumber(phoneNumber);
 
-            return View(userList);
+            // Serialize the userList to JSON format and return as JsonResult
+            return Json(userList);
         }
 
         [HttpPost]

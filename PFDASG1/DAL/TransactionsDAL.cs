@@ -73,8 +73,8 @@ namespace PFDASG1.DAL
         public List<User> GetUsersByPhoneNumber(string phoneNumber)
         {
             SqlCommand cmd = conn.CreateCommand();
-            cmd.CommandText = @"SELECT Userid, Name, AccessCode, phoneNumber, Pin, NRIC FROM Users WHERE phoneNumber = @phoneNumber";
-            cmd.Parameters.AddWithValue("@phoneNumber", phoneNumber); // Add the phone number to the query
+            cmd.CommandText = @"SELECT Userid, Name, AccessCode, phoneNumber, Pin, NRIC FROM Users WHERE phoneNumber LIKE '%' + @phoneNumber + '%'";
+            cmd.Parameters.AddWithValue("@phoneNumber", phoneNumber);
             conn.Open();
             SqlDataReader reader = cmd.ExecuteReader();
 
@@ -82,27 +82,15 @@ namespace PFDASG1.DAL
 
             while (reader.Read())
             {
-                int userid;
-                if (int.TryParse(reader["Userid"].ToString(), out userid))
+                userList.Add(new User
                 {
-                    userList.Add(new User
-                    {
-                        Userid = userid,
-                        Name = reader["Name"].ToString(),
-                        AccessCode = reader["AccessCode"].ToString(),
-                        phoneNumber = phoneNumber,
-                        Pin = reader["Pin"].ToString(),
-                        NRIC = reader["NRIC"].ToString()
-                    // Other properties
+                    Userid = reader.GetInt32(0),
+                    Name = reader.GetString(1),
+                    AccessCode = reader.GetString(2),
+                    phoneNumber = reader.GetString(3),
+                    Pin = reader.GetString(4),
+                    NRIC = reader.GetString(5)
                 });
-                }
-                else
-                {
-                    // Handle the case where the Userid is not a valid integer
-                    // For instance, log an error or handle it appropriately
-                    Console.WriteLine($"Invalid Userid value: {reader["Userid"].ToString()}");
-                    // Add a default user or handle the error case
-                }
             }
 
             // Close reader and connection after use
@@ -112,8 +100,34 @@ namespace PFDASG1.DAL
             return userList;
         }
 
+        
+        public List<User> GetAllUser()
+        {
+            SqlCommand cmd = conn.CreateCommand();
+            cmd.CommandText = @"SELECT Userid, Name, AccessCode, phoneNumber, Pin, NRIC FROM Users Order by userId";
+            conn.Open();
+            SqlDataReader reader = cmd.ExecuteReader();
 
-    
+            List<User> userList = new List<User>();
+            while (reader.Read())
+            {
+                userList.Add(new User
+                {
+                    Userid = reader.GetInt32(0),
+                    Name = reader.GetString(1),
+                    AccessCode = reader.GetString(2),
+                    phoneNumber = reader.GetString(3),
+                    Pin = reader.GetString(4),
+                    NRIC = reader.GetString(5)
+                });
+
+            }
+
+            reader.Close();
+            conn.Close();
+
+            return userList;
+        }
 
 
 
@@ -204,23 +218,23 @@ namespace PFDASG1.DAL
             SqlCommand cmd = conn.CreateCommand();
             //Specify the SELECT SQL statement 
             cmd.CommandText = @"SELECT
-  t.transactionId,
-  t.description,
-  t.accountId,
-  t.amount,
-  t.transactionDate,
-  t.receiverId,
-  t.senderId
-FROM
-  Transactions AS t
-INNER JOIN
-  Accounts AS a
-ON
-  t.accountId = a.accountId
-WHERE
-  (t.senderId = @id OR t.receiverId = @id)
-ORDER BY
-  t.transactionDate DESC";
+                              t.transactionId,
+                              t.description,
+                              t.accountId,
+                              t.amount,
+                              t.transactionDate,
+                              t.receiverId,
+                              t.senderId
+                            FROM
+                              Transactions AS t
+                            INNER JOIN
+                              Accounts AS a
+                            ON
+                              t.accountId = a.accountId
+                            WHERE
+                              (t.senderId = @id OR t.receiverId = @id)
+                            ORDER BY
+                              t.transactionDate DESC";
             cmd.Parameters.AddWithValue("@id", userid);
             //Open a database connection
             conn.Open();
