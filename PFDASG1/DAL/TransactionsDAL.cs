@@ -42,7 +42,7 @@ namespace PFDASG1.DAL
 
             // Create a SqlCommand object to retrieve the account ID
             SqlCommand cmd = conn.CreateCommand();
-            cmd.CommandText = @"SELECT * FROM Users u JOIN Accounts a ON u.userId = a.userId WHERE u.phoneNumber = @phoneNumber";
+            cmd.CommandText = @"SELECT Userid, Name, AccessCode, phoneNumber, Pin, NRIC FROM Users WHERE phoneNumber = @phoneNumber";
             cmd.Parameters.AddWithValue("@phoneNumber", phoneNumber); // Add the phone number to the query
 
             // Execute the query and retrieve the account ID
@@ -53,9 +53,11 @@ namespace PFDASG1.DAL
 
             SqlDataReader reader = cmd.ExecuteReader();
 
-            User user = new User();
-            while (reader.Read())
+            User user = null;
+
+            if (reader.Read())
             {
+                user = new User();
                 user.Userid = reader.GetInt32(0);
                 user.Name = reader.GetString(1);
                 user.AccessCode = reader.GetString(2);
@@ -66,7 +68,7 @@ namespace PFDASG1.DAL
 
             reader.Close();
             conn.Close();
-            // Return the retrieved account ID
+
             return user;
         }
 

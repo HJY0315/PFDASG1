@@ -129,8 +129,15 @@ namespace PFDASG1.Controllers
         {
             List<User> userList = TransactionsContext.GetUsersByPhoneNumber(phoneNumber);
 
-            // Serialize the userList to JSON format and return as JsonResult
             return Json(userList);
+        }
+
+        [HttpGet]
+        public JsonResult PhoneNumberValidation(string phoneNumber)
+        {
+            User user = TransactionsContext.GetUserFromPhoneNumber(phoneNumber);
+
+            return Json(user);
         }
 
         [HttpPost]
