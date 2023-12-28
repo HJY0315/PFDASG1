@@ -119,6 +119,8 @@ namespace PFDASG1.Controllers
         [HttpGet]
         public IActionResult Transfer()
         {
+            ViewData["status"] = null;
+
             TransactionViewModel transactionViewModel = new TransactionViewModel();
 
             return View(transactionViewModel);
@@ -127,7 +129,13 @@ namespace PFDASG1.Controllers
         [HttpGet]
         public JsonResult SearchPhoneNumber(string phoneNumber)
         {
+            int userId = (int)HttpContext.Session.GetInt32("id");
+
+            // Get the list of users by phone number
             List<User> userList = TransactionsContext.GetUsersByPhoneNumber(phoneNumber);
+
+            // Exclude the logged in user from the list
+            userList = userList.Where(u => u.Userid != userId).ToList();
 
             return Json(userList);
         }
@@ -135,7 +143,17 @@ namespace PFDASG1.Controllers
         [HttpGet]
         public JsonResult PhoneNumberValidation(string phoneNumber)
         {
+            int userId = (int)HttpContext.Session.GetInt32("id");
+
+            // Get the user from the provided phone number
             User user = TransactionsContext.GetUserFromPhoneNumber(phoneNumber);
+
+            // Check if the user ID from HttpContext matches the user ID retrieved
+            if (user != null && user.Userid == userId)
+            {
+                // Handle the scenario where the user is the same as the one from HttpContext
+                return Json("Logged in User");
+            }
 
             return Json(user);
         }
@@ -155,11 +173,22 @@ namespace PFDASG1.Controllers
             transactionViewModel.TransactionDate = DateTime.Now;
             transactionViewModel.senderID = userId;
             transactionViewModel.AccountId = userId;
-            // Create a new Transactions object
 
-            // Add the transaction to the TransactionsContext
-            TransactionsContext.Add(transactionViewModel);
+            ViewData["ReceipientName"] = user.Name;
 
+            // Validate account balance
+            decimal accBalance = TransactionsContext.GetAccountBalance(userId);
+            if (transactionViewModel.Amount < accBalance)
+            {
+                // Create a new Transactions object
+                // Add the transaction to the TransactionsContext
+                TransactionsContext.Add(transactionViewModel);
+                ViewData["status"] = "success";
+            }
+            else
+            {
+                ViewData["status"] = "failed";
+            }
 
             //}
             //catch (Exception ex)
@@ -170,7 +199,7 @@ namespace PFDASG1.Controllers
             //}
 
             //// Redirect the user back to the Transfer page
-            return RedirectToAction("Index");
+            return View(transactionViewModel);
         }
 
         public IActionResult Unknown()

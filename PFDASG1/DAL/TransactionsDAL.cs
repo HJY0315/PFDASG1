@@ -134,31 +134,31 @@ namespace PFDASG1.DAL
 
 
 
-        //public decimal GetAccountBalance(int senderId)
-        //{
-        //    // Open a connection to the database
-        //    conn.Open();
+        public decimal GetAccountBalance(int senderId)
+        {
+            // Open a connection to the database
+            conn.Open();
 
-        //    // Create a SqlCommand object to retrieve the account balance
-        //    SqlCommand cmd = conn.CreateCommand();
-        //    cmd.CommandText = "SELECT accountBalance FROM Accounts WHERE userId = @senderId";
-        //    cmd.Parameters.AddWithValue("@senderId", senderId);
+            // Create a SqlCommand object to retrieve the account balance
+            SqlCommand cmd = conn.CreateCommand();
+            cmd.CommandText = "SELECT accountBalance FROM Accounts WHERE userId = @senderId and accountType = 'Savings'";
+            cmd.Parameters.AddWithValue("@senderId", senderId);
 
-        //    // Execute the query and retrieve the account balance
-        //    //decimal accountBalance = (decimal)cmd.ExecuteScalar();
-        //    SqlDataReader reader = cmd.ExecuteReader();
-        //    Account account = new Account();
-        //    while (reader.Read())
-        //    {
-        //        account.accountBalance = reader.GetDecimal(2);
-        //    }
-        //    reader.Close();
-        //    // Close the connection to the database
-        //    conn.Close();
+            // Execute the query and retrieve the account balance
+            SqlDataReader reader = cmd.ExecuteReader();
+            Account account = new Account();
+            while (reader.Read())
+            {
+                account.accountBalance = reader.GetDecimal(0);
+            }
+            reader.Close();
+            // Close the connection to the database
+            conn.Close();
 
-        //    // Return the retrieved account balance
-        //    return account.accountBalance;
-        //}
+            // Return the retrieved account balance
+            return account.accountBalance;
+        }
+
 
         public int Add(TransactionViewModel transactionViewModel)
         {
@@ -213,6 +213,9 @@ namespace PFDASG1.DAL
 
             return transactionViewModel.TransactionId;
         }
+
+
+
         public List<Transactions> getalltransactions(int userid)
         {
 

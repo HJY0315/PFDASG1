@@ -75,7 +75,7 @@
                         <span asp-validation-for="MobileNumber" class="text-danger"></span>
                     </div>
                 </div>*@
-                <!-- Step 2: Select Payment Type -->
+                <!-- Step 1: Enter phone number -->
                 <div class="form-group step-content">
                 <div class="form-group" id="mobileInput">
                     <label asp-for="phoneNumber"></label>
@@ -94,11 +94,11 @@
                         </table>
                 </div>
                 </div>
-                <!-- Step 3: Enter Amount -->
+                <!-- Step 2: Enter Amount -->
                 <div class="form-group step-content">
                     <label asp-for="Amount">Enter your Amount</label>
-                    <input type="number" id="amount" asp-for="Amount" required ="" />
-                    <span asp-validation-for="Amount" class="text-danger"></span>
+                    <input type="number" id="amount" asp-for="Amount" required min="1" />
+                    <span asp-validation-for="Amount" class="text-danger" id="amountMsg"></span>
 
                   @*  <label>Remaining Balance:</label>
                     <p>$@ViewBag.amount</p>*@
@@ -109,11 +109,11 @@
                     <span asp-validation-for="Description" class="text-danger"></span>
                 </div>
 
-                <!-- Step 4: Review -->
+                <!-- Step 3: Confirmation -->
                 <div class="form-group step-content">
                     <img src="../img/checked.png" width="150" height="150" />
                     <p>Amount: <span id="reviewAmount">@Html.DisplayFor(model => model.Amount)</span></p>
-                    <p>Transfer to: <span id="reviewTransferTo">@Model.receipient</span></p>
+                    <p>Transfer to: <span id="reviewTransferTo">@ViewData["ReceipientName"]</span></p>
                     <p>Description: <span id="reviewDescription">@Model.Description</span></p>
                 </div>
             </div>
@@ -190,29 +190,34 @@
         //    }
         //}
 
-        
-        function phoneNumberValidation(callback) {
+        const isPhoneNumberValid = false;
+
+        function phoneNumberValidation() {
             const phoneNumber = document.getElementById('mobileNumber').value;
 
-            $.ajax({
-                type: 'GET',
-                url: '/VisuallyImpaired/PhoneNumberValidation',
-                data: { phoneNumber: phoneNumber },
-                success: function (data) {
-                    // Check if data (user object) is null or not
-                    if (data === null) {
-                        document.getElementById('phoneNo').innerHTML = 'Invalid phone number';
-                        callback(false);  // Phone number is invalid
-                    } else {
-                        document.getElementById('phoneNo').innerHTML = '';
-                        callback(true);   // Phone number is valid
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    type: 'GET',
+                    url: '/VisuallyImpaired/PhoneNumberValidation',
+                    data: { phoneNumber: phoneNumber },
+                    success: function (data) {
+                        if (data === null) {
+                            document.getElementById('phoneNo').innerHTML = 'Invalid phone number';
+                            reject('Invalid phone number');
+                        } else if (data === "Logged in User") {
+                            document.getElementById('phoneNo').innerHTML = 'Transfer to own account is not supported';
+                            reject('Transfer to own account');
+                        } else {
+                            document.getElementById('phoneNo').innerHTML = '';
+                            resolve(true);  // Phone number is valid
+                        }
+                    },
+                    error: function (error) {
+                        console.error('Error:', error.responseText);
+                        document.getElementById('phoneNo').innerHTML = 'Error validating phone number.';
+                        reject('Error validating phone number');
                     }
-                },
-                error: function (error) {
-                    console.error('Error:', error.responseText);
-                    document.getElementById('phoneNo').innerHTML = 'Error validating phone number.';
-                    callback(false);  // Error occurred, so phone number is invalid
-                }
+                });
             });
         }
 
@@ -225,14 +230,17 @@
 
             var isValid = true;
 
+            const formContent = document.querySelector('.form-group.step-content[style="display: block;"]');
+
             // Loop through each span element to get the asp-validation-for attribute value
             spanElements.forEach(function (span) {
                 var innerSpanValue = span.getAttribute('id');
                 var input = span.previousElementSibling;
                 if (input && input.tagName.toLowerCase() === 'input') {
-                    var inputValue = input.value; // Get the value of the input
+                    var inputValue = input.value.trim(); // Get the value of the input
+                    console.log('inside input')
                     //if the page is at the phone number page
-                    if (innerSpanValue == 'phoneNo' || innerSpanValue == 'Please enter an 8-digit phone number!') {
+                    if (formContent.querySelector('#mobileNumber')) {
                         if (inputValue.length !== 8) { //check if the phone number input have 8 digit
                             span.innerHTML = 'Please enter an 8-digit phone number!'; //update error message
                             isValid = false; //false so that it wont go to next page
@@ -256,6 +264,11 @@
             window.speechSynthesis.speak(msg);
         }
 
+        function speakAmountError() {
+            const msg = new SpeechSynthesisUtterance('Your account have insufficient balance');
+            window.speechSynthesis.speak(msg);
+        }
+
         let currentPage = 1;
 
         function nextPrev(n) {
@@ -263,40 +276,46 @@
             currentPage += n;
             console.log(currentPage)
             // Perform your page navigation logic here
-            const isPhoneNumberValid = null;
+
+
+            phoneNumberValidation().then(function () {
+                isPhoneNumberValid = true;
+            }).catch(function (error) {
+                isPhoneNumberValid = false;
+                console.log('Error:', error);
+            });
 
             if (currentPage === 1) {
                 console.log('1');
-                var isvalidInput = inputValidation();
-                if (isvalidInput) {
-                    // Call phoneNumberValidation instead of inputValidation
-                    phoneNumberValidation(function (isPhoneNumberValid) {
-                        console.log('inside')
-                        if (isPhoneNumberValid) {
-                            // Change the button text to "Confirm"
-                            document.getElementById('nextButton').innerText = 'Confirm';
-                            // Update the onclick event to call the speakConfirmation function
-                            document.getElementById('nextButton').onclick = function () {
-                                speakConfirmation();
-                                nextPrev(1);
-                            };
+                var isValidInput = inputValidation();
+                if (isValidInput) {
+                    phoneNumberValidation().then(function () {
+                        console.log('inside');
+                        var amountInput = document.getElementById('amount');
+                        amountInput.value = '1';
+                        // Change the button text to "Confirm"
+                        document.getElementById('nextButton').innerText = 'Confirm';
+                        // Update the onclick event to call the speakConfirmation function
+                        document.getElementById('nextButton').onclick = function () {
+                            nextPrev(1);
                         }
+                    }).catch(function (error) {
+                        console.log('Error:', error);
                     });
                 }
             } else if (currentPage === 4) {
                 console.log('4' + currentPage)
                 var isvalidInput = inputValidation();
                 if (isvalidInput) {
-                    phoneNumberValidation(function (isPhoneNumberValid) {
-                        console.log('inside')
-                        if (isPhoneNumberValid) {
-                            // Reset the button text to "Next" for other pages
-                            document.getElementById('nextButton').innerText = 'Next';
-                            // Reset the onclick event to the original function for other pages
-                            document.getElementById('nextButton').onclick = function () {
-                                nextPrev(1);
-                            };
+                    phoneNumberValidation().then(function () {
+                        // Reset the button text to "Next" for other pages
+                        document.getElementById('nextButton').innerText = 'Next';
+                        // Reset the onclick event to the original function for other pages
+                        document.getElementById('nextButton').onclick = function () {
+                            nextPrev(1);
                         }
+                    }).catch(function (error) {
+                        console.log('Error:', error);
                     });
                 }
             } else {
@@ -304,19 +323,18 @@
                 var isvalidInput = inputValidation();
                 if (isvalidInput) {
                     console.log('else valid')
-                    phoneNumberValidation(function (isPhoneNumberValid) {
-                        console.log('inside')
-                        if (isPhoneNumberValid) {
-                            // Reset the button text to "Next" for other pages
-                            document.getElementById('nextButton').innerText = 'Next';
-                            // Reset the onclick event to the original function for other pages
-                            document.getElementById('nextButton').onclick = function () {
-                                nextPrev(1);
-                            };
-                            // Show the buttons for other pages
-                            document.getElementById('prevButton').style.display = 'block';
-                            document.getElementById('nextButton').style.display = 'block';
-                        }
+                    phoneNumberValidation().then(function () {
+                        // Reset the button text to "Next" for other pages
+                        document.getElementById('nextButton').innerText = 'Next';
+                        // Reset the onclick event to the original function for other pages
+                        document.getElementById('nextButton').onclick = function () {
+                            nextPrev(1);
+                        };
+                        // Show the buttons for other pages
+                        document.getElementById('prevButton').style.display = 'block';
+                        document.getElementById('nextButton').style.display = 'block';
+                    }).catch(function (error) {
+                        console.log('Error:', error);
                     });
                 }
             }
@@ -325,22 +343,42 @@
             var isvalidInput = inputValidation();
             if (isvalidInput) {
                 console.log('out valid')
-                phoneNumberValidation(function (isPhoneNumberValid) {
-                    if (isPhoneNumberValid) {
-                        //// Perform your existing logic for updating the current step
-                        if (currentPage < 0) {
-                            currentPage = 0;
-                        } else if (currentPage >= formSteps.length) {
-                            currentPage = formSteps.length - 1;
-                        }
-                        showStep(currentPage);
+                phoneNumberValidation().then(function () {
+                    console.log('out valid2')
+                    //// Perform your existing logic for updating the current step
+                    if (currentPage < 0) {
+                        currentPage = 0;
+                    } else if (currentPage >= formSteps.length) {
+                        currentPage = formSteps.length - 1;
                     }
+                    showStep(currentPage);
+                }).catch(function (error) {
+                    console.log('Error:', error);
                 });
             }
         }
 
         document.addEventListener('DOMContentLoaded', function () {
-            showStep(0);
+            // Get the error message from ViewData
+            const statusMsg = '@ViewData["status"]';
+
+            // Check if errorMsg is not null or empty
+            if (statusMsg && statusMsg.trim() === "failed") {
+                // If error message is present, show step 2
+                document.getElementById('nextButton').innerText = 'Confirm';
+                document.getElementById('amountMsg').innerHTML = 'Your account have insufficient balance';
+                speakAmountError();
+                currentPage = 1;
+                showStep(1);
+            } 
+            else if (statusMsg.trim() === "success") {
+                speakConfirmation();
+                currentPage = 2;
+                showStep(2);
+            }
+            else{
+                showStep(0);
+            }
         });
 
         function searchPhoneNumber() {
@@ -437,7 +475,11 @@
         });
 
 
-
+        document.getElementById('amount').addEventListener('input', function () {
+            if (this.value === '' || parseFloat(this.value) < 1) {
+                this.value = '1';
+            }
+        });
 
 
 
