@@ -296,23 +296,30 @@
                         // Change the button text to "Confirm"
                         document.getElementById('nextButton').innerText = 'Confirm';
                         // Update the onclick event to call the speakConfirmation function
-                        document.getElementById('nextButton').onclick = function () {
-                            nextPrev(1);
-                        }
+                        //document.getElementById('nextButton').onclick = function () {
+                        //    nextPrev(1);
+                        //}
+                        //document.getElementById('prevButton').onclick = function(){
+                        //    nextPrev(-1);
+                        //};
+
                     }).catch(function (error) {
                         console.log('Error:', error);
                     });
                 }
-            } else if (currentPage === 4) {
-                console.log('4' + currentPage)
+            } else if (currentPage === 2) {
+                console.log(currentPage)
                 var isvalidInput = inputValidation();
                 if (isvalidInput) {
                     phoneNumberValidation().then(function () {
                         // Reset the button text to "Next" for other pages
-                        document.getElementById('nextButton').innerText = 'Next';
+                        document.getElementById('nextButton').innerText = 'Done';
                         // Reset the onclick event to the original function for other pages
-                        document.getElementById('nextButton').onclick = function () {
-                            nextPrev(1);
+                        //document.getElementById('nextButton').onclick = function () {
+                        //    nextPrev(1);
+                        //}
+                        document.getElementById('prevButton').onclick = function(){
+                            nextPrev(-1);
                         }
                     }).catch(function (error) {
                         console.log('Error:', error);
@@ -373,6 +380,7 @@
             } 
             else if (statusMsg.trim() === "success") {
                 speakConfirmation();
+                document.getElementById('nextButton').innerText = 'Done';
                 currentPage = 2;
                 showStep(2);
             }
