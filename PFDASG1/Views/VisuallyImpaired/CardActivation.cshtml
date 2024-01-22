@@ -55,17 +55,65 @@
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>
 
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
+
 </head>
 
 <body>
+    <style>
+        .iconContainer {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 8;
+            background-color: white; /* Set the background color to white */
+            padding: 10px; /* Optional: Add padding for space around the icon */
+            border-radius: 15px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .iconCompleted {
+            width: 100%; /* Set the width and height to 100% to fill the container */
+            height: 100%;
+        }
+    </style>
+
     @if (ViewData["CardActivation"] != null)
     {
         <div role="alert" aria-live="polite" class="visually-hidden">
             <span class="form-control-plaintext text-danger">@ViewData["CardActivation"]</span>
         </div>
+
+        @if (ViewData["CardActivation"].ToString().Equals("Card Activated Successfully", StringComparison.OrdinalIgnoreCase))
+        {
+            <div class="iconContainer">
+                <lord-icon class="iconCompleted" id="iconAnimation" src="https://cdn.lordicon.com/guqkthkk.json"
+                           trigger="in"
+                           delay="1000"
+                           style="width: 250px; height: 250px">
+                </lord-icon>
+            </div>
+
+            <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+            <script>
+                $(document).ready(function () {
+                    // Select the Lottie animation
+                    var iconAnimation = $("#iconAnimation");
+
+                    // Show the animation
+                    iconAnimation.show();
+
+                    // Gradually reduce the opacity over 3000 milliseconds (3 seconds)
+                    iconAnimation.animate({ opacity: 0 }, 3000, function () {
+                        iconAnimation.remove();
+                        $(".iconContainer").remove();
+                    });
+                });
+            </script>
+        }
     }
-  
-    
+
     <div class="checkout">
         <div class="credit-card-box"  aria-hidden="true">
             <div class="flip">
@@ -285,10 +333,40 @@
             });
         });
 
+        //for icons
+        document.addEventListener("DOMContentLoaded", function () {
+            // Select the animated icon
+            var animatedIcon = document.getElementById("animatedIcon");
+
+            // Set a timeout to fade out the icon after 3000 milliseconds (3 seconds)
+            setTimeout(function () {
+                // Apply inline styles for the fade-out effect
+                animatedIcon.style.transition = "opacity 1s ease-out";
+                animatedIcon.style.opacity = 0;
+
+                // remove the icon after the animation end
+                setTimeout(function () {
+                    animatedIcon.remove();
+                }, 1000); // Adjust the duration to match the transition duration
+            }, 3000); // Adjust the timeout duration
+        });
+
+        $(document).ready(function () {
+            // Select the Lottie animation
+            var iconAnimation = $(".iconContainer");
+
+            // Show the animation and fade it out after 3000 milliseconds (3 seconds)
+            iconAnimation.show().fadeOut(3000);
+
+            // Optional: Remove the element from the DOM after the animation completes
+            setTimeout(function () {
+                iconAnimation.remove();
+            }, 3000); // Adjust the timeout duration to match the fadeOut duration
+        });
+
     </script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/annyang-setup.js" asp-append-version="true"></script>
     <script src="~/js/search.js" asp-append-version="true"></script>
-
 </body>
 </html>
