@@ -40,7 +40,7 @@
     <meta name="viewport" content="width = device-width,
  initial-scale = 1" />
 
-    <title>OCBC</title>
+    <title>Card Activation</title>
 
     <!-- Reference to customized styling for this website -->
     @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />*@
@@ -58,11 +58,16 @@
 </head>
 
 <body>
-  
+    @if (ViewData["CardActivation"] != null)
+    {
+        <div role="alert" aria-live="polite" class="visually-hidden">
+            <span class="form-control-plaintext text-danger">@ViewData["CardActivation"]</span>
+        </div>
+    }
   
     
     <div class="checkout">
-        <div class="credit-card-box">
+        <div class="credit-card-box"  aria-hidden="true">
             <div class="flip">
                 <div class="front">
                     <div class="chip"></div>
@@ -129,8 +134,8 @@
         <form class="form" asp-controller="VisuallyImpaired" asp-action="CardActivation" method="post" autocomplete="off" novalidate>
             <fieldset>
                 <label for="card-number">Card Number (last 8 digits of your card number)</label>
-                <input type="num" id="card-number" class="input-cart-number" value="xxxx" readonly />
-                <input type="num" id="card-number-0" class="input-cart-number" value="xxxx" readonly />
+                <input id="card-number" class="input-cart-number" value="xxxx" readonly aria-hidden="true" />
+                <input id="card-number-0" class="input-cart-number" value="xxxx" readonly aria-hidden="true" />
                 <input asp-for="cardNumber1" type="num" id="card-number-1" class="input-cart-number" maxlength="4" placeholder="1234" required />
                 <input asp-for="cardNumber2" type="num" id="card-number-2" class="input-cart-number" maxlength="4" placeholder="1234" required />
             </fieldset>

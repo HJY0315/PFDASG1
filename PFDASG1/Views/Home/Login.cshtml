@@ -29,6 +29,10 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>
 </head>
 <body>
+    <div role="alert" aria-live="polite" class="visually-hidden">
+        <p style="color:red;">@ViewBag.ErrorMessage</p>
+    </div>
+
     <header>
         <partial name="Navbar" />
     </header>
@@ -75,7 +79,7 @@
             <form class="login-form" method="post" id="login" style="display:block;">
                 <input type="text" id="accessCodeInput" name="txtLoginID" placeholder="Access Code" maxlength="7"/>
                 <input type="password" id="pinInput" name="txtPin" placeholder="PIN" maxlength="6" />
-                <span style="color:red;">@TempData["Message"]</span>
+                <span style="color:red;">@ViewBag.ErrorMessage</span>
                 <button class="login-button" id="login login_btn" >login</button>
                 <p class="message"><a href="#"><u>No Access Code/PIN? Click here.</u></a></p>
                 <p class="message">Don't have an Online Banking? <a href="#" onclick="toggle('login'); toggle('register')">Sign Up Now.</a></p>
