@@ -30,6 +30,23 @@
   
 </head>
 <body>
+    <!-- Add an overlay div -->
+    <div id="overlay"></div>
+
+    <!-- Center div -->
+    <div id="centerDiv" class="center-div enlarged-text" role="dialog" aria-labelledby="accessibilityMode" aria-describedby="tutorialContent">
+        <span class="close" onclick="closeCenterDiv()">&times;</span>
+        <h1 id="accessibilityMode" style="font-size: 1.6em">Accessibility Mode</h1>
+        <div id="tutorialContent" style="font-size: 1.6em" aria-live="assertive">
+
+        </div>
+        <div class="buttons">
+            <button  type="button" class="btn btn-secondary" id="cancelButton">Cancel</button>
+            <button  type="button" class="btn btn-primary" id="skipButton">Skip</button>
+            <button  type="button" class="btn btn-success" id="nextButton">Next</button>
+        </div>
+    </div>
+
     <header>
         <partial name="Navbar"/>
     </header>
@@ -64,26 +81,6 @@
         </div>
     </fieldset>
 
-    <!-- Add an overlay div -->
-    <div id="overlay"></div>
-
-    <!-- Center div -->
-    <div id="centerDiv" class="center-div">
-        <span class="close" onclick="closeCenterDiv()">&times;</span>
-        <div aria-live="assertive">
-            <p tabindex="1" id="accessibilityMode">Accessibility Mode</p>
-        </div>
-        <div id="tutorialContent" aria-live="assertive">
-            <p tabindex="1">
-            </p>
-        </div>
-
-        <div class="buttons">
-            <button tabindex="1" type="button" class="btn btn-secondary" id="cancelButton">Cancel</button>
-            <button tabindex="1" type="button" class="btn btn-primary" id="skipButton" >Skip</button>
-            <button tabindex="1" type="button" class="btn btn-success" id="nextButton">Next</button>
-        </div>
-    </div>
 
 
     <script>
@@ -119,43 +116,36 @@
             // Check the current step and update content accordingly
             switch (currentStep) {
                 case 1:
-                    tutorialContent.innerHTML = `<p tabindex="1">Do you want to activate the accessibility mode? This mode includes features such as
-                                voice recognition, which can be useful for some users. A tutorial will be provided.
-                                To Cancel, Shift + b. To Activate, Shift + n. </p>`;
-                    cancelButton.textContent = "Cancel";
+                    tutorialContent.innerHTML = `<p>Are you a visually impaired?  </p>`;
+                    cancelButton.textContent = "No";
+                    nextButton.textContent = "Yes";
                     cancelButton.removeEventListener('click', previousTutorialStep);
                     cancelButton.addEventListener('click', close);   //before activation we have cancel button
                     break;
                 case 2:
-                    tutorialContent.innerHTML = `<p tabindex="1">Tutorial Step 1: You can use the shortcut of control + space key to toggle the accessibility
-                                mode on and off. Toggle it twice and go to the next step</p>`;
+                    tutorialContent.innerHTML = `<p>Tutorial Step 1: Use Shift key + Space to turn voice recognition on and off.</p>`;
                     cancelButton.textContent = "Previous";
+                    nextButton.textContent = "Next";
                     cancelButton.removeEventListener('click', close);
                     cancelButton.addEventListener('click', previousTutorialStep); //in tutorial we only have previous button
                     break;
                 case 3:
-                    tutorialContent.innerHTML = `<p tabindex="1">Step 2: After login, there is a search bar in every page. You can use
-                            the voice command 'Search' to focus on the search bar. Use 'Type In' voice command followed by your input to enter your information verbally.
-                     After that, press enter on keyboard.Try it out in the search bar below.</p>
+                    tutorialContent.innerHTML = `<p>Step 2: Use voice command of "Search" to focus on search bar. And use 'Type In' voice command followed by your input to enter your information verbally.
+                     After that, press enter on keyboard. Try it out in the search bar below.</p>
                         <div class="search-wrapper">
                             <i class="search-icon bx bx-search"></i>
                             <input type="search" id="searchDemo" data-search placeholder="Search">
                         </div>`;
                     cancelButton.textContent = "Previous";
+                    nextButton.textContent = "Next";
                     cancelButton.removeEventListener('click', close);
                     cancelButton.addEventListener('click', previousTutorialStep);
                     break;
                 case 4:
-                    tutorialContent.innerHTML = `<p tabindex="1">You can use 'Type in' command to fill up any of the input field in this website. Remember
-                            the command carefully and utilize it to make your journey easier.</p>`;
-                    cancelButton.textContent = "Previous";
-                    cancelButton.removeEventListener('click', close);
-                    cancelButton.addEventListener('click', previousTutorialStep);
-                    break;
-                case 5:
-                    tutorialContent.innerHTML = `<p tabindex="1">Step 4: To navigate to different pages, use voice commands starting with 'Go to.'
+                    tutorialContent.innerHTML = `<p>Step 4: To navigate to different pages, use voice commands starting with 'Go to.'
                             For example, say 'Go to login page'. The system also may provide suggestion for you based on your inacurate voice command.</p>`;
                     cancelButton.textContent = "Previous";
+                    nextButton.textContent = "Close";
                     cancelButton.removeEventListener('click', close);
                     cancelButton.addEventListener('click', previousTutorialStep);
                     break;
@@ -186,12 +176,13 @@
     function nextTutorialStep() {
         // Increment the current step
         currentStep++;
-        if (currentStep === 6) {
+        if (currentStep === 5) {
             close();
         }
 
         // Update the tutorial content for the new step
         updateTutorialContent();
+        updateFontSizeBasedOnEnlargedText();
     }
 
     function previousTutorialStep() {
@@ -204,6 +195,16 @@
 
         // Update the tutorial content for the new step
         updateTutorialContent();
+    }
+
+    function updateFontSizeBasedOnEnlargedText() {
+        const tutorialContentElement = document.getElementById('tutorialContent');
+        const isEnlargedPage = document.body.classList.contains('enlarged-page');
+        const isEnlargedText = document.body.classList.contains('enlarged-text');
+
+        if (tutorialContentElement && isEnlargedPage && isEnlargedText) {
+            tutorialContentElement.style.fontSize = '1.2em';
+        }
     }
 
     document.getElementById('cancelButton').addEventListener('click', close);
@@ -256,7 +257,7 @@
         }
     });
 
-        document.getElementById('skipButton').addEventListener('click', close);
+    document.getElementById('skipButton').addEventListener('click', close);
 
     document.addEventListener("keydown", function (event) {
         // Check if centerDiv exists
@@ -265,7 +266,7 @@
             return;
         }
 
-        if (event.key === "N" && document.activeElement.tagName !== "INPUT") {
+        if (event.key === "N" && event.shiftKey && document.activeElement.tagName !== "INPUT") {
             if (currentStep === 1) {
                 activateAccessibility();
                 nextTutorialStep();
@@ -302,10 +303,11 @@
             else if (currentStep === 5) {
                 nextTutorialStep();
             }
-        } 
-        else if (event.key === "B" && document.activeElement.tagName !== "INPUT") {
+        }
+        else if (event.key === "B" && event.shiftKey && document.activeElement.tagName !== "INPUT") {
             previousTutorialStep();
         }
+
 
         if ((event.ctrlKey || event.metaKey) && event.key === " " && document.activeElement.tagName !== "INPUT") {
             if (!annyang.isListening()) {
