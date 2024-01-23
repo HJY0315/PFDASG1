@@ -72,15 +72,15 @@ namespace PFDASG1.Controllers
                     }
                     else
                     {
-                        msg = "Verification failed.";
+                        msg = "Security Question Verification failed.";
                     }
                 }
                 else
                 {
-                    msg = "Verification failed.";
+                    msg = "Security Question Verification failed.";
                 }
             }
-            if (HttpContext.Session.GetString("Name") != null)
+            if (HttpContext.Session.GetString("Name") != null) //for logged in user
             {
                 var loggedinUserName = HttpContext.Session.GetString("Name");
                 var loggedinUserID = HttpContext.Session.GetInt32("id");
