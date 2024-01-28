@@ -123,6 +123,36 @@ namespace PFDASG1.Controllers
 
             TransactionViewModel transactionViewModel = new TransactionViewModel();
 
+            int userId = (int)HttpContext.Session.GetInt32("id");
+
+            // Retrieve transactions based on the session ID
+            List<TransactionViewModel> transactions = TransactionsContext.GetTransactions(userId);
+
+            // Initialize the total balance variable
+            decimal totalBalance = 0;
+
+            // Add amounts for non-sender transactions
+            foreach (var item in transactions)
+            {
+                if (item.SenderID != userId)
+                {
+                    totalBalance += item.Amount;
+                }
+                else
+                {
+                    totalBalance -= item.Amount;
+                }
+            }
+
+            // Subtract amounts for sender transactions
+            var senderTransactions = transactions.Where(item => item.SenderID == userId);
+            decimal amountToSubtract = senderTransactions.Sum(item => item.Amount);
+            totalBalance -= amountToSubtract;
+
+            // Set the ViewBag for totalBalance and DailyLimit
+            ViewBag.totalBalance = totalBalance;
+            ViewBag.DailyLimit = 5000; 
+
             return View(transactionViewModel);
         }
 
@@ -201,6 +231,7 @@ namespace PFDASG1.Controllers
             //// Redirect the user back to the Transfer page
             return View(transactionViewModel);
         }
+
 
         public IActionResult Unknown()
         {

@@ -1,6 +1,8 @@
 ﻿var unrecognizedFlag = false;
 var listening = false;
 
+
+
 var commandKeywords = {
     'Go to login page': ['login page', 'bring me to login page', 'take me to login'],
     'Go to home page': ['home page', 'bring me to home page', 'take me to home'],
