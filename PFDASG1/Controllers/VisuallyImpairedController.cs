@@ -178,7 +178,7 @@ namespace PFDASG1.Controllers
 
             // Validate account balance
             decimal accBalance = TransactionsContext.GetAccountBalance(userId);
-            if (transactionViewModel.Amount < accBalance)
+            if (transactionViewModel.Amount < accBalance && accBalance > 0)
             {
                 // Create a new Transactions object
                 // Add the transaction to the TransactionsContext
