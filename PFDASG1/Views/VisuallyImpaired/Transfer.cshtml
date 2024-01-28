@@ -3,8 +3,8 @@
     Layout = null;
 }
 
-<!--1. Make the Done button transfer page to HomePage.
-    2. Ensure that the prev button is in working condition.
+<!--1. Make the Done button transfer page to HomePage. (Done)
+    2. Ensure that the prev button is in working condition. (On Hold)
     3. Display Remaining Balance.
     4. Ensure that the Remaining Balance is linked to the acct balance.
     5. Display Daily Limit.
@@ -32,11 +32,7 @@
     </header>
     <div class="transfer-form container mt-5">
         <form asp-controller="VisuallyImpaired" asp-action="Transfer" method="post">
-            <div class="form-step-list">
-               @* <div class="form-step-item active">
-                    <span class="item__step">1</span>
-                    <p class="item__title mt-1">Select Account</p>
-                </div>*@
+            <div class="form-step-list">               
                 <div class="form-step-item text-center">
                     <span class="item__step">1</span>
                     <p class="item__title mt-1">Search Recipient</p>
@@ -52,39 +48,6 @@
             </div>
             
             <div class="form-layout">
-                @*  <!-- Step 1: Select Account -->
-                <div class="form-group step-content">
-                <label asp-for="AccountId">Choose Account</label>
-                <select name="bankTransfer" id="bankTransfer" asp-for="AccountId">
-                <option value="1">Please Select</option>
-                <option value="2">Frank Card</option>
-                <option value="3">Saving Account</option>
-                </select>
-                </div>*@
-
-                @*<!-- Step 2: Select Payment Type -->
-                <div class="form-group step-content">
-                    <label asp-for="RecipientID">Search Recipient</label>
-                    <select name="paymentType" id="paymentType" onchange="updatePaymentMethod()" asp-for="RecipientID">
-                        <option value="1">Please Select</option>
-                        <option value="2">NRIC</option>
-                        <option value="3">Mobile Number</option>
-                    </select>
-
-                    <!-- Input for NRIC -->
-                    <div class="form-group" id="nricInput" style="display:none;">
-                        <label asp-for="NRIC">Enter NRIC</label>
-                        <input type="text" id="nric" placeholder="S1234567A" maxlength="9" />
-                        <span asp-validation-for="NRIC" class="text-danger"></span>
-                    </div>
-
-                    <!-- Input for Mobile Number -->
-                    <div class="form-group" id="mobileInput" style="display:none;">
-                        <label asp-for="MobileNumber">Enter Mobile Number</label>
-                        <input type="text" id="mobileNumber" placeholder="91234567" maxlength="8" />
-                        <span asp-validation-for="MobileNumber" class="text-danger"></span>
-                    </div>
-                </div>*@
                 <!-- Step 1: Enter phone number -->
                 <div class="form-group step-content">
                 <div class="form-group" id="mobileInput">
@@ -110,9 +73,12 @@
                     <input type="number" id="amount" asp-for="Amount" required min="1" />
                     <span asp-validation-for="Amount" class="text-danger" id="amountMsg"></span>
 
-                  @*  <label>Remaining Balance:</label>
-                    <p>$@ViewBag.amount</p>*@
+                    <!-- Display Remaining Balance -->
+                    <label>Remaining Balance:</label>
+                    <p>$@ViewBag.totalBalance</p>
 
+                    <label>Daily Limit:</label>
+                    <p>$@ViewBag.DailyLimit</p>
 
                     <label asp-for="Description">Description</label>
                     <input type="text" id="description" asp-for="Description" />
@@ -165,42 +131,12 @@
                 }
             });
 
-            updateReviewContent();
+            //updateReviewContent();
         }
 
-        //function updateReviewContent() {
-        //    const reviewAmount = document.getElementById('reviewAmount');
-        //    const reviewTransferTo = document.getElementById('reviewTransferTo');
-        //    const reviewDescription = document.getElementById('reviewDescription');
-
-        //    // Get values from the form inputs
-        //    const amount = document.getElementById('amount').value;
-        //    const paymentType = document.getElementById('paymentType').value;
-
-        //    // Update the review content
-        //    reviewAmount.textContent = amount;
-        //    //reviewTransferTo.textContent = getTransferToText(paymentType);
-
-        //    // Display the description in the review
-        //    const description = document.getElementById('description').value;
-        //    reviewDescription.textContent = description;
-        //}
 
 
-        //function getTransferToText(paymentType) {
-        //    const nricInput = document.getElementById('nric');
-        //    const mobileNumberInput = document.getElementById('mobileNumber');
-
-        //    if (paymentType === '2') {
-        //        return 'Transfer to NRIC: ' + nricInput.value;
-        //    } else if (paymentType === '3') {
-        //        return 'Transfer to Mobile Number: ' + mobileNumberInput.value;
-        //    } else {
-        //        return 'Unknown Transfer';
-        //    }
-        //}
-
-        const isPhoneNumberValid = false;
+        let isPhoneNumberValid = false;
 
         function phoneNumberValidation() {
             const phoneNumber = document.getElementById('mobileNumber').value;
@@ -324,13 +260,16 @@
                     phoneNumberValidation().then(function () {
                         // Reset the button text to "Next" for other pages
                         document.getElementById('nextButton').innerText = 'Done';
+                        document.getElementById('prevButton').style.display = 'block';
                         // Reset the onclick event to the original function for other pages
                         //document.getElementById('nextButton').onclick = function () {
                         //    nextPrev(1);
                         //}
-                        document.getElementById('prevButton').onclick = function(){
-                            nextPrev(-1);
-                        }
+                        // Redirect to the Index page when the "Done" button is clicked
+                        window.location.href = '/VisuallyImpaired/Index';
+                        //document.getElementById('prevButton').onclick = function(){
+                        //    nextPrev(-1);
+                        //}
                     }).catch(function (error) {
                         console.log('Error:', error);
                     });
@@ -356,23 +295,34 @@
                 }
             }
 
-            console.log(currentPage)
-            var isvalidInput = inputValidation();
-            if (isvalidInput) {
-                console.log('out valid')
-                phoneNumberValidation().then(function () {
-                    console.log('out valid2')
-                    //// Perform your existing logic for updating the current step
-                    if (currentPage < 0) {
-                        currentPage = 0;
-                    } else if (currentPage >= formSteps.length) {
-                        currentPage = formSteps.length - 1;
-                    }
-                    showStep(currentPage);
-                }).catch(function (error) {
-                    console.log('Error:', error);
-                });
+             if (currentPage < 0) {
+                currentPage = 0;
+            } else if (currentPage >= formSteps.length) {
+                currentPage = formSteps.length - 1;
             }
+
+            // Update the step and show the corresponding content
+            showStep(currentPage);
+
+            //console.log(currentPage)
+            //var isvalidInput = inputValidation();
+            //if (isvalidInput) {
+            //    console.log('out valid')
+            //    phoneNumberValidation().then(function () {
+            //        console.log('out valid2')
+            //        //// Perform your existing logic for updating the current step
+            //        if (currentPage < 0) {
+            //            currentPage = 0;
+            //        } else if (currentPage >= formSteps.length) {
+            //            currentPage = formSteps.length - 1;
+            //        }
+
+            //        // Update the step and show the corresponding content
+            //        showStep(currentPage);
+            //    }).catch(function (error) {
+            //        console.log('Error:', error);
+            //    });
+            //}
         }
 
         document.addEventListener('DOMContentLoaded', function () {
@@ -498,33 +448,6 @@
                 this.value = '1';
             }
         });
-
-
-
-        //function updatePaymentMethod() {
-        //    const paymentType = document.getElementById('paymentType').value;
-        //    const nricInput = document.getElementById('nricInput');
-        //    const mobileInput = document.getElementById('mobileInput');
-
-        //    // Show or hide inputs based on the selected payment method
-        //    if (paymentType === '2') {
-        //        nricInput.style.display = 'block';
-        //        mobileInput.style.display = 'none';
-        //    } else if (paymentType === '3') {
-        //        nricInput.style.display = 'none';
-        //        mobileInput.style.display = 'block';
-        //    }
-        //    else {
-        //        // Handle other payment methods if needed
-        //        nricInput.style.display = 'none';
-        //        mobileInput.style.display = 'none';
-        //    }
-
-        //    updateReviewContent();
-        //}
-
-
-        
 
     </script>
     <script src="~/js/site.js" asp-append-version="true"></script>

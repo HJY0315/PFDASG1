@@ -123,6 +123,36 @@ namespace PFDASG1.Controllers
 
             TransactionViewModel transactionViewModel = new TransactionViewModel();
 
+            int userId = (int)HttpContext.Session.GetInt32("id");
+
+            // Retrieve transactions based on the session ID
+            List<TransactionViewModel> transactions = TransactionsContext.GetTransactions(userId);
+
+            // Initialize the total balance variable
+            decimal totalBalance = 0;
+
+            // Add amounts for non-sender transactions
+            foreach (var item in transactions)
+            {
+                if (item.SenderID != userId)
+                {
+                    totalBalance += item.Amount;
+                }
+                else
+                {
+                    totalBalance -= item.Amount;
+                }
+            }
+
+            // Subtract amounts for sender transactions
+            var senderTransactions = transactions.Where(item => item.SenderID == userId);
+            decimal amountToSubtract = senderTransactions.Sum(item => item.Amount);
+            totalBalance -= amountToSubtract;
+
+            // Set the ViewBag for totalBalance and DailyLimit
+            ViewBag.totalBalance = totalBalance;
+            //ViewBag.DailyLimit = CalculateDailyLimit(userId); // Make sure you have a method to calculate the daily limit
+
             return View(transactionViewModel);
         }
 
@@ -163,8 +193,6 @@ namespace PFDASG1.Controllers
         {
             int userId = (int)HttpContext.Session.GetInt32("id");
 
-            //try
-            //{
             // Retrieve the phone number from the form
             string phoneNumber = transactionViewModel.phoneNumber;
             User user = TransactionsContext.GetUserFromPhoneNumber(phoneNumber);
@@ -178,7 +206,10 @@ namespace PFDASG1.Controllers
 
             // Validate account balance
             decimal accBalance = TransactionsContext.GetAccountBalance(userId);
-            if (transactionViewModel.Amount < accBalance)
+
+            
+
+            if (transactionViewModel.Amount < accBalance && transactionViewModel.Amount <= ViewBag.DailyLimit)
             {
                 // Create a new Transactions object
                 // Add the transaction to the TransactionsContext
@@ -190,17 +221,10 @@ namespace PFDASG1.Controllers
                 ViewData["status"] = "failed";
             }
 
-            //}
-            //catch (Exception ex)
-            //{
-            //    // Handle any errors that occur
-            //    TempData["message"] = "An error occurred during the transfer: " + ex.Message;
-            //    TempData["status"] = "error";
-            //}
-
-            //// Redirect the user back to the Transfer page
+            // Redirect the user back to the Transfer page
             return View(transactionViewModel);
         }
+
 
         public IActionResult Unknown()
         {
