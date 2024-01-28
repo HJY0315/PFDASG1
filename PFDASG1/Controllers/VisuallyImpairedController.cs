@@ -209,7 +209,7 @@ namespace PFDASG1.Controllers
 
             
 
-            if (transactionViewModel.Amount < accBalance && transactionViewModel.Amount <= ViewBag.DailyLimit)
+            if (transactionViewModel.Amount < accBalance)
             {
                 // Create a new Transactions object
                 // Add the transaction to the TransactionsContext

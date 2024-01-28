@@ -5,8 +5,8 @@
 
 <!--1. Make the Done button transfer page to HomePage. (Done)
     2. Ensure that the prev button is in working condition. (On Hold)
-    3. Display Remaining Balance.
-    4. Ensure that the Remaining Balance is linked to the acct balance.
+    3. Display Remaining Balance. (Done)
+    4. Ensure that the Remaining Balance is linked to the acct balance. (Done)
     5. Display Daily Limit.
     6. Ensure that the Daily limit is linked the the transaction amount history.
     7. Done
@@ -295,34 +295,25 @@
                 }
             }
 
-             if (currentPage < 0) {
-                currentPage = 0;
-            } else if (currentPage >= formSteps.length) {
-                currentPage = formSteps.length - 1;
+            console.log(currentPage)
+            var isvalidInput = inputValidation();
+            if (isvalidInput) {
+                console.log('out valid')
+                phoneNumberValidation().then(function () {
+                    console.log('out valid2')
+                    //// Perform your existing logic for updating the current step
+                    if (currentPage < 0) {
+                        currentPage = 0;
+                    } else if (currentPage >= formSteps.length) {
+                        currentPage = formSteps.length - 1;
+                    }
+
+                    // Update the step and show the corresponding content
+                    showStep(currentPage);
+                }).catch(function (error) {
+                    console.log('Error:', error);
+                });
             }
-
-            // Update the step and show the corresponding content
-            showStep(currentPage);
-
-            //console.log(currentPage)
-            //var isvalidInput = inputValidation();
-            //if (isvalidInput) {
-            //    console.log('out valid')
-            //    phoneNumberValidation().then(function () {
-            //        console.log('out valid2')
-            //        //// Perform your existing logic for updating the current step
-            //        if (currentPage < 0) {
-            //            currentPage = 0;
-            //        } else if (currentPage >= formSteps.length) {
-            //            currentPage = formSteps.length - 1;
-            //        }
-
-            //        // Update the step and show the corresponding content
-            //        showStep(currentPage);
-            //    }).catch(function (error) {
-            //        console.log('Error:', error);
-            //    });
-            //}
         }
 
         document.addEventListener('DOMContentLoaded', function () {
