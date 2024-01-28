@@ -193,6 +193,8 @@ namespace PFDASG1.Controllers
         {
             int userId = (int)HttpContext.Session.GetInt32("id");
 
+            //try
+            //{
             // Retrieve the phone number from the form
             string phoneNumber = transactionViewModel.phoneNumber;
             User user = TransactionsContext.GetUserFromPhoneNumber(phoneNumber);
@@ -206,9 +208,6 @@ namespace PFDASG1.Controllers
 
             // Validate account balance
             decimal accBalance = TransactionsContext.GetAccountBalance(userId);
-
-            
-
             if (transactionViewModel.Amount < accBalance)
             {
                 // Create a new Transactions object
@@ -221,7 +220,15 @@ namespace PFDASG1.Controllers
                 ViewData["status"] = "failed";
             }
 
-            // Redirect the user back to the Transfer page
+            //}
+            //catch (Exception ex)
+            //{
+            //    // Handle any errors that occur
+            //    TempData["message"] = "An error occurred during the transfer: " + ex.Message;
+            //    TempData["status"] = "error";
+            //}
+
+            //// Redirect the user back to the Transfer page
             return View(transactionViewModel);
         }
 
