@@ -151,7 +151,7 @@ namespace PFDASG1.Controllers
 
             // Set the ViewBag for totalBalance and DailyLimit
             ViewBag.totalBalance = totalBalance;
-            //ViewBag.DailyLimit = CalculateDailyLimit(userId); // Make sure you have a method to calculate the daily limit
+            ViewBag.DailyLimit = 5000; 
 
             return View(transactionViewModel);
         }
