@@ -2,7 +2,7 @@
 @using Microsoft.AspNetCore.Http
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 @{
-    Layout = null;
+    Layout = "~/Views/Shared/_Layout.cshtml";
     int userid = 0;
     var session = HttpContextAccessor.HttpContext;
 
@@ -57,6 +57,16 @@
 
     <script src="https://cdn.lordicon.com/lordicon.js"></script>
 
+    @{
+        // Check if Context and Session are not null
+        var fontSize = Context?.Session?.GetInt32("FontSize") ?? 20;
+    }
+
+    <style>
+        body {
+            font-size: @(fontSize)px;
+        }
+    </style>
 </head>
 
 <body>

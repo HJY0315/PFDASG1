@@ -32,6 +32,33 @@ namespace PFDASG1.Controllers
             return View();
         }
 
+        [HttpPost]
+        public IActionResult AdjustFontSize(int size)
+        {
+            // Save the selected font size in the session or user preferences
+            ControllerContext.HttpContext.Session.SetInt32("FontSize", size);
+
+            // Redirect back to the referring page or any desired page
+            return Redirect(Request.Headers["Referer"].ToString());
+        }
+
+        [HttpPost]
+        public IActionResult UpdateFontSizeJS(int size)
+        {
+            // Save the selected font size in the session or user preferences
+            ControllerContext.HttpContext.Session.SetInt32("FontSize", size);
+
+            // Return an OK response or any necessary information
+            return Ok();
+        }
+
+        [HttpGet]
+        public IActionResult GetFontSize()
+        {
+            var fontSize = ControllerContext.HttpContext.Session.GetInt32("FontSize") ?? 20;
+            return Json(new { fontSize = fontSize });
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

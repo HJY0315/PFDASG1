@@ -1,5 +1,5 @@
 ﻿@{
-    Layout = null;
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <!DOCTYPE html>
@@ -20,7 +20,17 @@
 
     <!-- GSAP -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.0/gsap.min.js"></script>
-  
+
+    @{
+        // Check if Context and Session are not null
+        var fontSize = Context?.Session?.GetInt32("FontSize") ?? 20;
+    }
+
+    <style>
+        body {
+            font-size: @(fontSize)px;
+        }
+    </style>
 </head>
 <body>
     <header>
