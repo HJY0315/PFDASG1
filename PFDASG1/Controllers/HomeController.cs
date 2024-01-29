@@ -55,8 +55,8 @@ namespace PFDASG1.Controllers
             }
             else
             {
-                TempData["Message"] = "Invalid login credentials";
-                ViewBag.ErrorMessage = "Invalid login credentials";
+                TempData["Message"] = "Invalid login credentials.";
+                ViewBag.ErrorMessage = "Invalid login credentials.";
                 return View();
             }
         }
