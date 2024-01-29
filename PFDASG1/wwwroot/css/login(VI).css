@@ -300,3 +300,23 @@ Form
     clip: rect(0, 0, 0, 0);
     border: 0;
 }
+
+
+.iconContainer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 8;
+    background-color: white;
+    padding: 10px;
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    height: 250px;
+    width: 250px;
+}
+
+.iconCompleted {
+    width: 100%; 
+    height: 100%;
+}
