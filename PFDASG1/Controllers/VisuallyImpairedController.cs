@@ -24,12 +24,15 @@ namespace PFDASG1.Controllers
             {
                 TempData["ShowSQSetUp"] = false; //if user is logged in, then dn setup
             }
-            if (TempData["showSQSetUp"] == null)
+            if (TempData["showSQSetUp"] != null && TempData["showSQSetUp"] is bool && (bool)TempData["showSQSetUp"] == false)
+            {
+                return View();
+            }
+            else
             {
                 return RedirectToAction("SQSetUp");
             }
-
-            return View();
+           
         }
 
         [HttpPost]
