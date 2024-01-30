@@ -26,7 +26,7 @@ namespace PFDASG1.Models
 
 
         
-        public decimal? Amount { get; set; }
+        public decimal Amount { get; set; }
 
         
         public string? Description { get; set; }

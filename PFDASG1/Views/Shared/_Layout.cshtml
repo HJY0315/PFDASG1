@@ -1,49 +1,60 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - PFDASG1</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/PFDASG1.styles.css" asp-append-version="true" />
+    <title>Layout</title>
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">PFDASG1</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
+    @RenderBody()
+
+    <!-- Add this button wherever you want in your layout -->
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#fontSizeModal">
+        Adjust Font Size
+    </button>
+
+    <!-- Bootstrap Modal for Font Size Adjustment -->
+    <div class="modal fade" id="fontSizeModal" tabindex="-1" role="dialog" aria-labelledby="fontSizeModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="fontSizeModalLabel">Adjust Font Size</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Add form elements for font size adjustment -->
+                    <form id="fontSizeForm" action="@Url.Action("AdjustFontSize", "Home")" method="post">
+                        <label for="fontSize">Select Font Size:</label>
+                        <div class="input-group">
+                            <button type="button" class="btn btn-secondary" aria-label="Decrease Font Size" style="margin:5px" onclick="adjustFontSize(-1)">
+                                <span aria-hidden="true">-</span>
+                            </button>
+                            <input type="number" name="size" id="fontSize" min="15" max="30" value="20" />
+                            <button type="button" class="btn btn-secondary" aria-label="Increase Font Size" style="margin:5px" onclick="adjustFontSize(1)">
+                                <span aria-hidden="true">+</span>
+                            </button>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Apply</button>
+
+                        <div id="fontSizeLiveRegion" aria-live="assertive" class="visually-hidden"></div>
+                    </form>
                 </div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2023 - PFDASG1 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+    </div>
+    <script>
+        function adjustFontSize(change) {
+            var fontSizeInput = document.getElementById("fontSize");
+            var currentSize = parseInt(fontSizeInput.value);
+
+            // Ensure the new size is within the specified range
+            var newSize = Math.min(30, Math.max(15, currentSize + change));
+
+            // Update the font size of the input element
+            fontSizeInput.value = newSize;
+
+            document.getElementById("fontSizeLiveRegion").textContent = newSize;
+        }
+    </script>
 </body>
 </html>

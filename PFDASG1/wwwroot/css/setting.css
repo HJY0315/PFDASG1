@@ -414,4 +414,20 @@ Credit Card
     transform: translate(-50%,-50%);
     display: none;
     z-index: 8;
+    width: 100%; /* Set the width and height to 100% to fill the container */
+    height: 100%;
+}
+
+.iconContainer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 8;
+    background-color: white; /* Set the background color to white */
+    padding: 10px; /* Optional: Add padding for space around the icon */
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    height: 250px;
+    width: 250px;
 }

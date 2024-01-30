@@ -9,7 +9,7 @@
     {
         userid = HttpContextAccessor.HttpContext.Session.GetInt32("id") ?? 0;
     }
-    Layout = null;
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <!--
@@ -49,6 +49,16 @@
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>
 
+    @{
+        // Check if Context and Session are not null
+        var fontSize = Context?.Session?.GetInt32("FontSize") ?? 20;
+    }
+
+    <style>
+        body {
+            font-size: @(fontSize)px;
+        }
+    </style>
 </head>
 
 <body>
@@ -84,7 +94,7 @@
                     <button class="filter-btn" data-filter="expense">Expense</button>
                     <button class="filter-btn" data-filter="income">Income</button>
                 </div>
-                <div class="flex-row header">
+                <div class="header">
                     <div class="flex-cell">Date</div>
                     <div class="flex-cell">Description</div>
                     <div class="flex-cell">Amount</div>

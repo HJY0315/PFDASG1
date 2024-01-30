@@ -150,6 +150,20 @@ span {
     }
 
 /* Row and cell styles */
+.header {
+    display: flex;
+    border-bottom: 1px solid #ccc;
+}
+
+    .header > .flex-cell {
+        font-weight: bold;
+    }
+
+
+    .header:last-child {
+        border-bottom: none;
+    }
+
 .flex-row {
     display: flex;
     border-bottom: 1px solid #ccc;
