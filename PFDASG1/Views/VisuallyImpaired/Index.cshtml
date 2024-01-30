@@ -66,21 +66,20 @@
         <partial name="_navbar" />
     </header>
 
-    <div style="position: relative;">
+    <div class="insight">
         <div id="progressText" class="progressLabel"></div>
-        <progress id="moneyProgress" value="0" max="100"></progress>
-
+        <canvas id="doughnutChart" width="162" height="162"></canvas>
     </div>
 
     <div class="flex-container">
         <div class="flex-item">
             <i class="fas fa-money-bill-wave"></i>
-            <span>Total Earning</span>
-            <span>$@ViewBag.totalBalance</span>*
+            <span>Total Income</span>
+            <span>$@ViewBag.totalBalance</span>
         </div>
         <div class="flex-item">
             <i class="fas fa-shopping-cart"></i>
-            <span>Total Spending</span>
+            <span>Total Expense</span>
             <span>$@ViewBag.amountToSubtract</span>
         </div>
     </div>
@@ -119,6 +118,33 @@
     </footer>
 
     <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const chartData = {
+                labels: ["Expense", "Income"],
+                datasets: [
+                    {
+                        data: [@ViewBag.amountToSubtract, @ViewBag.totalBalance],
+                        backgroundColor: ["#006400", "#FC4349"],
+                    },
+                ],
+            };
+
+            const options = {
+                responsive: true,
+                maintainAspectRatio: true,
+            };
+
+            const ctx = document.getElementById("doughnutChart").getContext("2d");
+            const myDoughnutChart = new Chart(ctx, {
+                type: "doughnut",
+                data: chartData,
+                options: options,
+            });
+        });
+
+
+
         const progressElement = document.getElementById('moneyProgress');
         const progressTextLabel = document.getElementById('progressText');
         const moneyValue = @ViewBag.amountToSubtract;

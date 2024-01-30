@@ -282,24 +282,12 @@ namespace PFDASG1.DAL
         {
             SqlCommand cmd = conn.CreateCommand();
             cmd.CommandText = @"SELECT
-                            t.transactionId,
-                            t.description,
-                            t.accountId,
-                            t.amount,
-                            t.transactionDate,
-                            t.receiverId,
-                            t.senderId
+                            accountId,
+                            accountType,
+                            accountBalance,
+                            userId
                         FROM
-                            Transactions AS t
-                        INNER JOIN
-                            Accounts AS a
-                        ON
-                            t.accountId = a.accountId
-                        WHERE
-                            (t.senderId = @id OR t.receiverId = @id)
-                        ORDER BY
-                            t.transactionDate DESC";
-            cmd.Parameters.AddWithValue("@id", userId);
+                            Accounts;";
 
             conn.Open();
             SqlDataReader reader = cmd.ExecuteReader();
@@ -311,13 +299,7 @@ namespace PFDASG1.DAL
                 {
                     transactionsList.Add(new TransactionViewModel
                     {
-                        TransactionId = reader.GetInt32(0),
-                        Description = reader.IsDBNull(1) ? null : reader.GetString(1),
-                        AccountId = reader.GetInt32(2),
-                        Amount = reader.IsDBNull(3) ? 0 : reader.GetDecimal(3), 
-                        TransactionDate = reader.GetDateTime(4),
-                        RecipientID = reader.GetInt32(5),
-                        SenderID = reader.GetInt32(6)
+                        Amount = reader.GetInt32(3),
                     });
 
                 }
