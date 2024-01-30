@@ -150,7 +150,7 @@ namespace PFDASG1.Controllers
             // Subtract amounts for sender transactions
             var senderTransactions = transactions.Where(item => item.SenderID == userId);
             decimal amountToSubtract = senderTransactions.Sum(item => item.Amount);
-            totalBalance -= amountToSubtract;
+        
 
             // Set the ViewBag for totalBalance and DailyLimit
             ViewBag.totalBalance = totalBalance;

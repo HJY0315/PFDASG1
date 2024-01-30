@@ -1,5 +1,7 @@
 ﻿var unrecognizedFlag = false;
 var listening = false;
+var isShiftKeyPressed = false;
+var annyangListening = false;
 
 
 
@@ -8,7 +10,7 @@ var commandKeywords = {
     'Go to home page': ['home page', 'bring me to home page', 'take me to home'],
     'Go to cut activation': ['card activation', 'activate card', 'activate my card', 'go to card activation'],
     'Go to payment page': ['payment page', 'go to payment', 'navigate to payment'],
-    
+
 };
 
 if (annyang) {
@@ -53,15 +55,18 @@ if (annyang) {
     const activated = 0;
 
     function startListening() {
-        annyang.start();
-        speakResponse("Listening started");
-        console.log("Listening started");
-        sessionStorage.setItem("annyangStatus", "true");
+        if (!annyangListening) {
+            annyang.start();
+            speakResponse("Listening started");
+            console.log("Listening started");
+            sessionStorage.setItem("annyangStatus", "true");
+            annyangListening = true; // Set the flag to true
+        }
     }
 
     function stopListening() {
         annyang.abort();
-        listening = false;
+        annyangListening = false;
         speakResponse("Listening stopped");
         console.log("Listening stopped");
         sessionStorage.setItem("annyangStatus", "false");
@@ -225,8 +230,7 @@ if (annyang) {
                 speakResponse("No input field is focused.");
             }
         }
-        else
-        {
+        else {
             // Remove spaces from the input value
             value = value.replace(/\s/g, '');
             document.getElementById('search').value = value;
@@ -274,9 +278,7 @@ if (annyang) {
 
     annyang.addCommands(commands);
 
-    if (sessionStorage.getItem("annyangStatus") === "true") {
-        annyang.start();
-    }
+
 
     annyang.addCallback('resultNoMatch', function (phrases) {
         console.log("resultNoMatch triggered");
@@ -291,12 +293,25 @@ if (annyang) {
 }
 
 document.addEventListener("keydown", function (event) {
-    if ((event.ctrlKey || event.metaKey) && event.key === " " && document.activeElement.tagName !== "INPUT") {
+    if (event.key === "Shift" && document.activeElement.tagName !== "INPUT") {
         event.preventDefault();
-        if (annyang && annyang.isListening()) {
-            stopListening();
-        } else {
-            startListening();
-        }
+        isShiftKeyPressed = true;
+        startListening();
     }
 });
+
+document.addEventListener("keyup", function (event) {
+    if (event.key === "Shift" && document.activeElement.tagName !== "INPUT") {
+        event.preventDefault();
+        isShiftKeyPressed = false;
+        stopListening();
+    }
+});
+
+function togglePushToTalk() {
+    if (isShiftKeyPressed) {
+        startListening();
+    } else {
+        stopListening();
+    }
+}
