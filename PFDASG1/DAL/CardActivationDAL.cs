@@ -51,6 +51,7 @@ namespace PFDASG1.DAL
                 {
                     if (reader.GetString(5) == "Unactivated")
                     {
+                        message = "";
                         cardID = reader.GetInt32(0);
                         break;
                     }

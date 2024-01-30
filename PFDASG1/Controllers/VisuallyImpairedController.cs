@@ -24,12 +24,15 @@ namespace PFDASG1.Controllers
             {
                 TempData["ShowSQSetUp"] = false; //if user is logged in, then dn setup
             }
-            if (TempData["showSQSetUp"] == null)
+            if (TempData["showSQSetUp"] != null && TempData["showSQSetUp"] is bool && (bool)TempData["showSQSetUp"] == false)
+            {
+                return View();
+            }
+            else
             {
                 return RedirectToAction("SQSetUp");
             }
-
-            return View();
+           
         }
 
         [HttpPost]
@@ -208,7 +211,7 @@ namespace PFDASG1.Controllers
 
             // Validate account balance
             decimal accBalance = TransactionsContext.GetAccountBalance(userId);
-            if (transactionViewModel.Amount < accBalance)
+            if (transactionViewModel.Amount < accBalance && accBalance > 0)
             {
                 // Create a new Transactions object
                 // Add the transaction to the TransactionsContext

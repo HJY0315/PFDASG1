@@ -2,7 +2,7 @@
 @using Microsoft.AspNetCore.Http
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 @{
-    Layout = null;
+    Layout = "~/Views/Shared/_Layout.cshtml";
     int userid = 0;
     var session = HttpContextAccessor.HttpContext;
 
@@ -57,6 +57,16 @@
 
     <script src="https://cdn.lordicon.com/lordicon.js"></script>
 
+    @{
+        // Check if Context and Session are not null
+        var fontSize = Context?.Session?.GetInt32("FontSize") ?? 20;
+    }
+
+    <style>
+        body {
+            font-size: @(fontSize)px;
+        }
+    </style>
 </head>
 
 <body>
@@ -71,6 +81,8 @@
             padding: 10px; /* Optional: Add padding for space around the icon */
             border-radius: 15px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            height: 250px;
+            width: 250px;
         }
 
         .iconCompleted {
@@ -104,11 +116,11 @@
                     // Show the animation
                     iconAnimation.show();
 
-                    // Gradually reduce the opacity over 3000 milliseconds (3 seconds)
-                    iconAnimation.animate({ opacity: 0 }, 4000, function () {
+                    // Set a timeout to remove the element after 3000 milliseconds (3 seconds)
+                    setTimeout(function () {
                         iconAnimation.remove();
                         $(".iconContainer").remove();
-                    });
+                    }, 3000);
                 });
             </script>
         }
@@ -333,36 +345,6 @@
             });
         });
 
-        //for icons
-        document.addEventListener("DOMContentLoaded", function () {
-            // Select the animated icon
-            var animatedIcon = document.getElementById("animatedIcon");
-
-            // Set a timeout to fade out the icon after 3000 milliseconds (3 seconds)
-            setTimeout(function () {
-                // Apply inline styles for the fade-out effect
-                animatedIcon.style.transition = "opacity 1s ease-out";
-                animatedIcon.style.opacity = 0;
-
-                // remove the icon after the animation end
-                setTimeout(function () {
-                    animatedIcon.remove();
-                }, 1000); // Adjust the duration to match the transition duration
-            }, 3000); // Adjust the timeout duration
-        });
-
-        $(document).ready(function () {
-            // Select the Lottie animation
-            var iconAnimation = $(".iconContainer");
-
-            // Show the animation and fade it out after 3000 milliseconds (3 seconds)
-            iconAnimation.show().fadeOut(3000);
-
-            // Optional: Remove the element from the DOM after the animation completes
-            setTimeout(function () {
-                iconAnimation.remove();
-            }, 3000); // Adjust the timeout duration to match the fadeOut duration
-        });
 
     </script>
     <script src="~/js/site.js" asp-append-version="true"></script>
