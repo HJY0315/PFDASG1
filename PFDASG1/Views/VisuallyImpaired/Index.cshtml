@@ -122,11 +122,12 @@
         const progressElement = document.getElementById('moneyProgress');
         const progressTextLabel = document.getElementById('progressText');
         const moneyValue = @ViewBag.amountToSubtract;
+        const remainingValue = @ViewBag.totalBalance - @ViewBag.amountToSubtract;
         const maxValue = @ViewBag.totalBalance;
         progressElement.value = moneyValue;
         progressElement.max = maxValue;
         // Update the text within the progress bar
-        progressTextLabel.textContent = `Your Card Balance: $${moneyValue}`;
+        progressTextLabel.textContent = `Your Card Balance: $${remainingValue}`;
         const filterButtons = document.querySelectorAll('.filter-btn');
         const rowsToFilter = document.querySelectorAll('.flex-row');
         filterButtons.forEach(button => {
