@@ -57,23 +57,13 @@ Additional styling for the search bar in collapsed mode
     opacity: 0;
 }
 
-/*Progress bar*/
-progress {
-    width: 80%;
-    height: 100px;
-    accent-color: red;
-    text-align: center;
-    position: relative;
-    left: calc(20% - 70px);
+.insight {
+    width: 361px;
+    height: 361px;
+    padding: 20px;
+    margin-left: 50px;
 }
 
-.progressLabel {
-    position: relative;
-    text-align: center;
-    color: black;
-    font-weight: bold;
-    font-size: 25px;
-}
 
 /*container for spending, saving and goal*/
 /* Flex container styles */

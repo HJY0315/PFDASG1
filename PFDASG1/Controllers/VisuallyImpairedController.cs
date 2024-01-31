@@ -125,7 +125,7 @@ namespace PFDASG1.Controllers
             ViewData["status"] = null;
 
             TransactionViewModel transactionViewModel = new TransactionViewModel();
-
+            
             int userId = (int)HttpContext.Session.GetInt32("id");
 
             // Retrieve transactions based on the session ID
@@ -150,11 +150,12 @@ namespace PFDASG1.Controllers
             // Subtract amounts for sender transactions
             var senderTransactions = transactions.Where(item => item.SenderID == userId);
             decimal amountToSubtract = senderTransactions.Sum(item => item.Amount);
-            totalBalance -= amountToSubtract;
+        
 
             // Set the ViewBag for totalBalance and DailyLimit
             ViewBag.totalBalance = totalBalance;
-            ViewBag.DailyLimit = 5000; 
+            decimal dailyLimit = TransactionsContext.GetDailyLimit(userId);
+            ViewBag.DailyLimit = dailyLimit; 
 
             return View(transactionViewModel);
         }
@@ -201,6 +202,7 @@ namespace PFDASG1.Controllers
             // Retrieve the phone number from the form
             string phoneNumber = transactionViewModel.phoneNumber;
             User user = TransactionsContext.GetUserFromPhoneNumber(phoneNumber);
+            decimal dailyLimit = TransactionsContext.GetDailyLimit(userId);
 
             transactionViewModel.receipient = user;
             transactionViewModel.TransactionDate = DateTime.Now;
@@ -211,7 +213,7 @@ namespace PFDASG1.Controllers
 
             // Validate account balance
             decimal accBalance = TransactionsContext.GetAccountBalance(userId);
-            if (transactionViewModel.Amount < accBalance && accBalance > 0)
+            if ((transactionViewModel.Amount < accBalance && accBalance > 0) && transactionViewModel.Amount > dailyLimit)
             {
                 // Create a new Transactions object
                 // Add the transaction to the TransactionsContext
