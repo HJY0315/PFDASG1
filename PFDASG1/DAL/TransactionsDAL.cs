@@ -5,6 +5,8 @@ using PFDASG1.Models;
 using System.Data.SqlClient;
 using System.Data;
 using System.Text.RegularExpressions;
+using System.Collections.Generic;
+
 
 namespace PFDASG1.DAL
 {
@@ -351,7 +353,68 @@ namespace PFDASG1.DAL
             }
         }
 
-       
-   
+        public List<Transactions> getRecentTransaction(int userid)
+        {
+            //Create a SqlCommand object from connection object
+            SqlCommand cmd = conn.CreateCommand();
+            //Specify the SELECT SQL statement 
+            cmd.CommandText = @"SELECT 
+                              t.transactionId,
+                              t.description,
+                              t.accountId,
+                              t.amount,
+                              t.transactionDate,
+                              t.receiverId,
+                              t.senderId
+                            FROM
+                              Transactions AS t
+                            INNER JOIN
+                              Accounts AS a
+                            ON
+                              t.accountId = a.accountId
+                            WHERE
+                              (t.senderId = @id OR t.receiverId = @id)
+                            ORDER BY
+                              t.transactionDate DESC";
+
+            cmd.Parameters.AddWithValue("@id", userid);
+            //Open a database connection
+            conn.Open();
+            //Execute the SELECT SQL through a DataReader
+            SqlDataReader reader = cmd.ExecuteReader();
+            List<Transactions> transactionslist = new List<Transactions>();
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    transactionslist.Add(
+                    new Transactions
+                    {
+                        TransactionId = reader.GetInt32(0),
+                        Description = reader.IsDBNull(1) ? null : reader.GetString(1), // Check if Description is null before setting it
+                        AccountId = reader.GetInt32(2),
+                        Amount = reader.GetDecimal(3),
+                        TransactionDate = reader.GetDateTime(4),
+                        RecipientID = reader.GetInt32(5),
+                        SenderID = reader.GetInt32(6)
+
+                    }
+                    );
+                }
+                reader.Close();
+                conn.Close();
+                return transactionslist;
+            }
+            else
+            {
+                // No rows found, return an empty list
+                reader.Close();
+                conn.Close();
+                return new List<Transactions>();
+            }
+        }
+
+
+
     }
 }

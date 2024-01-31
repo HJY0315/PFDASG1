@@ -42,6 +42,8 @@
     @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />*@
     <link rel="stylesheet" type="text/css" href="~/css/site.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.syncfusion.com/ej2/xx.x.x/dist/ej2.min.css" />
+
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
@@ -79,7 +81,7 @@
                     <i class="fa-solid fa-dollar-sign fa-2xl"></i>
                 </div>
                 <div class="d-flex flex-column m-auto py-3">
-                    <span class="lead">Total Income</span>
+                    <span class="lead">Monthly Income</span>
                     <h1 class="display-6 fw-bold">@ViewBag.totalBalance</h1>
                 </div>
             </div>
@@ -91,7 +93,7 @@
                     <i class="fa-solid fa-dollar-sign fa-2xl"></i>
                 </div>
                 <div class="d-flex flex-column m-auto py-3">
-                    <span class="lead">Total Expense</span>
+                    <span class="lead">Monthly Expense</span>
                     <h1 class="display-6 fw-bold">@ViewBag.amountToSubtract</h1>
                 </div>
             </div>
@@ -135,6 +137,8 @@
         </div>
        </div>
     @*Recent Transactions and More*@
+    @Json.Serialize(ViewBag.RecentTransactions)
+    
     <div class="row">
         <div class="col-md-6">
             <div class="widget">
@@ -142,19 +146,27 @@
                     <h5 class="fw-bold">Recent Transactions</h5>
                 </div>
                 <div class="px-4 pb-4">
+                    <div class="flex-row" data-type="@Json.Serialize(ViewBag.RecentTransactions)">
+                        <div class="flex-cell">@Json.Serialize(ViewBag.RecentTransactions)</div>
+                        <div class="flex-cell">@Json.Serialize(ViewBag.RecentTransactions)</div>
+                     @*   <div class="flex-cell" style="color: @(ViewBag.RecentTransactions == @userid ? "green" : "red"); font-weight:bold;">
+                            @(ViewBag.RecentTransactions == @userid ? "+" : "-")@ViewBag.RecentTransactions.ToString("0.00")
+                        </div>*@
+                    </div>
                     <ejs-grid id="recent-transactions"
                               dataSource="@ViewBag.RecentTransactions" gridLines="None">
                         <e-grid-columns>
-                            <e-grid-column headerText="Category" field="CategoryTitleWithIcon"></e-grid-column>
-                            <e-grid-column headerText="Date" field="Date" type="date" format="MMM-dd-yy"></e-grid-column>
-                            <e-grid-column headerText="Amount" field="FormattedAmount" textAlign="Right"></e-grid-column>
+                            <e-grid-column headerText="Description" field="Description"></e-grid-column>
+                            <e-grid-column headerText="Transaction Date" field="TransactionDate" type="date" format="MMM-dd-yy"></e-grid-column>
+                            <e-grid-column headerText="Amount" field="Amount" textAlign="Right"></e-grid-column>
                         </e-grid-columns>
                     </ejs-grid>
                 </div>
             </div>
         </div>
     </div>
-    @*
+
+    
     @{
         if (Model != null)
         {
@@ -182,7 +194,7 @@
             </div>
         }
     }
-    *@
+    
 
     <footer>
         <p>&copy; Please do not share or download your information.</p>
@@ -246,5 +258,7 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/search.js" asp-append-version="true"></script>
     <script src="~/js/annyang-setup.js" asp-append-version="true"></script>
+    <script src="https://cdn.syncfusion.com/ej2/xx.x.x/dist/ej2.min.js"></script>
+
 </body>
 </html>

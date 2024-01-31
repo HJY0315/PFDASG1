@@ -263,7 +263,7 @@ namespace PFDASG1.Controllers
 
 
 
-        public IActionResult Index(int userId, decimal amount)
+        public async Task<IActionResult> Index(int userId, decimal amount)
         {
             // Get the user's name from the session
             string userName = HttpContext.Session.GetString("Name");
@@ -306,6 +306,9 @@ namespace PFDASG1.Controllers
             ViewBag.totalBalance = withdrawlamount;
             ViewBag.Balance = Balance;
 
+            List<Transactions> recenttransaction = TransactionsContext.getRecentTransaction(sessionId);
+
+            ViewBag.RecentTransactions = recenttransaction;
 
             return View(transactions);
         }
