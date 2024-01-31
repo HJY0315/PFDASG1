@@ -129,28 +129,15 @@ namespace PFDASG1.Controllers
             int userId = (int)HttpContext.Session.GetInt32("id");
 
             // Retrieve transactions based on the session ID
-            List<TransactionViewModel> transactions = TransactionsContext.GetTransactions(userId);
+            List<Account> accounts = TransactionsContext.gettransactions(userId);
 
             // Initialize the total balance variable
             decimal totalBalance = 0;
 
-            // Add amounts for non-sender transactions
-            foreach (var item in transactions)
+            foreach (var account in accounts)
             {
-                if (item.SenderID != userId)
-                {
-                    totalBalance += item.Amount;
-                }
-                else
-                {
-                    totalBalance -= item.Amount;
-                }
+                totalBalance += account.accountBalance;
             }
-
-            // Subtract amounts for sender transactions
-            var senderTransactions = transactions.Where(item => item.SenderID == userId);
-            decimal amountToSubtract = senderTransactions.Sum(item => item.Amount);
-        
 
             // Set the ViewBag for totalBalance and DailyLimit
             ViewBag.totalBalance = totalBalance;
@@ -285,8 +272,15 @@ namespace PFDASG1.Controllers
 
             // Retrieve transactions based on the session ID
             List<Transactions> transactions = TransactionsContext.getalltransactions(sessionId);
+            List<Account> accounts = TransactionsContext.gettransactions(sessionId);
             // Initialize the total balance variable
             decimal totalBalance = 0;
+            decimal Balance = 0;
+
+            foreach (var account in accounts)
+            {
+                Balance += account.accountBalance;
+            }
 
             // Add amounts for non-sender transactions
             foreach (var item in transactions)
@@ -304,12 +298,11 @@ namespace PFDASG1.Controllers
             // Subtract amounts for sender transactions
             var senderTransactions = transactions.Where(item => item.SenderID == sessionId);
             decimal amountToSubtract = senderTransactions.Sum(item => item.Amount);
-            totalBalance -= amountToSubtract;
-            decimal despostamount = totalBalance;
-            decimal withdrawlamount = totalBalance - amountToSubtract;
+            decimal withdrawlamount = totalBalance + amountToSubtract;
 
             ViewBag.amountToSubtract = amountToSubtract;
-            ViewBag.totalBalance = despostamount;
+            ViewBag.totalBalance = withdrawlamount;
+            ViewBag.Balance = Balance;
 
 
             return View(transactions);

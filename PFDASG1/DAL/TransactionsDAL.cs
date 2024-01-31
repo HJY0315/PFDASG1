@@ -278,42 +278,56 @@ namespace PFDASG1.DAL
             }
         }
 
-        public List<TransactionViewModel> GetTransactions(int userId)
+        public List<Account> gettransactions(int userid)
         {
+
+            //Create a SqlCommand object from connection object
             SqlCommand cmd = conn.CreateCommand();
+            //Specify the SELECT SQL statement 
             cmd.CommandText = @"SELECT
-                            accountId,
-                            accountType,
-                            accountBalance,
-                            userId
-                        FROM
-                            Accounts;";
-
+                                accountid,
+                                accounttype,
+                                accountbalance, 
+                                userid
+                            FROM
+                              Accounts
+                            WHERE
+                              userId = @id;";
+            cmd.Parameters.AddWithValue("@id", userid);
+            //Open a database connection
             conn.Open();
+            //Execute the SELECT SQL through a DataReader
             SqlDataReader reader = cmd.ExecuteReader();
-            List<TransactionViewModel> transactionsList = new List<TransactionViewModel>();
-
+            List<Account> accountlist = new List<Account>();
             if (reader.HasRows)
             {
+
                 while (reader.Read())
                 {
-                    transactionsList.Add(new TransactionViewModel
+                    accountlist.Add(
+                    new Account
                     {
-                        Amount = reader.GetInt32(3),
-                    });
-
+                        accountId = reader.GetInt32(0),
+                        accountType = reader.GetString(1),
+                        accountBalance = reader.GetDecimal(2),
+                        userId = reader.GetInt32(3)
+                    }
+                    ) ;
                 }
-
                 reader.Close();
                 conn.Close();
-                return transactionsList;
+                return accountlist;
             }
             else
             {
+                // No rows found, return an empty list
                 reader.Close();
                 conn.Close();
-                return new List<TransactionViewModel>();
+                return new List<Account>();
             }
         }
+
+       
+   
     }
 }
