@@ -264,8 +264,8 @@ if (annyang) {
         console.log(`%c ${message}`, 'color: blue; font-weight:bold;');
         var speechSynthesis = window.speechSynthesis;
         var speech = new SpeechSynthesisUtterance(message);
-        speech.volume = 1; // Adjust volume
-        speech.rate = 1; // Adjust speaking rate
+        speech.volume = 1; 
+        speech.rate = 1; 
 
         speech.addEventListener('end', function () {
             if (callback && typeof callback === 'function') {
@@ -285,7 +285,7 @@ if (annyang) {
         if (!unrecognizedFlag) {
             console.log("Handling unrecognized command");
             speakResponse("Sorry, I didn't catch that. Please say again.", function () {
-                unrecognizedFlag = false;  // Reset the flag after speaking
+                unrecognizedFlag = false;  
             });
             unrecognizedFlag = true;
         }
@@ -293,18 +293,18 @@ if (annyang) {
 }
 
 document.addEventListener("keydown", function (event) {
-    if (event.key === "Shift" && document.activeElement.tagName !== "INPUT") {
+    if (event.key === "Shift") {
         event.preventDefault();
         isShiftKeyPressed = true;
-        startListening();
+        togglePushToTalk();
     }
 });
 
 document.addEventListener("keyup", function (event) {
-    if (event.key === "Shift" && document.activeElement.tagName !== "INPUT") {
+    if (event.key === "Shift") {
         event.preventDefault();
         isShiftKeyPressed = false;
-        stopListening();
+        togglePushToTalk();
     }
 });
 
@@ -312,6 +312,10 @@ function togglePushToTalk() {
     if (isShiftKeyPressed) {
         startListening();
     } else {
-        stopListening();
+        if (annyangListening) {
+            stopListening();
+        }
     }
 }
+
+

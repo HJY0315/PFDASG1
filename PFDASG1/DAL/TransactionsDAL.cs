@@ -159,6 +159,30 @@ namespace PFDASG1.DAL
             return account.accountBalance;
         }
 
+        public decimal GetDailyLimit(int senderId)
+        {
+            // Open a connection to the database
+            conn.Open();
+
+            // Create a SqlCommand object to retrieve the account balance
+            SqlCommand cmd = conn.CreateCommand();
+            cmd.CommandText = "SELECT dailyLimit FROM Accounts WHERE userId = @senderId and accountType = 'Savings'";
+            cmd.Parameters.AddWithValue("@senderId", senderId);
+
+            // Execute the query and retrieve the account balance
+            SqlDataReader reader = cmd.ExecuteReader();
+            Account account = new Account();
+            while (reader.Read())
+            {
+                account.accountBalance = reader.GetDecimal(0);
+            }
+            reader.Close();
+            // Close the connection to the database
+            conn.Close();
+
+            // Return the retrieved account balance
+            return account.accountBalance;
+        }
 
         public int Add(TransactionViewModel transactionViewModel)
         {
@@ -176,7 +200,7 @@ namespace PFDASG1.DAL
 
             conn.Open();
             SqlCommand deductCmd = conn.CreateCommand();
-            deductCmd.CommandText = @"UPDATE Accounts SET accountBalance = accountBalance - @amount WHERE accountId = @senderId";
+            deductCmd.CommandText = @"UPDATE Accounts SET dailyLimit = dailyLimit - @amount, accountBalance = accountBalance - @amount WHERE accountId = @senderId";
             deductCmd.Parameters.AddWithValue("@amount", transactionViewModel.Amount);
             deductCmd.Parameters.AddWithValue("@senderId", transactionViewModel.senderID);
 
