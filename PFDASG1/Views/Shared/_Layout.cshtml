@@ -4,11 +4,15 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
+
 <body>
     @RenderBody()
 
     <!-- Add this button wherever you want in your layout -->
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#fontSizeModal">
+@*    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#fontSizeModal">
+        Adjust Font Size
+    </button>*@
+    <button type="button" class="btn btn-primary animated-button" data-bs-toggle="modal" data-bs-target="#fontSizeModal">
         Adjust Font Size
     </button>
 
@@ -26,11 +30,19 @@
                         <label for="fontSize">Select Font Size:</label>
                         <div class="input-group">
                             <button type="button" class="btn btn-secondary" aria-label="Decrease Font Size" style="margin:5px" onclick="adjustFontSize(-1)">
-                                <span aria-hidden="true">-</span>
+                                <span aria-hidden="true">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-dash" viewBox="0 0 20 20">
+                                        <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8" />
+                                    </svg>
+                                </span>
                             </button>
-                            <input type="number" name="size" id="fontSize" min="15" max="30" value="20" />
+                            <input type="number" name="size" id="fontSize" min="15" max="30" value="20" style="text-align: center;" />
                             <button type="button" class="btn btn-secondary" aria-label="Increase Font Size" style="margin:5px" onclick="adjustFontSize(1)">
-                                <span aria-hidden="true">+</span>
+                                <span aria-hidden="true">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus" viewBox="0 0 20 20">
+                                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                                    </svg>
+                                </span>
                             </button>
                         </div>
                         <button type="submit" class="btn btn-primary">Apply</button>
