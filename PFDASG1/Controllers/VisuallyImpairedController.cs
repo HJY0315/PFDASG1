@@ -125,36 +125,34 @@ namespace PFDASG1.Controllers
             ViewData["status"] = null;
 
             TransactionViewModel transactionViewModel = new TransactionViewModel();
-
+            
             int userId = (int)HttpContext.Session.GetInt32("id");
 
             // Retrieve transactions based on the session ID
-            List<TransactionViewModel> transactions = TransactionsContext.GetTransactions(userId);
-
+            List<Account> accounts = TransactionsContext.gettransactions(userId);
+            List<Transactions> transactions = TransactionsContext.getalltransactions(userId);
             // Initialize the total balance variable
             decimal totalBalance = 0;
 
-            // Add amounts for non-sender transactions
-            foreach (var item in transactions)
+            foreach (var account in accounts)
             {
-                if (item.SenderID != userId)
+                foreach (var transaction in transactions)
                 {
-                    totalBalance += item.Amount;
-                }
-                else
-                {
-                    totalBalance -= item.Amount;
+                    if (transaction.SenderID != userId)
+                    {
+                        totalBalance += account.accountBalance;
+                    }
+                    else
+                    {
+                        totalBalance -= account.accountBalance;
+                    }
                 }
             }
 
-            // Subtract amounts for sender transactions
-            var senderTransactions = transactions.Where(item => item.SenderID == userId);
-            decimal amountToSubtract = senderTransactions.Sum(item => item.Amount);
-        
-
             // Set the ViewBag for totalBalance and DailyLimit
             ViewBag.totalBalance = totalBalance;
-            ViewBag.DailyLimit = 5000; 
+            decimal dailyLimit = TransactionsContext.GetDailyLimit(userId);
+            ViewBag.DailyLimit = dailyLimit; 
 
             return View(transactionViewModel);
         }
@@ -201,6 +199,7 @@ namespace PFDASG1.Controllers
             // Retrieve the phone number from the form
             string phoneNumber = transactionViewModel.phoneNumber;
             User user = TransactionsContext.GetUserFromPhoneNumber(phoneNumber);
+            decimal dailyLimit = TransactionsContext.GetDailyLimit(userId);
 
             transactionViewModel.receipient = user;
             transactionViewModel.TransactionDate = DateTime.Now;
@@ -211,7 +210,7 @@ namespace PFDASG1.Controllers
 
             // Validate account balance
             decimal accBalance = TransactionsContext.GetAccountBalance(userId);
-            if (transactionViewModel.Amount < accBalance && accBalance > 0)
+            if ((transactionViewModel.Amount < accBalance && accBalance > 0) && transactionViewModel.Amount > dailyLimit)
             {
                 // Create a new Transactions object
                 // Add the transaction to the TransactionsContext
@@ -263,6 +262,18 @@ namespace PFDASG1.Controllers
                 }
             }
 
+            foreach (var item in transactions)
+            {
+                if (item.SenderID != sessionId)
+                {
+                    totalBalance += item.Amount;
+                }
+                else
+                {
+                    totalBalance -= item.Amount;
+                }
+            }
+
             // Subtract amounts for sender transactions
             var senderTransactions = transactions.Where(item => item.SenderID == sessionId);
             decimal amountToSubtract = senderTransactions.Sum(item => item.Amount);
@@ -274,7 +285,7 @@ namespace PFDASG1.Controllers
 
 
 
-        public IActionResult Index(int userId, decimal amount)
+        public async Task<IActionResult> Index(int userId, decimal amount)
         {
             // Get the user's name from the session
             string userName = HttpContext.Session.GetString("Name");
@@ -285,8 +296,15 @@ namespace PFDASG1.Controllers
 
             // Retrieve transactions based on the session ID
             List<Transactions> transactions = TransactionsContext.getalltransactions(sessionId);
+            List<Account> accounts = TransactionsContext.gettransactions(sessionId);
             // Initialize the total balance variable
             decimal totalBalance = 0;
+            decimal Balance = 0;
+
+            foreach (var account in accounts)
+            {
+                Balance += account.accountBalance;
+            }
 
             // Add amounts for non-sender transactions
             foreach (var item in transactions)
@@ -304,13 +322,18 @@ namespace PFDASG1.Controllers
             // Subtract amounts for sender transactions
             var senderTransactions = transactions.Where(item => item.SenderID == sessionId);
             decimal amountToSubtract = senderTransactions.Sum(item => item.Amount);
-            totalBalance -= amountToSubtract;
-            decimal despostamount = totalBalance;
-            decimal withdrawlamount = totalBalance - amountToSubtract;
+            decimal withdrawlamount = totalBalance + amountToSubtract;
 
             ViewBag.amountToSubtract = amountToSubtract;
-            ViewBag.totalBalance = despostamount;
+            ViewBag.totalBalance = withdrawlamount;
+            ViewBag.Balance = Balance;
 
+            List<Transactions> recenttransaction = TransactionsContext.getRecentTransaction(sessionId);
+
+            ViewBag.RecentTransactions = recenttransaction;
+
+            List<Transactions> Doughnut = TransactionsContext.SelectDoughnutChartData(sessionId);
+            ViewBag.DoughnutChartData = Doughnut;
 
             return View(transactions);
         }

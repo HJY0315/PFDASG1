@@ -282,7 +282,7 @@
                         //    nextPrev(1);
                         //}
                         // Redirect to the Index page when the "Done" button is clicked
-                        window.location.href = '/VisuallyImpaired/Index';
+                        
                         //document.getElementById('prevButton').onclick = function(){
                         //    nextPrev(-1);
                         //}
@@ -348,6 +348,7 @@
             else if (statusMsg.trim() === "success") {
                 speakConfirmation();
                 document.getElementById('nextButton').innerText = 'Done';
+                window.location.href = '/VisuallyImpaired/Index';
                 currentPage = 2;
                 showStep(2);
             }

@@ -4,12 +4,16 @@
 
 
 @{
+    
     int userid = 0;
     if (HttpContextAccessor.HttpContext != null)
     {
         userid = HttpContextAccessor.HttpContext.Session.GetInt32("id") ?? 0;
+  
     }
     Layout = "~/Views/Shared/_Layout.cshtml";
+    // Check if Context and Session are not null
+    var fontSize = Context?.Session?.GetInt32("FontSize") ?? 20;
 }
 
 <!--
@@ -37,11 +41,16 @@
     <!-- Reference to customized styling for this website -->
     @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />*@
     <link rel="stylesheet" type="text/css" href="~/css/site.css">
+    
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.syncfusion.com/ej2/xx.x.x/dist/ej2.min.css" />
+
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
+    
     <!-- Bootstrap JavaScript (Popper.js is required for dropdowns) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -51,7 +60,7 @@
 
     @{
         // Check if Context and Session are not null
-        var fontSize = Context?.Session?.GetInt32("FontSize") ?? 20;
+        //var fontSize = Context?.Session?.GetInt32("FontSize") ?? 20;
     }
 
     <style>
@@ -66,51 +75,91 @@
         <partial name="_navbar" />
     </header>
 
-    <div class="insight">
-        <div id="progressText" class="progressLabel"></div>
-        <canvas id="doughnutChart" width="162" height="162"></canvas>
-    </div>
+    @*Summary Widgets*@
+    <div class="row mb-4">
 
-    <div class="flex-container">
-        <div class="flex-item">
-            <i class="fas fa-money-bill-wave"></i>
-            <span>Total Income</span>
-            <span>$@ViewBag.totalBalance</span>
-        </div>
-        <div class="flex-item">
-            <i class="fas fa-shopping-cart"></i>
-            <span>Total Expense</span>
-            <span>$@ViewBag.amountToSubtract</span>
-        </div>
-    </div>
-
-    @{
-        if (Model != null)
-        {
-            <div class="flex-table">
-                <div class="flex-header">
-                    <button class="filter-btn active" data-filter="all">All</button>
-                    <button class="filter-btn" data-filter="expense">Expense</button>
-                    <button class="filter-btn" data-filter="income">Income</button>
+        <div class="col-md-4">
+            <div class="d-flex flex-row widget summary income">
+                <div class="d-flex flex-column justify-content-center p-5">
+                    <i class="fa fa-dollar" style="font-size:60px;color:green;text-shadow:2px 2px 4px #000000;"></i>
                 </div>
-                <div class="header">
-                    <div class="flex-cell">Date</div>
-                    <div class="flex-cell">Description</div>
-                    <div class="flex-cell">Amount</div>
+                <div class="d-flex flex-column m-auto py-3">
+                    <span class="lead">Monthly Income</span>
+                    <h1 class="display-6 fw-bold">@ViewBag.totalBalance</h1>
                 </div>
-                @foreach (var item in Model)
-                {
-                    <div class="flex-row" data-type="@(item.RecipientID == @userid ? "income" : "expense")">
-                        <div class="flex-cell">@item.TransactionDate.Date.ToString("yyyy-MM-dd")</div>
-                        <div class="flex-cell">@item.Description</div>
-                        <div class="flex-cell" style="color: @(item.RecipientID == @userid ? "green" : "red"); font-weight:bold;">
-                            @(item.RecipientID == @userid ? "+" : "-")@item.Amount.ToString("0.00")
-                        </div>
-                    </div>
-                }
             </div>
-        }
-    }
+        </div>
+
+        <div class="col-md-4">
+            <div class="d-flex flex-row widget summary expense">
+                <div class="d-flex flex-column justify-content-center p-5">
+                    <i class="fa fa-dollar" style="font-size:60px;color:red;text-shadow:2px 2px 4px #000000;"></i>
+                </div>
+                <div class="d-flex flex-column m-auto py-3">
+                    <span class="lead">Monthly Expense</span>
+                    <h1 class="display-6 fw-bold">@ViewBag.amountToSubtract</h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="d-flex flex-row widget summary balance">
+                <div class="d-flex flex-column justify-content-center p-5">
+                    <i class="fa fa-dollar" style="font-size:60px;color:blue;text-shadow:2px 2px 4px #000000;"></i>
+                </div>
+                <div class="d-flex flex-column m-auto py-3">
+                    <span class="lead">Balance</span>
+                    <h1 class="display-6 fw-bold">@ViewBag.Balance</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*Doughnut and Spline Chart*@
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="widget chart">
+                <div class="p-4">
+                    <h5 class="fw-bold">Expense By Month</h5>
+                </div>
+                <div>
+                    <canvas id="doughnutChart"></canvas>
+                </div>
+
+            </div>
+        </div>
+        @*Recent Transactions and More*@
+        <div class="col-md-7">
+        <div class="widget chart">
+            <div class="p-4">
+                    <h5 class="fw-bold">Recent Transactions</h5>
+            </div>
+                <div class="flex-table">
+                    <div class="flex-header">
+                        <button class="filter-btn active" data-filter="all">All</button>
+                        <button class="filter-btn" data-filter="expense">Expense</button>
+                        <button class="filter-btn" data-filter="income">Income</button>
+                    </div>
+                    <div class="header">
+                        <div class="flex-cell">Date</div>
+                        <div class="flex-cell">Description</div>
+                        <div class="flex-cell">Amount</div>
+                    </div>
+
+                    @foreach (var item in ViewBag.RecentTransactions)
+                    {
+                        <div class="flex-row" data-type="@(item.RecipientID == @userid ? "income" : "expense")">
+                            @*<div class="flex-cell">@item.RecipientID == @userid ? "Income" : "Expense"</div>*@
+                            <div class="flex-cell">@item.TransactionDate.Date.ToString("yyyy-MM-dd")</div>
+                            <div class="flex-cell">@item.Description</div>
+                            <div class="flex-cell" style="color: @(item.RecipientID == @userid ? "green" : "red"); font-weight:bold;">
+                                @(item.RecipientID == @userid ? "+" : "-")@item.Amount.ToString("0.00")
+                            </div>
+                        </div>
+                    }
+                </div>
+        </div>
+    </div>
     </div>
 
     <footer>
@@ -118,42 +167,39 @@
     </footer>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
+            document.addEventListener("DOMContentLoaded", function () {
+                // Get data from ViewBag.DoughnutChartData
+                var chartData = @Html.Raw(Json.Serialize(ViewBag.DoughnutChartData));
 
-            const chartData = {
-                labels: ["Expense", "Income"],
-                datasets: [
-                    {
-                        data: [@ViewBag.amountToSubtract, @ViewBag.totalBalance],
-                        backgroundColor: ["#006400", "#FC4349"],
-                    },
-                ],
-            };
-
-            const options = {
-                responsive: true,
-                maintainAspectRatio: true,
-            };
-
-            const ctx = document.getElementById("doughnutChart").getContext("2d");
-            const myDoughnutChart = new Chart(ctx, {
-                type: "doughnut",
-                data: chartData,
-                options: options,
+                // Extract labels and data from the chartData
+            var labels = chartData.map(function (item) {
+                return item.TransactionDate;
             });
-        });
+
+                var data = chartData.map(function (item) {
+                    return item.amount;
+                });
+
+                // Create the doughnut chart
+                var ctx = document.getElementById("doughnutChart").getContext("2d");
+                var doughnutChart = new Chart(ctx, {
+                    type: "doughnut",
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            data: data,
+                            backgroundColor: ["#0e8d76", "#a4b219", "#cb9b00", "#8a442c", "#0454b5", "#7d0a0a", "#822690", "#4c2090", "#313e93", "#0096ac"]
+                        }]
+                    },
+                    options: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                });
+            });
 
 
-
-        const progressElement = document.getElementById('moneyProgress');
-        const progressTextLabel = document.getElementById('progressText');
-        const moneyValue = @ViewBag.amountToSubtract;
-        const remainingValue = @ViewBag.totalBalance - @ViewBag.amountToSubtract;
-        const maxValue = @ViewBag.totalBalance;
-        progressElement.value = moneyValue;
-        progressElement.max = maxValue;
-        // Update the text within the progress bar
-        progressTextLabel.textContent = `Your Card Balance: $${remainingValue}`;
         const filterButtons = document.querySelectorAll('.filter-btn');
         const rowsToFilter = document.querySelectorAll('.flex-row');
         filterButtons.forEach(button => {
@@ -175,5 +221,7 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/search.js" asp-append-version="true"></script>
     <script src="~/js/annyang-setup.js" asp-append-version="true"></script>
+    <script src="https://cdn.syncfusion.com/ej2/xx.x.x/dist/ej2.min.js"></script>
+
 </body>
 </html>

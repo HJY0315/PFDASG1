@@ -5,6 +5,8 @@ using PFDASG1.Models;
 using System.Data.SqlClient;
 using System.Data;
 using System.Text.RegularExpressions;
+using System.Collections.Generic;
+
 
 namespace PFDASG1.DAL
 {
@@ -159,6 +161,30 @@ namespace PFDASG1.DAL
             return account.accountBalance;
         }
 
+        public decimal GetDailyLimit(int senderId)
+        {
+            // Open a connection to the database
+            conn.Open();
+
+            // Create a SqlCommand object to retrieve the account balance
+            SqlCommand cmd = conn.CreateCommand();
+            cmd.CommandText = "SELECT dailyLimit FROM Accounts WHERE userId = @senderId and accountType = 'Savings'";
+            cmd.Parameters.AddWithValue("@senderId", senderId);
+
+            // Execute the query and retrieve the account balance
+            SqlDataReader reader = cmd.ExecuteReader();
+            Account account = new Account();
+            while (reader.Read())
+            {
+                account.accountBalance = reader.GetDecimal(0);
+            }
+            reader.Close();
+            // Close the connection to the database
+            conn.Close();
+
+            // Return the retrieved account balance
+            return account.accountBalance;
+        }
 
         public int Add(TransactionViewModel transactionViewModel)
         {
@@ -176,7 +202,7 @@ namespace PFDASG1.DAL
 
             conn.Open();
             SqlCommand deductCmd = conn.CreateCommand();
-            deductCmd.CommandText = @"UPDATE Accounts SET accountBalance = accountBalance - @amount WHERE accountId = @senderId";
+            deductCmd.CommandText = @"UPDATE Accounts SET dailyLimit = dailyLimit - @amount, accountBalance = accountBalance - @amount WHERE accountId = @senderId";
             deductCmd.Parameters.AddWithValue("@amount", transactionViewModel.Amount);
             deductCmd.Parameters.AddWithValue("@senderId", transactionViewModel.senderID);
 
@@ -278,42 +304,155 @@ namespace PFDASG1.DAL
             }
         }
 
-        public List<TransactionViewModel> GetTransactions(int userId)
+        public List<Account> gettransactions(int userid)
         {
+
+            //Create a SqlCommand object from connection object
             SqlCommand cmd = conn.CreateCommand();
+            //Specify the SELECT SQL statement 
             cmd.CommandText = @"SELECT
-                            accountId,
-                            accountType,
-                            accountBalance,
-                            userId
-                        FROM
-                            Accounts;";
-
+                                accountid,
+                                accounttype,
+                                accountbalance, 
+                                userid
+                            FROM
+                              Accounts
+                            WHERE
+                              userId = @id;";
+            cmd.Parameters.AddWithValue("@id", userid);
+            //Open a database connection
             conn.Open();
+            //Execute the SELECT SQL through a DataReader
             SqlDataReader reader = cmd.ExecuteReader();
-            List<TransactionViewModel> transactionsList = new List<TransactionViewModel>();
+            List<Account> accountlist = new List<Account>();
+            if (reader.HasRows)
+            {
 
+                while (reader.Read())
+                {
+                    accountlist.Add(
+                    new Account
+                    {
+                        accountId = reader.GetInt32(0),
+                        accountType = reader.GetString(1),
+                        accountBalance = reader.GetDecimal(2),
+                        userId = reader.GetInt32(3)
+                    }
+                    ) ;
+                }
+                reader.Close();
+                conn.Close();
+                return accountlist;
+            }
+            else
+            {
+                // No rows found, return an empty list
+                reader.Close();
+                conn.Close();
+                return new List<Account>();
+            }
+        }
+
+        public List<Transactions> getRecentTransaction(int userid)
+        {
+            //Create a SqlCommand object from connection object
+            SqlCommand cmd = conn.CreateCommand();
+            //Specify the SELECT SQL statement 
+            cmd.CommandText = @"SELECT Top 5
+                              t.transactionId,
+                              t.description,
+                              t.accountId,
+                              t.amount,
+                              t.transactionDate,
+                              t.receiverId,
+                              t.senderId
+                            FROM
+                              Transactions AS t
+                            INNER JOIN
+                              Accounts AS a
+                            ON
+                              t.accountId = a.accountId
+                            WHERE
+                              (t.senderId = @id OR t.receiverId = @id)
+                            ORDER BY
+                              t.transactionDate DESC";
+
+            cmd.Parameters.AddWithValue("@id", userid);
+            //Open a database connection
+            conn.Open();
+            //Execute the SELECT SQL through a DataReader
+            SqlDataReader reader = cmd.ExecuteReader();
+            List<Transactions> transactionslist = new List<Transactions>();
             if (reader.HasRows)
             {
                 while (reader.Read())
                 {
-                    transactionsList.Add(new TransactionViewModel
+                    transactionslist.Add(
+                    new Transactions
                     {
-                        Amount = reader.GetInt32(3),
-                    });
+                        TransactionId = reader.GetInt32(0),
+                        Description = reader.IsDBNull(1) ? null : reader.GetString(1), // Check if Description is null before setting it
+                        AccountId = reader.GetInt32(2),
+                        Amount = reader.GetDecimal(3),
+                        TransactionDate = reader.GetDateTime(4),
+                        RecipientID = reader.GetInt32(5),
+                        SenderID = reader.GetInt32(6)
 
+                    }
+                    );
                 }
-
                 reader.Close();
                 conn.Close();
-                return transactionsList;
+                return transactionslist;
             }
             else
             {
+                // No rows found, return an empty list
                 reader.Close();
                 conn.Close();
-                return new List<TransactionViewModel>();
+                return new List<Transactions>();
             }
         }
+
+        public List<Transactions> SelectDoughnutChartData(int userid)
+        {
+            SqlCommand cmd = conn.CreateCommand();
+            cmd.CommandText = @"
+                    	SELECT
+                    SUM(Amount) AS amount,
+                    FORMAT(MIN(TransactionDate), 'MMMM yyyy') AS MonthYear
+                FROM
+                    Transactions
+                WHERE
+                    (SenderId = @id OR receiverId = @id)
+                GROUP BY
+                    FORMAT(TransactionDate, 'MMMM yyyy')
+                ORDER BY
+                    FORMAT(MIN(TransactionDate), 'yyyyMM'), amount DESC;
+                ";
+
+            cmd.Parameters.AddWithValue("@id", userid);
+            conn.Open();
+            SqlDataReader reader = cmd.ExecuteReader();
+            List<Transactions> doughnutChartData = new List<Transactions>();
+
+            while (reader.Read())
+            {
+                doughnutChartData.Add(new Transactions
+                {
+                    Amount = reader.GetDecimal(0),
+                    Description = null,
+                    AccountId = 0,
+                    TransactionDate = DateTime.MinValue,
+                    RecipientID = 0,
+                    SenderID = 0
+                });
+            }
+
+            reader.Close();
+            conn.Close();
+            return doughnutChartData;
+        }
+
     }
 }

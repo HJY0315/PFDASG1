@@ -21,5 +21,10 @@ namespace PFDASG1.Models
         [Required(ErrorMessage = "User ID is required.")]
         [Display(Name = "User ID")]
         public int userId { get; set; }
+
+        [Required(ErrorMessage = "Daily Limit is required.")]
+        [Display(Name = "Daily Limit")]
+        [Range(typeof(decimal), "0.01", "79228162514264337593543950335", ErrorMessage = "Account balance must be a positive number.")]
+        public decimal dailyLimit { get; set; }
     }
 }
