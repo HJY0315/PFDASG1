@@ -130,13 +130,23 @@ namespace PFDASG1.Controllers
 
             // Retrieve transactions based on the session ID
             List<Account> accounts = TransactionsContext.gettransactions(userId);
-
+            List<Transactions> transactions = TransactionsContext.getalltransactions(userId);
             // Initialize the total balance variable
             decimal totalBalance = 0;
 
             foreach (var account in accounts)
             {
-                totalBalance += account.accountBalance;
+                foreach (var transaction in transactions)
+                {
+                    if (transaction.SenderID != userId)
+                    {
+                        totalBalance += account.accountBalance;
+                    }
+                    else
+                    {
+                        totalBalance -= account.accountBalance;
+                    }
+                }
             }
 
             // Set the ViewBag for totalBalance and DailyLimit
@@ -252,6 +262,18 @@ namespace PFDASG1.Controllers
                 }
             }
 
+            foreach (var item in transactions)
+            {
+                if (item.SenderID != sessionId)
+                {
+                    totalBalance += item.Amount;
+                }
+                else
+                {
+                    totalBalance -= item.Amount;
+                }
+            }
+
             // Subtract amounts for sender transactions
             var senderTransactions = transactions.Where(item => item.SenderID == sessionId);
             decimal amountToSubtract = senderTransactions.Sum(item => item.Amount);
@@ -309,6 +331,9 @@ namespace PFDASG1.Controllers
             List<Transactions> recenttransaction = TransactionsContext.getRecentTransaction(sessionId);
 
             ViewBag.RecentTransactions = recenttransaction;
+
+            List<Transactions> Doughnut = TransactionsContext.SelectDoughnutChartData(sessionId);
+            ViewBag.DoughnutChartData = Doughnut;
 
             return View(transactions);
         }

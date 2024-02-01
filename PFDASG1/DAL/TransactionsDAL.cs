@@ -414,7 +414,45 @@ namespace PFDASG1.DAL
             }
         }
 
+        public List<Transactions> SelectDoughnutChartData(int userid)
+        {
+            SqlCommand cmd = conn.CreateCommand();
+            cmd.CommandText = @"
+                    	SELECT
+                    SUM(Amount) AS amount,
+                    FORMAT(MIN(TransactionDate), 'MMMM yyyy') AS MonthYear
+                FROM
+                    Transactions
+                WHERE
+                    (SenderId = @id OR receiverId = @id)
+                GROUP BY
+                    FORMAT(TransactionDate, 'MMMM yyyy')
+                ORDER BY
+                    FORMAT(MIN(TransactionDate), 'yyyyMM'), amount DESC;
+                ";
 
+            cmd.Parameters.AddWithValue("@id", userid);
+            conn.Open();
+            SqlDataReader reader = cmd.ExecuteReader();
+            List<Transactions> doughnutChartData = new List<Transactions>();
+
+            while (reader.Read())
+            {
+                doughnutChartData.Add(new Transactions
+                {
+                    Amount = reader.GetDecimal(0),
+                    Description = null,
+                    AccountId = 0,
+                    TransactionDate = DateTime.MinValue,
+                    RecipientID = 0,
+                    SenderID = 0
+                });
+            }
+
+            reader.Close();
+            conn.Close();
+            return doughnutChartData;
+        }
 
     }
 }
