@@ -358,7 +358,7 @@ namespace PFDASG1.DAL
             //Create a SqlCommand object from connection object
             SqlCommand cmd = conn.CreateCommand();
             //Specify the SELECT SQL statement 
-            cmd.CommandText = @"SELECT 
+            cmd.CommandText = @"SELECT Top 5
                               t.transactionId,
                               t.description,
                               t.accountId,

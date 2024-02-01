@@ -136,9 +136,7 @@
             </div>
         </div>
        </div>
-    @*Recent Transactions and More*@
-    @Json.Serialize(ViewBag.RecentTransactions)
-    
+    @*Recent Transactions and More*@    
     <div class="row">
         <div class="col-md-6">
             <div class="widget">
@@ -146,21 +144,24 @@
                     <h5 class="fw-bold">Recent Transactions</h5>
                 </div>
                 <div class="px-4 pb-4">
-                    <div class="flex-row" data-type="@Json.Serialize(ViewBag.RecentTransactions)">
-                        <div class="flex-cell">@Json.Serialize(ViewBag.RecentTransactions)</div>
-                        <div class="flex-cell">@Json.Serialize(ViewBag.RecentTransactions)</div>
-                     @*   <div class="flex-cell" style="color: @(ViewBag.RecentTransactions == @userid ? "green" : "red"); font-weight:bold;">
-                            @(ViewBag.RecentTransactions == @userid ? "+" : "-")@ViewBag.RecentTransactions.ToString("0.00")
-                        </div>*@
+                    <div class="header">
+                        <div class="flex-cell">Date</div>
+                        <div class="flex-cell">Description</div>
+                        <div class="flex-cell">Amount</div>
                     </div>
-                    <ejs-grid id="recent-transactions"
-                              dataSource="@ViewBag.RecentTransactions" gridLines="None">
-                        <e-grid-columns>
-                            <e-grid-column headerText="Description" field="Description"></e-grid-column>
-                            <e-grid-column headerText="Transaction Date" field="TransactionDate" type="date" format="MMM-dd-yy"></e-grid-column>
-                            <e-grid-column headerText="Amount" field="Amount" textAlign="Right"></e-grid-column>
-                        </e-grid-columns>
-                    </ejs-grid>
+
+                    @foreach (var item in ViewBag.RecentTransactions)
+                    {
+                        <div class="flex-row" data-type="@(item.RecipientID == @userid ? "income" : "expense")">
+                            @*<div class="flex-cell">@item.RecipientID == @userid ? "Income" : "Expense"</div>*@
+                            <div class="flex-cell">@item.TransactionDate.Date.ToString("yyyy-MM-dd")</div>
+                            <div class="flex-cell">@item.Description</div>
+                            <div class="flex-cell" style="color: @(item.RecipientID == @userid ? "green" : "red"); font-weight:bold;">
+                                @(item.RecipientID == @userid ? "+" : "-")@item.Amount.ToString("0.00")
+                            </div>
+                        </div>
+                    }
+
                 </div>
             </div>
         </div>
