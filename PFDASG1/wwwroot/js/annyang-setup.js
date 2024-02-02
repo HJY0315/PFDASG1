@@ -34,6 +34,7 @@ if (annyang) {
         'Next': clickNextButton,
         'Skip': clickSkipButton,
         'Submit': clickSubmitButton,
+        'Increase font size': increaseFontSize,
     };
 
     function goToLoginPage() {
@@ -316,6 +317,11 @@ function togglePushToTalk() {
             stopListening();
         }
     }
+}
+
+function increaseFontSize() {
+    adjustFontSize(1);
+    speakResponse("Font size increased.");
 }
 
 
