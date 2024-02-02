@@ -148,9 +148,9 @@ namespace PFDASG1.Controllers
                     }
                 }
             }
-
+            decimal displaybalance = TransactionsContext.GetAccountBalance(userId);
             // Set the ViewBag for totalBalance and DailyLimit
-            ViewBag.totalBalance = totalBalance;
+            ViewBag.totalBalance = displaybalance;
             decimal dailyLimit = TransactionsContext.GetDailyLimit(userId);
             ViewBag.DailyLimit = dailyLimit; 
 
@@ -210,7 +210,7 @@ namespace PFDASG1.Controllers
 
             // Validate account balance
             decimal accBalance = TransactionsContext.GetAccountBalance(userId);
-            if ((transactionViewModel.Amount < accBalance && accBalance > 0) && transactionViewModel.Amount > dailyLimit)
+            if ((transactionViewModel.Amount < accBalance && accBalance > 0) && transactionViewModel.Amount < dailyLimit)
             {
                 // Create a new Transactions object
                 // Add the transaction to the TransactionsContext
