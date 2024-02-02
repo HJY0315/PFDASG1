@@ -45,7 +45,7 @@
                                 </span>
                             </button>
                         </div>
-                        <button type="submit" class="btn btn-primary">Apply</button>
+                        @*<button type="submit" class="btn btn-primary">Apply</button>*@
 
                         <div id="fontSizeLiveRegion" aria-live="assertive" class="visually-hidden"></div>
                     </form>
@@ -55,7 +55,7 @@
     </div>
     <script>
         function adjustFontSize(change) {
-            var elementsToAdjust = document.querySelectorAll("body, input, select, textarea, form");
+            var elementsToAdjust = document.querySelectorAll("body, input, select, textarea, form, label, p, h4");
 
             elementsToAdjust.forEach(function (element) {
                 var computedStyle = window.getComputedStyle(element);
