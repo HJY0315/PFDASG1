@@ -35,6 +35,7 @@ if (annyang) {
         'Skip': clickSkipButton,
         'Submit': clickSubmitButton,
         'Increase font size': increaseFontSize,
+        'Decrease font size': decreaseFontSize,
     };
 
     function goToLoginPage() {
@@ -320,8 +321,11 @@ function togglePushToTalk() {
 }
 
 function increaseFontSize() {
-    adjustFontSize(1);
+    adjustFontSize(2);
     speakResponse("Font size increased.");
 }
 
-
+function decreaseFontSize() {
+    adjustFontSize(-2); // Call the existing adjustFontSize function with a change of -1
+    speakResponse("Font size decreased.");
+}
