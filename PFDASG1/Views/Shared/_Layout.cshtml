@@ -55,15 +55,26 @@
     </div>
     <script>
         function adjustFontSize(change) {
+            var elementsToAdjust = document.querySelectorAll("body, input, select, textarea, form");
+
+            elementsToAdjust.forEach(function (element) {
+                var computedStyle = window.getComputedStyle(element);
+                var currentSize = parseFloat(computedStyle.getPropertyValue('font-size'));
+
+                // Ensure the new size is within the specified range
+                var newSize = Math.min(30, Math.max(15, currentSize + change));
+
+                // Update the font size of the element
+                element.style.fontSize = newSize + "px";
+            });
+
+            // Update the font size in the font size input
             var fontSizeInput = document.getElementById("fontSize");
             var currentSize = parseInt(fontSizeInput.value);
-
-            // Ensure the new size is within the specified range
             var newSize = Math.min(30, Math.max(15, currentSize + change));
-
-            // Update the font size of the input element
             fontSizeInput.value = newSize;
 
+            // Update the live region with the new font size
             document.getElementById("fontSizeLiveRegion").textContent = newSize;
         }
     </script>
