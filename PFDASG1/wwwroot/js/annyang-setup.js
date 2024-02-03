@@ -324,12 +324,10 @@ function togglePushToTalk() {
 
 function increaseFontSize() {
     adjustFontSize(2);
-    speakResponse("Font size increased.");
 }
 
 function decreaseFontSize() {
     adjustFontSize(-2); // Call the existing adjustFontSize function with a change of -1
-    speakResponse("Font size decreased.");
 }
 
 function toggledarkmode() {
