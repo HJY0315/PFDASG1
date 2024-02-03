@@ -20,19 +20,57 @@
                 background-color: red;
             }
 
+        /* Hide the default button styles */
+        .btn-toggle {
+            position: relative;
+            width: 60px;
+            height: 30px;
+            border-radius: 15px;
+            background-color: #ccc;
+            cursor: pointer;
+        }
+
+        /* Style the inner circle */
+        .btn-toggle:before {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background-color: #fff;
+            transition: transform 0.3s ease;
+        }
+
+        /* Move the inner circle to the right when button is active */
+        .btn-toggle.active:before {
+            transform: translateX(30px);
+        }
+
+        /* Hide the button text */
+        .btn-toggle span {
+            visibility: hidden;
+        }
+
+        /* Show the button text only for accessibility */
+        .btn-toggle span {
+            visibility: visible;
+        }
+
         .dark-mode {
-            background-color: #1e1e1e; /* Dark background color */
+            background-color: #3f3f3f; /* Dark background color */
             color: #ffffff; /* Light text color */
         }
 
             .dark-mode .form {
-                background-color: #333333; /* Dark background color for forms in dark mode */
+                background-color: #545454; /* Dark background color for forms in dark mode */
             }
 
             
 
             .dark-mode .div {
-                background-color: #333333; /* Dark background color for popups in dark mode */
+                background-color: #545454; /* Dark background color for popups in dark mode */
             }
 
             .dark-mode label {
@@ -58,7 +96,7 @@
 
             /* Additional styles for dropdown menu background */
             .dark-mode .dropdown-menu {
-                background-color: #333333; /* Dark background color for dropdown menu in dark mode */
+                background-color: #545454; /* Dark background color for dropdown menu in dark mode */
             }
 
             
@@ -68,13 +106,13 @@
             .dark-mode input[type="password"],
             .dark-mode input[type="email"],
             .dark-mode textarea {
-                background-color: #1e1e1e; /* Dark background color for input fields in dark mode */
+                background-color: #3f3f3f; /* Dark background color for input fields in dark mode */
                 color: #ffffff; /* Light text color for input fields in dark mode */
                 border-color: #555555; /* Border color for input fields in dark mode */
             }
             
             .dark-mode .modal-content {
-                background-color: #333333; /* Dark background color for modal content */
+                background-color: #545454; /* Dark background color for modal content */
                 color: #ffffff; /* Light text color for modal content */
             }
 
@@ -83,7 +121,7 @@
             }
 
             .dark-mode .transfer-form {
-                background-color: #333333; /* Dark background color for the form */
+                background-color: #545454; /* Dark background color for the form */
                 color: #ffffff; /* Light text color for the form */
             }
 
@@ -99,18 +137,18 @@
             
             .dark-mode .cardactivationtext{
                 color: #ffffff;
-                background-color: #333333;
+                background-color: #545454;
             }
             .dark-mode .checkout{
-                background-color: #333333;
+                background-color: #545454;
             }
 
             .dark-mode #search {
-                background-color: #333333;
+                background-color: #545454;
                 color: #ffffff;
             }
             .dark-mode .search-text{
-                color: #333333;
+                color: #545454;
             }
 
     </style>
@@ -124,7 +162,7 @@
         Adjust Font Size
     </button>*@
     <button type="button" class="btn btn-outline-primary animated-button" data-bs-toggle="modal" data-bs-target="#fontSizeModal">
-        Adjust Font Size
+        Adjust Display
     </button>
 
     <!-- Bootstrap Modal for Font Size Adjustment -->
@@ -156,8 +194,13 @@
                                 </span>
                             </button>
                         </div>
+                        <span>Toggle Dark Mode</span>
+                        <br />
                         @*<button type="submit" class="btn btn-primary">Apply</button>*@
-                        <button type="button" class="btn btn-primary" onclick="toggleDarkMode()">Toggle Dark Mode</button>
+                        <button type="button" class="btn-toggle slider" onclick="toggleDarkMode()">
+                            
+                        </button>
+
                         <div id="fontSizeLiveRegion" aria-live="assertive" class="visually-hidden"></div>
                     </form>
                 </div>
@@ -204,6 +247,21 @@
         // Apply font size setting when the page loads
         window.addEventListener("load", applyFontSizeSetting);
 
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+            // Check if the theme setting is stored in sessionStorage
+            var currentTheme = sessionStorage.getItem("themeSetting");
+
+            // If a theme setting was previously stored, apply it
+            if (currentTheme === "dark") {
+                var body = document.body;
+                body.classList.add("dark-mode");
+                var button = document.querySelector('.btn-toggle');
+                button.classList.add('active');
+            }
+        });
+
         function toggleDarkMode() {
             var body = document.body;
             var currentTheme = body.classList.contains("dark-mode") ? "light" : "dark";
@@ -213,6 +271,8 @@
 
             // Store the current theme setting in sessionStorage
             sessionStorage.setItem("themeSetting", currentTheme);
+            var button = document.querySelector('.btn-toggle');
+            button.classList.toggle('active');
         }
 
         // Function to apply dark mode setting from sessionStorage
