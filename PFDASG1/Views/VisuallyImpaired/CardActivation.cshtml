@@ -57,6 +57,8 @@
 
     <script src="https://cdn.lordicon.com/lordicon.js"></script>
 
+    <script src="https://kit.fontawesome.com/13eda29b0b.js" crossorigin="anonymous"></script>
+
     @{
         // Check if Context and Session are not null
         var fontSize = Context?.Session?.GetInt32("FontSize") ?? 20;
@@ -83,11 +85,18 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             height: 250px;
             width: 250px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .iconCompleted {
             width: 100%; /* Set the width and height to 100% to fill the container */
             height: 100%;
+        }
+
+        #iconAnimations {
+            color: red;
         }
     </style>
 
@@ -112,6 +121,27 @@
                 $(document).ready(function () {
                     // Select the Lottie animation
                     var iconAnimation = $("#iconAnimation");
+
+                    // Show the animation
+                    iconAnimation.show();
+
+                    // Set a timeout to remove the element after 3000 milliseconds (3 seconds)
+                    setTimeout(function () {
+                        iconAnimation.remove();
+                        $(".iconContainer").remove();
+                    }, 3000);
+                });
+            </script>
+        }
+        else
+        {
+            <div class="iconContainer">
+                <i id="iconAnimations" class="fa-regular fa-circle-xmark fa-10x"></i>
+            </div>
+
+            <script>
+                $(document).ready(function () {
+                    var iconAnimation = $("#iconAnimations");
 
                     // Show the animation
                     iconAnimation.show();
