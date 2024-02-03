@@ -54,8 +54,9 @@
         </div>
     </div>
     <script>
+        // Function to adjust font size
         function adjustFontSize(change) {
-            var elementsToAdjust = document.querySelectorAll("body, input, select, textarea, form, label, p, h4");
+            var elementsToAdjust = document.querySelectorAll("body, input, select, textarea, form, label, p, h4, button");
 
             elementsToAdjust.forEach(function (element) {
                 var computedStyle = window.getComputedStyle(element);
@@ -76,7 +77,22 @@
 
             // Update the live region with the new font size
             document.getElementById("fontSizeLiveRegion").textContent = newSize;
+
+            // Store the new font size setting in sessionStorage
+            sessionStorage.setItem("fontSizeSetting", newSize);
         }
+
+        // Function to apply font size setting from sessionStorage
+        function applyFontSizeSetting() {
+            var fontSizeSetting = sessionStorage.getItem("fontSizeSetting");
+            if (fontSizeSetting) {
+                adjustFontSize(fontSizeSetting - 20); // Adjust font size based on the stored setting
+            }
+        }
+
+        // Apply font size setting when the page loads
+        window.addEventListener("load", applyFontSizeSetting);
     </script>
+
 </body>
 </html>
