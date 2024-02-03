@@ -21,6 +21,19 @@
                 font-weight: bold;
                 background-color: red;
             }
+
+        .dark-mode {
+            background-color: #1e1e1e; /* Dark background color */
+            color: #ffffff; /* Light text color */
+        }
+
+            .dark-mode .form {
+                background-color: #333333; /* Dark background color for forms in dark mode */
+            }
+
+            .dark-mode .div {
+                background-color: #333333; /* Dark background color for popups in dark mode */
+            }
     </style>
 </head>
 
@@ -65,7 +78,7 @@
                             </button>
                         </div>
                         @*<button type="submit" class="btn btn-primary">Apply</button>*@
-
+                        <button type="button" class="btn btn-primary" onclick="toggleDarkMode()">Toggle Dark Mode</button>
                         <div id="fontSizeLiveRegion" aria-live="assertive" class="visually-hidden"></div>
                     </form>
                 </div>
@@ -75,7 +88,7 @@
     <script>
         // Function to adjust font size
         function adjustFontSize(change) {
-            var elementsToAdjust = document.querySelectorAll("body, input, select, textarea, form, label, p, h4");
+            var elementsToAdjust = document.querySelectorAll("body, input, select, textarea, form, label, p, h4, option");
 
             elementsToAdjust.forEach(function (element) {
                 var computedStyle = window.getComputedStyle(element);
@@ -111,6 +124,34 @@
 
         // Apply font size setting when the page loads
         window.addEventListener("load", applyFontSizeSetting);
+
+        function toggleDarkMode() {
+            var body = document.body;
+            var currentTheme = body.classList.contains("dark-mode") ? "light" : "dark";
+
+            // Toggle dark mode class on body
+            body.classList.toggle("dark-mode");
+
+            // Store the current theme setting in sessionStorage
+            sessionStorage.setItem("themeSetting", currentTheme);
+        }
+
+        // Function to apply dark mode setting from sessionStorage
+        function applyThemeSetting() {
+            var body = document.body;
+            var themeSetting = sessionStorage.getItem("themeSetting");
+
+            // Check if a theme setting is stored
+            if (themeSetting) {
+                // Apply dark mode if the stored setting is dark
+                if (themeSetting === "dark") {
+                    body.classList.add("dark-mode");
+                }
+            }
+        }
+
+        // Apply theme setting when the page loads
+        window.addEventListener("load", applyThemeSetting);
     </script>
 
 </body>
