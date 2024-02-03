@@ -173,10 +173,10 @@
                 var chartData = @Html.Raw(Json.Serialize(ViewBag.DoughnutChartData));
 
                 // Extract labels and data from the chartData
-            var labels = chartData.map(function (item) {
-                // Use moment.js for date formatting
-                return moment(item.TransactionDate).format('MM-YYYY');
-            });
+                var labels = chartData.map(function (item) {
+                    // Use moment.js for date formatting
+                    return item.stringDate;
+                });
 
                 var data = chartData.map(function (item) {
                     return item.amount;

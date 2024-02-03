@@ -31,5 +31,7 @@ namespace PFDASG1.Models
         public string? Description { get; set; }
 
         public DateTime TransactionDate { get; set; }
+
+        public string stringDate { get; set; }
     }
 }
