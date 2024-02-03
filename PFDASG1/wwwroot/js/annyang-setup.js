@@ -36,6 +36,10 @@ if (annyang) {
         'Submit': clickSubmitButton,
         'Increase font size': increaseFontSize,
         'Decrease font size': decreaseFontSize,
+        'Toggle dark mode': toggledarkmode,
+        'Help': helpCommand,
+        'Voice command': voiceCommand,
+        'Keyboard': keyboardCommand,
     };
 
     function goToLoginPage() {
@@ -263,6 +267,19 @@ if (annyang) {
         speakResponse("Navigating to payment page.");
     }
 
+    function helpCommand() {
+        document.body.classList.toggle("show-chatbot");
+    }
+
+    function voiceCommand() {
+        handleButtonClick("voice-command");
+    }
+
+    function keyboardCommand() {
+        handleButtonClick("keyboard-shortcut");
+    }
+
+
     function speakResponse(message, callback) {
         console.log(`%c ${message}`, 'color: blue; font-weight:bold;');
         var speechSynthesis = window.speechSynthesis;
@@ -323,10 +340,12 @@ function togglePushToTalk() {
 
 function increaseFontSize() {
     adjustFontSize(2);
-    speakResponse("Font size increased.");
 }
 
 function decreaseFontSize() {
     adjustFontSize(-2); // Call the existing adjustFontSize function with a change of -1
-    speakResponse("Font size decreased.");
+}
+
+function toggledarkmode() {
+    toggleDarkMode();
 }
