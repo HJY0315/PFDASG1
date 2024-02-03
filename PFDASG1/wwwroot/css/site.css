@@ -211,7 +211,23 @@ footer {
     border: 0;
 }
 
+.animated-button {
+    position: fixed;
+    bottom: 20px;
+    left: 30px;
+    z-index: 1000;
+    transition: transform 0.2s ease-in-out;
+    color: red !important;
+    font-weight: bold;
+    background-color: #f3f3f3;
+}
 
+    .animated-button:hover {
+        transform: scale(1.1);
+        color: #f3f3f3 !important;
+        font-weight: bold;
+        background-color: red !important;
+    }
 .animated-button {
     position: fixed;
     bottom: 20px;
