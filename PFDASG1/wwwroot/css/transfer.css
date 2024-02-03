@@ -159,5 +159,5 @@ table.table tbody tr.selected {
         transform: scale(1.1);
         color: #f3f3f3 !important;
         font-weight: bold;
-        background-color: red;
+        background-color: red !important;
     }
