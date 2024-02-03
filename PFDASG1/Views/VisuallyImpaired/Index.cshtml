@@ -86,7 +86,7 @@
                 </div>
                 <div class="d-flex flex-column m-auto py-4">
                     <span class="lead">Monthly Income</span>
-                    <h1 class="display-6 fw-bold">@ViewBag.totalBalance</h1>
+                    <p class="display-6 fw-bold">@ViewBag.totalBalance</p>
                 </div>
             </div>
         </div>
@@ -98,7 +98,7 @@
                 </div>
                 <div class="d-flex flex-column m-auto py-4">
                     <span class="lead">Monthly Expense</span>
-                    <h1 class="display-6 fw-bold">@ViewBag.amountToSubtract</h1>
+                    <p class="display-6 fw-bold">@ViewBag.amountToSubtract</p>
                 </div>
             </div>
         </div>
@@ -110,7 +110,7 @@
                 </div>
                 <div class="d-flex flex-column m-auto py-4">
                     <span class="lead">Balance</span>
-                    <h1 class="display-6 fw-bold">@ViewBag.Balance</h1>
+                    <p class="display-6 fw-bold">@ViewBag.Balance</p>
                 </div>
             </div>
         </div>
@@ -121,7 +121,7 @@
         <div class="col-md-4">
             <div class="widget chart">
                 <div class="p-4">
-                    <h5 class="fw-bold">Expense By Month</h5>
+                    <p class="fw-bold">Expense By Month</p>
                 </div>
                 <div>
                     <canvas id="doughnutChart"></canvas>
@@ -133,13 +133,13 @@
         <div class="col-md-7">
         <div class="widget chart">
             <div class="p-4">
-                    <h5 class="fw-bold">Recent Transactions</h5>
+                    <p class="fw-bold">Recent Transactions</p>
             </div>
                 <div class="flex-table">
                     <div class="flex-header">
-                        <button class="filter-btn active" data-filter="all">All</button>
-                        <button class="filter-btn" data-filter="expense">Expense</button>
-                        <button class="filter-btn" data-filter="income">Income</button>
+                        <button class="filter-btn active" data-filter="all" aria-pressed="true">All</button>
+                        <button class="filter-btn" data-filter="expense" aria-pressed="false">Expense</button>
+                        <button class="filter-btn" data-filter="income" aria-pressed="false">Income</button>
                     </div>
                     <div class="header">
                         <div class="flex-cell">Date</div>
@@ -206,8 +206,12 @@
         const rowsToFilter = document.querySelectorAll('.flex-row');
         filterButtons.forEach(button => {
             button.addEventListener('click', () => {
-                filterButtons.forEach(btn => btn.classList.remove('active'));
+                filterButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                    btn.setAttribute('aria-pressed', 'false');
+                });
                 button.classList.add('active');
+                button.setAttribute('aria-pressed', 'true');
                 const filterValue = button.getAttribute('data-filter');
                 rowsToFilter.forEach(row => {
                     const rowType = row.getAttribute('data-type');

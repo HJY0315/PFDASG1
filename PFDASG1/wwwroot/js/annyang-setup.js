@@ -34,6 +34,8 @@ if (annyang) {
         'Next': clickNextButton,
         'Skip': clickSkipButton,
         'Submit': clickSubmitButton,
+        'Increase font size': increaseFontSize,
+        'Decrease font size': decreaseFontSize,
     };
 
     function goToLoginPage() {
@@ -82,6 +84,7 @@ if (annyang) {
         var nextButton = document.getElementById('nextButton');
         if (nextButton) {
             nextButton.click();
+            activateCount++;
         }
     }
 
@@ -318,4 +321,12 @@ function togglePushToTalk() {
     }
 }
 
+function increaseFontSize() {
+    adjustFontSize(2);
+    speakResponse("Font size increased.");
+}
 
+function decreaseFontSize() {
+    adjustFontSize(-2); // Call the existing adjustFontSize function with a change of -1
+    speakResponse("Font size decreased.");
+}
