@@ -223,22 +223,22 @@
         </div>
         <form class="form" asp-controller="VisuallyImpaired" asp-action="CardActivation" method="post" autocomplete="off" novalidate>
             <fieldset>
-                <label for="card-number">Card Number (last 8 digits of your card number)</label>
-                <input id="card-number" class="input-cart-number" value="xxxx" readonly aria-hidden="true" />
-                <input id="card-number-0" class="input-cart-number" value="xxxx" readonly aria-hidden="true" />
-                <input asp-for="cardNumber1" type="num" id="card-number-1" class="input-cart-number" maxlength="4" placeholder="1234" required />
-                <input asp-for="cardNumber2" type="num" id="card-number-2" class="input-cart-number" maxlength="4" placeholder="1234" required />
+                <label for="card-number" class="cardactivationtext">Card Number (last 8 digits of your card number)</label>
+                <input id="card-number" class="input-cart-number cardactivationtext" value="xxxx" readonly aria-hidden="true" />
+                <input id="card-number-0" class="input-cart-number cardactivationtext" value="xxxx" readonly aria-hidden="true" />
+                <input asp-for="cardNumber1" type="num" id="card-number-1" class="input-cart-number cardactivationtext" maxlength="4" placeholder="1234" required />
+                <input asp-for="cardNumber2" type="num" id="card-number-2" class="input-cart-number cardactivationtext" maxlength="4" placeholder="1234" required />
             </fieldset>
 
             <fieldset>
-                <label for="card-holder">Card holder</label>
-                <input type="text" id="card-holder" asp-for="cardHolderName" placeholder="Name on the card" required />
+                <label for="card-holder" class="cardactivationtext">Card holder</label>
+                <input type="text" id="card-holder" asp-for="cardHolderName" placeholder="Name on the card" class="cardactivationtext" required />
             </fieldset>
             <fieldset class="fieldset-expiration">
-                <label for="expirationMonth">Expiration date</label>
-                <div class="expiration-inputs">
+                <label for="expirationMonth" class="cardactivationtext">Expiration date</label>
+                <div class="expiration-inputs cardactivationtext">
                     <div style="width:130px;  margin-top: 3px; margin-right: 6px">
-                        <input type="number" id="card-expiration-month" asp-for="expirationMonth" placeholder="Month" min="1" max="12">
+                        <input type="number" id="card-expiration-month" asp-for="expirationMonth" placeholder="Month" min="1" max="12" class="cardactivationtext">
     @*                     <select id="card-expiration-month" asp-for="expirationMonth">
                             <option>Month</option>
                             <option value="01">01</option>
@@ -256,7 +256,7 @@
                         </select> *@
                     </div>
                     <div style="width:120px; margin-top: 3px; margin-right: 5px">
-                        <input type="number" id="card-expiration-year" asp-for="expirationYear" placeholder="Year" min="2023" max="2035">
+                        <input type="number" id="card-expiration-year" asp-for="expirationYear" placeholder="Year" min="2023" max="2035" class="cardactivationtext">
     @*                     <select id="card-expiration-year" asp-for="expirationYear">
                             <option>Year</option>
                             <option value="2023">2023</option>
@@ -275,23 +275,23 @@
             </fieldset>
 
             <fieldset class="fieldset-ccv">
-                <label for="cvv">CCV</label>
+                <label for="cvv" class="cardactivationtext">CCV</label>
                 <input asp-for="cvv" type="text" id="card-ccv" maxlength="3" required />
             </fieldset>
 
             <div id="security-questions-container">
                 <!-- Initial security question fieldset -->
                 <fieldset class="security-question-fieldset">
-                    <div class="security-question-inputs">
+                    <div class="security-question-inputs cardactivationtext">
                         <div class="select">
-                            <select asp-for="securityQuestion" class="security-question-dropdown">
+                            <select asp-for="securityQuestion" class="security-question-dropdown cardactivationtext">
                                 <option>Questions</option>
                                 <option value="1">Where is your primary school?</option>
                                 <option value="2">Who is your best friend?</option>
                                 <option value="3">Do you have any musical background?</option>
                             </select>
                         </div>
-                        <input asp-for="securityQuestion" type="text" class="security-question" maxlength="20" style="margin-top:10px; border: none; display:none;" placeholder="Questions" required/>
+                        <input asp-for="securityQuestion" type="text" class="security-question cardactivationtext" maxlength="20" style="margin-top:10px; border: none; display:none;" placeholder="Questions" required/>
                         <input asp-for="answer" type="text" class="security-answer" maxlength="20" style="margin-top:10px; border: none;" placeholder="Answer" required />
                     </div>
                 </fieldset>
