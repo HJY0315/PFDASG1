@@ -84,6 +84,7 @@ if (annyang) {
         var nextButton = document.getElementById('nextButton');
         if (nextButton) {
             nextButton.click();
+            activateCount++;
         }
     }
 

@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.Data;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
+using System.Globalization;
 
 
 namespace PFDASG1.DAL
@@ -443,11 +444,13 @@ namespace PFDASG1.DAL
                     Amount = reader.GetDecimal(0),
                     Description = null,
                     AccountId = 0,
-                    TransactionDate = DateTime.MinValue,
                     RecipientID = 0,
-                    SenderID = 0
+                    SenderID = 0,
+                    stringDate = reader.GetString(1),
                 });
             }
+
+
 
             reader.Close();
             conn.Close();
