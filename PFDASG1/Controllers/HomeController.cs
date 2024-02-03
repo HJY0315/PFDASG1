@@ -5,6 +5,7 @@ using PFDASG1.DAL;
 using PFDASG1.Models;
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
+using System.Xml.Linq;
 
 namespace PFDASG1.Controllers
 {
@@ -95,8 +96,8 @@ namespace PFDASG1.Controllers
         public async Task<IActionResult> Logout()
         {
             // Sign out the user
-            await HttpContext.SignOutAsync();
-
+            HttpContext.Session.Remove("Name");
+            HttpContext.Session.Remove("id");
             // Redirect to the home page or any other page
             return RedirectToAction("Index", "Home");
         }
