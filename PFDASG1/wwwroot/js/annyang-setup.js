@@ -208,9 +208,9 @@ if (annyang) {
     }
 
     function typeIn(value) {
-        if (window.location.pathname.toLowerCase() === '/visuallyimpaired/cardactivation') {
-            const focusedInput = document.activeElement;
+        const focusedInput = document.activeElement;
 
+        if (window.location.pathname.toLowerCase() === '/visuallyimpaired/cardactivation') {
             if (focusedInput.tagName === 'INPUT') {
                 // Remove spaces from the input value
                 value = value.replace(/\s/g, '');
@@ -224,10 +224,7 @@ if (annyang) {
             value = value.replace(/\s/g, '');
             document.getElementById('searchDemo').value = value;
             speakResponse("Input entered, You can go to the next step now.");
-        }
-        else if (window.location.pathname.toLowerCase() === '/visuallyimpaired/transfer') {
-            const focusedInput = document.activeElement;
-
+        } else if (window.location.pathname.toLowerCase() === '/visuallyimpaired/transfer') {
             if (focusedInput.tagName === 'INPUT') {
                 // Remove spaces from the input value
                 value = value.replace(/\s/g, '');
@@ -236,8 +233,17 @@ if (annyang) {
             } else {
                 speakResponse("No input field is focused.");
             }
-        }
-        else {
+        } else if (window.location.pathname.toLowerCase() === '/visually/impaired/sqsetup' || window.location.pathname === '/') {
+            const answerInput = document.querySelector('.security-answer');
+            if (answerInput) {
+                // Remove spaces from the input value
+                value = value.replace(/\s/g, '');
+                answerInput.value = value;
+                speakResponse("Answer entered, You can go to the next step now.");
+            } else {
+                speakResponse("No input field is focused.");
+            }
+        } else {
             // Remove spaces from the input value
             value = value.replace(/\s/g, '');
             document.getElementById('search').value = value;
@@ -246,6 +252,8 @@ if (annyang) {
             speakResponse("Input entered, press enter to search.");
         }
     }
+
+
 
     function getBalance() {
         var totalBalanceElement = document.querySelector('.total-balance h1');
@@ -284,8 +292,8 @@ if (annyang) {
         console.log(`%c ${message}`, 'color: blue; font-weight:bold;');
         var speechSynthesis = window.speechSynthesis;
         var speech = new SpeechSynthesisUtterance(message);
-        speech.volume = 1; 
-        speech.rate = 1; 
+        speech.volume = 1;
+        speech.rate = 1;
 
         speech.addEventListener('end', function () {
             if (callback && typeof callback === 'function') {
@@ -305,7 +313,7 @@ if (annyang) {
         if (!unrecognizedFlag) {
             console.log("Handling unrecognized command");
             speakResponse("Sorry, I didn't catch that. Please say again.", function () {
-                unrecognizedFlag = false;  
+                unrecognizedFlag = false;
             });
             unrecognizedFlag = true;
         }
@@ -313,7 +321,7 @@ if (annyang) {
 }
 
 document.addEventListener("keydown", function (event) {
-    if (event.key === "Shift") {
+    if (event.key === "Control") {
         event.preventDefault();
         isShiftKeyPressed = true;
         togglePushToTalk();
@@ -321,7 +329,7 @@ document.addEventListener("keydown", function (event) {
 });
 
 document.addEventListener("keyup", function (event) {
-    if (event.key === "Shift") {
+    if (event.key === "Control") {
         event.preventDefault();
         isShiftKeyPressed = false;
         togglePushToTalk();
