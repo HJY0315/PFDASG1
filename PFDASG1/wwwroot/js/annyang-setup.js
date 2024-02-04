@@ -40,6 +40,8 @@ if (annyang) {
         'Help': helpCommand,
         'Voice command': voiceCommand,
         'Keyboard': keyboardCommand,
+        'Increase font size *fontsize': increaseFontSizeByValue,
+        'Decrease font size *fsize': decreaseFontSizeByValue,
         'Yes': closeTutorial,
     };
 
@@ -360,6 +362,34 @@ function increaseFontSize() {
 
 function decreaseFontSize() {
     adjustFontSize(-2); // Call the existing adjustFontSize function with a change of -1
+}
+
+function increaseFontSizeByValue(fontsize) {
+    // Parse the spoken value to an integer
+    var fontSizeChange = parseInt(fontsize);
+
+    // Check if the parsed value is a valid number
+    if (!isNaN(fontSizeChange)) {
+        adjustFontSize(fontSizeChange);
+        speakResponse(`Font size increase by ${fontSizeChange} units.`);
+    } else {
+        speakResponse('Invalid font size adjustment. Please specify a number.');
+    }
+}
+
+function decreaseFontSizeByValue(fsize) {
+    // Parse the spoken value to an integer
+    var fontSizeChange = parseInt(fsize);
+
+    // Check if the parsed value is a valid number
+    if (!isNaN(fontSizeChange)) {
+        // Invert the value for decreasing font size
+        fontSizeChange = -fontSizeChange;
+        adjustFontSize(fontSizeChange);
+        speakResponse(`Font size decreased by ${-fontSizeChange} units.`);
+    } else {
+        speakResponse('Invalid font size adjustment. Please specify a number.');
+    }
 }
 
 function toggledarkmode() {
