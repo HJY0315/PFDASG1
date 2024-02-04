@@ -82,7 +82,7 @@
         <div class="col-md-4">
             <div class="d-flex flex-row widget summary income">
                 <div class="d-flex flex-column justify-content-center p-4">
-                    <i class="fa fa-dollar" style="font-size:60px;color:green;text-shadow:2px 2px 4px #000000;"></i>
+                    <i class="fa fa-dollar" style="font-size:60px;color:mediumseagreen;text-shadow:2px 2px 4px #000000;"></i>
                 </div>
                 <div class="d-flex flex-column m-auto py-4">
                     <span class="lead">Monthly Income</span>
@@ -153,7 +153,7 @@
                             @*<div class="flex-cell">@item.RecipientID == @userid ? "Income" : "Expense"</div>*@
                             <div class="flex-cell">@item.TransactionDate.Date.ToString("yyyy-MM-dd")</div>
                             <div class="flex-cell">@item.Description</div>
-                            <div class="flex-cell" style="color: @(item.RecipientID == @userid ? "green" : "red"); font-weight:bold;">
+                            <div class="flex-cell" style="color: @(item.RecipientID == @userid ? "mediumseagreen" : "red"); font-weight:bold;">
                                 @(item.RecipientID == @userid ? "+" : "-")@item.Amount.ToString("0.00")
                             </div>
                         </div>
