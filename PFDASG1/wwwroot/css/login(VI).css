@@ -326,7 +326,7 @@ Form
     transition: transform 0.2s ease-in-out;
     color: red !important;
     font-weight: bold !important;
-    background-color: #f3f3f3;
+    background-color: #f3f3f3 !important;
 }
 
     .animated-button:hover {
