@@ -284,7 +284,7 @@
                 <fieldset class="security-question-fieldset">
                     <div class="security-question-inputs cardactivationtext">
                         <div class="select">
-                            <select asp-for="securityQuestion" class="security-question-dropdown cardactivationtext">
+                            <select asp-for="securityQuestion" class=" cardactivationtext security-question-dropdown">
                                 <option>Questions</option>
                                 <option value="1">Where is your primary school?</option>
                                 <option value="2">Who is your best friend?</option>
@@ -703,7 +703,7 @@
                 chatbox.appendChild(chatLi);
                 addButtons();
             } else if (buttonType === "keyboard-shortcut") {
-                const keyboardShortcutMessage = "Command 1 - Your keyboard shortcut message here";
+                const keyboardShortcutMessage = "Hold Control_ Activate voice recognition";
                 const chatLi = createChatLi(keyboardShortcutMessage, "incoming");
                 chatLi.classList.add("keyboard-shortcut-list");
                 chatbox.appendChild(chatLi);
