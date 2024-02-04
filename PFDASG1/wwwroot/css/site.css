@@ -172,7 +172,8 @@ footer {
 .widget {
     border-radius: 1rem;
     background-color: #f3f33;
-    border: 2px solid #333 !important;
+    border: 2px solid!important;
+    border-color: #333;
 }
 
     .widget.income > div:first-child {
