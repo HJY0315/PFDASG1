@@ -217,14 +217,17 @@
             var elementsToAdjust = document.querySelectorAll("body, input, select, textarea, form, label, p, h4, option");
 
             elementsToAdjust.forEach(function (element) {
-                var computedStyle = window.getComputedStyle(element);
-                var currentSize = parseFloat(computedStyle.getPropertyValue('font-size'));
+                // Check if the element is part of the specific div structure
+                if (!element.closest('.widget')) {
+                    var computedStyle = window.getComputedStyle(element);
+                    var currentSize = parseFloat(computedStyle.getPropertyValue('font-size'));
 
-                // Ensure the new size is within the specified range
-                var newSize = Math.min(30, Math.max(15, currentSize + change));
+                    // Ensure the new size is within the specified range
+                    var newSize = Math.min(30, Math.max(15, currentSize + change));
 
-                // Update the font size of the element
-                element.style.fontSize = newSize + "px";
+                    // Update the font size of the element
+                    element.style.fontSize = newSize + "px";
+                }
             });
 
             // Update the font size in the font size input
