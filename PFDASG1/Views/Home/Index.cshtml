@@ -138,14 +138,14 @@
             // Check the current step and update content accordingly
             switch (currentStep) {
                 case 1:
-                    tutorialContent.innerHTML = `<h2>Do you know how to use our voice recognition?</h2>`;
+                    tutorialContent.innerHTML = `<h2 style="font-size: 25">Do you know how to use our voice recognition?</h2>`;
                     cancelButton.textContent = "Yes";
                     nextButton.textContent = "No";
                     cancelButton.removeEventListener('click', previousTutorialStep);
                     cancelButton.addEventListener('click', close);   //before activation we have cancel button
                     break;
                 case 2:
-                    tutorialContent.innerHTML = `<h2>Tutorial Step 1: Hold control key to activate voice recognition,
+                    tutorialContent.innerHTML = `<h2 style="font-size: 25">Tutorial Step 1: Hold control key to activate voice recognition,
                                     say 'Next' and release control key to go to next step.</h2>`;
                     cancelButton.textContent = "Previous";
                     nextButton.textContent = "Next";
@@ -155,7 +155,7 @@
 
 
                 case 3:
-                    tutorialContent.innerHTML = `<h2>Step 2: Say "Search" to focus on search bar. And say 'Type In' followed by your input to enter your information verbally.
+                    tutorialContent.innerHTML = `<h2 style="font-size: 25">Step 2: Say "Search" to focus on search bar. And say 'Type In' followed by your input to enter your information verbally.
                                      Try it out in next page.</h2>
                               `;
                     cancelButton.textContent = "Previous";
@@ -164,7 +164,7 @@
                     cancelButton.addEventListener('click', previousTutorialStep);
                     break;
                 case 4:
-                    tutorialContent.innerHTML = `Step 2: Focus on search bar. Say "type in" to enter information.
+                    tutorialContent.innerHTML = `<h2 style="font-size: 25">Step 3: Focus on search bar. Say "type in" to enter information. </h2>
                                              <div class="search-wrapper">
                                     <i class="search-icon bx bx-search"></i>
                                     <input type="search" id="searchDemo" data-search placeholder="Search">
@@ -177,8 +177,8 @@
                     cancelButton.addEventListener('click', previousTutorialStep);
                     break;
                 case 5:
-                    tutorialContent.innerHTML = `<p>Step 4: To navigate to different pages, use voice commands starting with 'Go to.'
-                            For example, 'Go to login page'. The system also may provide suggestion for you based on your inacurate voice command.</p>`;
+                    tutorialContent.innerHTML = `<h2 style="font-size: 25">Step 4: To navigate to different pages, use voice commands starting with 'Go to.'
+                                    For example, 'Go to login page'. The system also may provide suggestion for you based on your inacurate voice command.</h2>`;
                     cancelButton.textContent = "Previous";
                     nextButton.textContent = "Close";
                     cancelButton.removeEventListener('click', close);

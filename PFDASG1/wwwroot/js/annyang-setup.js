@@ -23,12 +23,12 @@ if (annyang) {
         'Start listening': startListening,
         'Stop listening': stopListening,
         'Access code *code': enterAccessCode,
-        'Pin number *pin': enterPIN,
+        'Pin *pin': enterPIN,
         'Login': login,
         'Logout': logout,
         'Search': search,
         'Type in *value': typeIn,
-        'Go to payment page': goToTransferPage,
+        'Go to transfer page': goToTransferPage,
         'Enter': searchEnter,
         'balance': getBalance,
         'Next': clickNextButton,
@@ -40,6 +40,7 @@ if (annyang) {
         'Help': helpCommand,
         'Voice command': voiceCommand,
         'Keyboard': keyboardCommand,
+        'Yes': closeTutorial,
     };
 
     function goToLoginPage() {
@@ -79,9 +80,17 @@ if (annyang) {
     }
 
     function enterAccessCode(code) {
+        code = code.replace(/-/g, '');
         code = code.replace(/\s/g, '');
         document.getElementById('accessCodeInput').value = code;
         speakResponse("Access code entered.");
+    }
+
+    function closeTutorial() {
+        var cancelButton = document.getElementById('cancelButton');
+        if (cancelButton) {
+            cancelButton.click();
+        }
     }
 
     function clickNextButton() {
@@ -215,7 +224,7 @@ if (annyang) {
                 // Remove spaces from the input value
                 value = value.replace(/\s/g, '');
                 focusedInput.value = value;
-                speakResponse("Input entered, You can go to the next step now.");
+                speakResponse("Input entered.");
             } else {
                 speakResponse("No input field is focused.");
             }
@@ -229,17 +238,17 @@ if (annyang) {
                 // Remove spaces from the input value
                 value = value.replace(/\s/g, '');
                 focusedInput.value = value;
-                speakResponse("Input entered, You can go to the next step now.");
+                speakResponse("Input entered.");
             } else {
                 speakResponse("No input field is focused.");
             }
-        } else if (window.location.pathname.toLowerCase() === '/visually/impaired/sqsetup' || window.location.pathname === '/') {
+        } else if (window.location.pathname.toLowerCase() === '/visuallyimpaired/sqsetup' || window.location.pathname === '/') {
             const answerInput = document.querySelector('.security-answer');
             if (answerInput) {
                 // Remove spaces from the input value
                 value = value.replace(/\s/g, '');
                 answerInput.value = value;
-                speakResponse("Answer entered, You can go to the next step now.");
+                speakResponse("Answer entered.");
             } else {
                 speakResponse("No input field is focused.");
             }
@@ -249,7 +258,6 @@ if (annyang) {
             document.getElementById('search').value = value;
             const inputEvent = new Event('input', { bubbles: true });
             document.getElementById('search').dispatchEvent(inputEvent);
-            speakResponse("Input entered, press enter to search.");
         }
     }
 
